@@ -32,3 +32,8 @@ main.container [hidden]{display:none!important}
 /* Retain the existing scrollable disclaimer area for the standalone document. */
 .disclaimer-frame:has(iframe){padding:0}
 .disclaimer-frame iframe{display:block;width:100%;height:100%;border:0}
+
+/* Cosmetic Fix 001: equal-width navigation on the disclaimer screen only. */
+#planning-fields:has(> [data-panel="welcome"]:not([hidden])) > .wizard-actions{align-items:stretch}
+#planning-fields:has(> [data-panel="welcome"]:not([hidden])) > .wizard-actions > .spacer{display:none}
+#planning-fields:has(> [data-panel="welcome"]:not([hidden])) > .wizard-actions > :is(#plan-back,#plan-next){flex:1 1 0;min-width:0;width:0}
