@@ -1,0 +1,3 @@
+# Private disposable regtest state and owner captures are never review assets.
+.regtest-private/
+*.chain-backup.zip

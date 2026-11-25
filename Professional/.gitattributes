@@ -1,0 +1,10 @@
+# SRI hashes cover exact bytes. Disable checkout/archive newline conversion.
+assets/original/pico.min.css -text
+assets/original/style.css -text
+retail-mirror/planner.css -text
+customer-controls.css -text
+# Standalone support tool CSP hashes cover inline script/style bytes.
+tools/Jade-Public-Account-Capture.html -text
+tools/TEF-First-Funded-Jade-Review.html -text
+tools/TEF-Signed-Return-Capture.html -text
+tools/TEF-Gift-Creation-Review.html -text

@@ -1,0 +1,72 @@
+{
+  "format": "bc1q21-professional-diagnostic-jade-handoff-v1",
+  "diagnosticOnly": true,
+  "signingAuthorized": false,
+  "canBroadcast": false,
+  "unsigned": {
+    "format": "bc1q21-professional-funded-distribution-unsigned-psbt-v1",
+    "network": "regtest",
+    "unsignedPsbtBase64": "cHNidP8BAPICAAAAATMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzAAAAAAD/////BiBOAAAAAAAAF6kUy/31ycaWBNvnYdI7l1LGuMChW5KHIE4AAAAAAAAXqRT2pKV191y/C+7HNqesFor/XaaEYYcgTgAAAAAAABepFEUfn94G4mp6hkqSKr67MzXaEYJghyBOAAAAAAAAF6kUBJi5E118Fnpptq2FmFHXApzltHKHIE4AAAAAAAAXqRSw6NoeMEdanVd38HEnEeH4V/dExofQBwAAAAAAABYAFDwZV3FFhx1sYdz0q1m/PfJh08jzAAAAAAABAR9GlQEAAAAAABYAFDwZV3FFhx1sYdz0q1m/PfJh08jzIgYCMMr0Yt4k1ZkHiAM/CmgRFWSLUzbQmhmd0Ijn6vX/fMAYO6aL/VQAAIAAAACAAAAAgAAAAAAAAAAAAAAAAAAAAA==",
+    "psbtSha256": "7e4bd56c1db9984ed5b179d101cda1e284c795ba91178a95d82de5ef05e38e1a",
+    "unsignedTxSha256": "c3a1a785d4a252c7971a92277e5bcb013ecce8072bbd485322f2b04b2a951ceb",
+    "fundingInputCount": 1,
+    "giftOutputCount": 5,
+    "totalOutputCount": 6,
+    "networkFeeSats": 1750,
+    "nextEncoder": "ur:crypto-psbt",
+    "signed": false,
+    "broadcast": false,
+    "hardwareSignatureVerified": false
+  },
+  "intent": {
+    "format": "bc1q21-professional-funded-distribution-intent-v1",
+    "network": "regtest",
+    "inputs": [
+      {
+        "txid": "3333333333333333333333333333333333333333333333333333333333333333",
+        "vout": 0,
+        "valueSats": 103750,
+        "scriptPubKeyHex": "00143c19577145871d6c61dcf4ab59bf3df261d3c8f3"
+      }
+    ],
+    "gifts": [
+      {
+        "scriptPubKeyHex": "a914cbfdf5c9c69604dbe761d23b9752c6b8c0a15b9287",
+        "valueSats": 20000
+      },
+      {
+        "scriptPubKeyHex": "a914f6a4a575f75cbf0beec736a7ac168aff5da6846187",
+        "valueSats": 20000
+      },
+      {
+        "scriptPubKeyHex": "a914451f9fde06e26a7a864a922abebb3335da11826087",
+        "valueSats": 20000
+      },
+      {
+        "scriptPubKeyHex": "a9140498b9135d7c167a69b6ad859851d7029ce5b47287",
+        "valueSats": 20000
+      },
+      {
+        "scriptPubKeyHex": "a914b0e8da1e30475a9d5777f0712711e1f857f744c687",
+        "valueSats": 20000
+      }
+    ],
+    "change": {
+      "scriptPubKeyHex": "00143c19577145871d6c61dcf4ab59bf3df261d3c8f3",
+      "valueSats": 2000
+    },
+    "serviceFee": null,
+    "networkFeeSats": 1750,
+    "inputTotalSats": 103750,
+    "outputTotalSats": 102000,
+    "signed": false,
+    "signatureVerified": false,
+    "broadcastAuthorized": false,
+    "nextStep": "synthetic offline validation only"
+  },
+  "synthetic": true,
+  "hardwareVerified": false,
+  "chainFunded": false,
+  "networkContacted": false,
+  "broadcast": false
+}

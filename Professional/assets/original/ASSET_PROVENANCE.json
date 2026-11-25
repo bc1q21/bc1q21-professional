@@ -1,0 +1,27 @@
+{
+  "sourceRepository": "bc1q21/bc1q21-Professional-Development",
+  "sourceCommit": "6892b56c0c81170bd7b88d7657a31a125c1f46a1",
+  "assets": {
+    "pico.min.css": {
+      "sourcePath": "Frontend/static/pico.min.css",
+      "sourceGitBlob": "b7bbabb8293f0dab7e437dca64ac527ef3e717aa",
+      "bytes": 72305,
+      "sha256": "b0e7671adf208f5b56ed041adde521d3ba980ee1bcdacea0202169284be7024a",
+      "integrity": "sha384-Igjx5rLo1oJuDlq1Ls6uECey1nXahm4j4GoF8ixTon9zxdse6QkdsFelFYk8j7rI"
+    },
+    "style.css": {
+      "sourcePath": "Frontend/static/style.css",
+      "sourceGitBlob": "e07b2c828f42a6fbba972178c04ec70bae3fd2f0",
+      "bytes": 13107,
+      "sha256": "0c327f690566685f68e3cb1ddc3e02300c88a303b922fec99a136406ca472771",
+      "integrity": "sha384-IL40brJmOAIucJSeHH6OKCK5bu6n3XFO3HEjNUe/bF1yHq9yPGwY+5IBAaP2WxgX"
+    },
+    "bc1q21-logo.png": {
+      "sourcePath": "Frontend/static/img/bc1q21-logo.png",
+      "sourceGitBlob": "08a6adb937d043ee24dfae8dc1fa2f1c9430ef71",
+      "bytes": 48732,
+      "sha256": "d8c415a2c21da09fb2b68e747136a78c942693913886d2226afa444d49864e24",
+      "integrity": "sha384-jsRInHSvgRZJNsM43NUqaDo1hyLVtNhyd57eYF/gkck7OtkEV2rRQyeWnAH2yZp2"
+    }
+  }
+}

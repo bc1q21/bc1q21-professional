@@ -1,0 +1,253 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none';script-src 'self' 'unsafe-inline';style-src 'self' 'unsafe-inline';img-src 'self' data:;connect-src https: http://127.0.0.1:* http://localhost:*;base-uri 'none';form-action 'none'">
+<title>bc1q21 Professional — Jade Plus</title><style>
+:root{font:16px system-ui,Segoe UI,sans-serif;color:#172c43;background:#f3f6fa}body{margin:0}main{max-width:880px;margin:28px auto;padding:20px}header,section{background:white;border:1px solid #d9e2ed;border-radius:10px;padding:24px;margin-bottom:18px}header{display:flex;gap:20px;align-items:center}header img{width:110px}h1{margin:0;color:#09518b}.bar{background:#09518b;color:white;padding:15px;border-radius:8px;margin:18px 0}.warning{background:#fff1da;border-left:4px solid #bc7b17;padding:14px}.status{background:#eaf1f8;padding:14px;border-radius:6px}button,a.button{font:inherit;background:#09518b;color:white;border:0;border-radius:7px;padding:12px 18px;margin:8px 8px 8px 0;cursor:pointer;text-decoration:none;display:inline-block}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#dce9f5!important;color:#164568!important}#qr{display:block;max-width:100%;width:360px;height:auto;margin:24px auto}#camera{display:block;max-width:100%;width:440px;background:#152536;margin:16px auto;min-height:240px}code{overflow-wrap:anywhere}
+</style><link rel="stylesheet" href="./customer-controls.css" integrity="sha384-fkMvXDYPH605EEcCTeKEr6x2KMS1FSaO3YCC0Ec0ATWB/qaDs55lAX/UKGLxK3ZM"><script src="./creator-memory.js"></script></head><body><main><header id="professional-brand-header"><img src="./assets/original/bc1q21-logo.png" alt="bc1q21"><div><h1>Gifting Wizard</h1><p class="practice-identity" hidden style="margin:8px 0 0;font-weight:650;color:#235c87"></p><p>Jade Plus signing</p></div></header><div class="bar"><strong>Step 4 · Jade Plus</strong> &nbsp; Planning → Add Funds → Jade Plus → Finish</div>
+<section><p class="warning"><strong>Development preview — do not sign or fund.</strong> This page is not connected to authenticated Bitcoin Core funding or a verified wallet identity. No real transactions or broadcasts are enabled.</p>
+<h2>Sign your gift with Jade Plus</h2><p id="gift-summary" class="status" role="status">Checking the approved gift schedule…</p>
+<div id="schedule-panel" hidden><h3>Review the gift schedule</h3><p>These are the releases you selected. Check every date and amount before approving a transaction on Jade Plus.</p><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse"><thead><tr><th style="text-align:left;padding:10px">Release</th><th style="text-align:left;padding:10px">Unlock date</th><th style="text-align:right;padding:10px">Amount (sats)</th></tr></thead><tbody id="schedule-rows"></tbody></table></div></div><p>When your Bitcoin deposit has been verified, the exact gift transaction will appear here as an animated QR code. Review it on Jade Plus, sign offline, and scan the signed QR back into this page.</p>
+<p id="status" class="status" role="status">Waiting for a trusted, gift-specific unsigned transaction. Jade signing is locked.</p>
+<p id="diagnostic-label" class="warning" hidden><strong>Disposable regtest developer preview only.</strong> This transaction came from browser session storage, not an authenticated Jade wallet or trusted signing issuer. Never use real Bitcoin. No signing authorization or broadcast is granted.</p><div id="transaction-review" class="status" hidden><h3>Transaction details to check on Jade Plus</h3><p id="transaction-review-details"></p><div id="jade-release-schedule" hidden><h4>Scheduled Bitcoin releases</h4><table style="width:100%;border-collapse:collapse;text-align:left"><thead><tr><th style="padding:8px;border-bottom:1px solid #ccd8e3">Release</th><th style="padding:8px;border-bottom:1px solid #ccd8e3">Unlock date</th><th style="padding:8px;border-bottom:1px solid #ccd8e3">Amount (sats)</th></tr></thead><tbody id="jade-release-rows"></tbody></table></div><p>Only approve a transaction if the amounts, gift releases and fee match what you intended. Signing requires the separate explicit regtest authorization below. No Bitcoin is broadcast.</p></div><div id="qr-panel" hidden><img id="qr" alt="Animated unsigned transaction QR"><p id="frame-count"></p><button type="button" id="pause">Pause QR</button><button type="button" id="qr-speed" class="secondary">Slow down QR</button><p id="qr-speed-status" role="status">Normal speed: 280 ms per frame</p></div>
+<div class="status" aria-label="Jade Plus signing steps"><strong>How to use Jade Plus</strong><ol style="margin:8px 0 0;padding-left:22px"><li>Review the release schedule and transaction details above.</li><li>When a disposable regtest signing QR is available, scan its moving frames with Jade Plus and review the transaction on the device.</li><li>After Jade displays its signed response, select <strong>Scan signed Jade QR</strong> below and hold Jade's screen in front of your computer camera.</li></ol><p style="margin-bottom:0"><strong>Important:</strong> The camera requires browser permission and a secure context (HTTPS or localhost). A verified signature is not a broadcast or a completed gift.</p></div><h3>Scan signed QR from Jade Plus</h3><video id="camera" playsinline muted></video><canvas id="camera-canvas" hidden></canvas><button type="button" id="scan" disabled>Scan signed Jade QR</button><button type="button" id="stop" disabled>Stop camera</button><p class="status" id="camera-help" role="status">Camera scanning is available after a valid regtest handoff. Allow camera permission when prompted; use HTTPS or localhost.</p>
+<p id="verification" class="status" role="status">No signed transaction verified.</p>
+<div id="verified-next" hidden><p class="status">The returned Jade QR has passed cryptographic checks for this gift. This does not mean the transaction has been broadcast.</p><a class="button" href="./finish-workspace.html">View verified transaction summary →</a></div><a class="button secondary" href="./finish-workspace.html">Preview Finish page (gift not completed) →</a><div class="wizard-actions"><a class="button secondary customer-nav-control" id="jade-back" href="./funding-workspace.html" aria-label="Back to Add Funds">Back</a><span class="spacer"></span><button class="btn-primary" id="finish-gift" disabled>Finish gift</button></div></section>
+<nav style="max-width:920px;margin:0 auto 22px;padding:16px;text-align:center;background:#e2edf6;border-radius:8px"><a href="./customer-walkthrough.html" style="color:#09518b;font-weight:700">← Customer walkthrough &amp; all five stages</a></nav></main><template id="legacy-lab-scripts"><script src="./browser-integration/professional-verifier.bundle.js"></script>
+<script>
+// The trusted funding adapter will deliver a frozen unsigned PSBT only after
+// server-side chain and wallet provenance verification. No file import, demo
+// PSBT, or browser-provided flags can unlock this production-facing screen.
+'use strict';
+if(sessionStorage.getItem('bc1q21-professional-coordinator-review')||(location.hash==='#recipient-claim-review'||location.hash.startsWith('#recipient-claim-recovery=')||location.hash.startsWith('#recipient-claim-preflight='))){
+ sessionStorage.removeItem('bc1q21-professional-diagnostic-jade-handoff');
+ sessionStorage.removeItem('bc1q21-professional-regtest-unsigned-preview');
+}
+let timer=null;const professionalIdentity=(()=>{try{const profile=JSON.parse(sessionStorage.getItem('bc1q21-professional-profile-draft')||'null');return typeof profile?.business==='string'&&profile.business.trim().length>0&&profile.business.length<=100?profile.business.trim():null;}catch{return null}})();
+if(professionalIdentity){for(const element of document.querySelectorAll('.practice-identity')){element.textContent=professionalIdentity;element.hidden=false;}}
+
+const summary=document.getElementById('gift-summary');
+let reviewedPlan=null;
+try{
+ const plan=JSON.parse(sessionStorage.getItem('bc1q21-professional-approved-plan-preview')||'null');
+ if(plan?.format!=='bc1q21-professional-retail-plan-preview-v1'||
+    plan.status!=='UNFUNDED_PREVIEW_NOT_SIGNABLE'||
+    !Array.isArray(plan.releases)||plan.releases.length<1||
+    plan.releases.length>60||!Number.isSafeInteger(plan.totalSats)||
+    plan.signingAuthorized!==false||plan.fundingAuthorized!==false||
+    plan.broadcastAuthorized!==false)
+  throw Error('No approved Professional gift schedule');
+ const total=plan.releases.reduce((sum,r)=>{
+  if(typeof r.date!=='string'||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(r.date)||
+     !Number.isSafeInteger(r.amountSats)||r.amountSats<=0)
+   throw Error('Invalid approved gift release');
+  return sum+r.amountSats;
+ },0);
+ if(!Number.isSafeInteger(total)||total!==plan.totalSats)throw Error('Gift total mismatch');
+ reviewedPlan=plan;
+ const scheduleRows=document.getElementById('schedule-rows');
+ for(const [index,release] of plan.releases.entries()){
+  const row=document.createElement('tr');
+  for(const [value,align] of [[index+1,'left'],[release.date,'left'],[release.amountSats.toLocaleString(),'right']]){
+   const cell=document.createElement('td');
+   cell.textContent=String(value);cell.style.padding='10px';
+   cell.style.textAlign=align;cell.style.borderBottom='1px solid #d9e2ed';
+   row.appendChild(cell);
+  }
+  scheduleRows.appendChild(row);
+ }
+ document.getElementById('schedule-panel').hidden=false;
+ summary.textContent=plan.releases.length+' release(s) · '+plan.totalSats.toLocaleString()+
+  ' sats · funding and Jade signing pending.';
+}catch(error){summary.textContent='Return to gift planning: '+error.message;}
+
+let approvedUnsigned=null;
+const verifiedSummaryKey='bc1q21-professional-verified-creator-preview';
+// Keep an earlier verified diagnostic when the customer navigates back from Finish.
+// A new Add Funds handoff invalidates it before any new signing attempt.
+let cameraController=null;
+const scanStatus=document.getElementById('verification');
+const attachCamera=window.bc1q21ProfessionalAttachCreatorCamera;
+if(typeof attachCamera==='function'&&!sessionStorage.getItem('bc1q21-professional-coordinator-review')&&location.hash!=='#recipient-claim-review'&&!location.hash.startsWith('#recipient-claim-recovery=')&&!location.hash.startsWith('#recipient-claim-preflight=')||location.hash.startsWith('#recipient-claim-preflight=')){
+ cameraController=attachCamera({
+  video:document.getElementById('camera'),
+  canvas:document.getElementById('camera-canvas'),
+  startButton:document.getElementById('scan'),
+  stopButton:document.getElementById('stop'),
+  statusElement:scanStatus,
+  getApprovedUnsigned:()=>approvedUnsigned,
+  onVerified:verified=>{
+   let currentPlan=null;
+   try{currentPlan=JSON.parse(sessionStorage.getItem('bc1q21-professional-approved-plan-preview')||'null');}catch{}
+   if(!reviewedPlan||!currentPlan||JSON.stringify(currentPlan.releases)!==JSON.stringify(reviewedPlan.releases)||currentPlan.totalSats!==reviewedPlan.totalSats){
+    scanStatus.textContent='Gift plan changed since signing began. Return to Add Funds and prepare a new transaction.';return;
+   }
+   if(verified.approvedPsbtSha256!==approvedUnsigned?.psbtSha256){
+    scanStatus.textContent='Signed QR did not match the approved gift';return;
+   }
+   if(verified.signatureCryptographicallyVerified!==true||
+      verified.transactionIntentBound!==true||
+      verified.finalizedTransaction!==true||
+      verified.canBroadcast!==false||
+      typeof verified.finalizedTxid!=='string'||
+      !/^[0-9a-f]{64}$/.test(verified.finalizedTxid)){
+    scanStatus.textContent='Returned Jade transaction did not pass completion checks.';
+    return;
+   }
+   sessionStorage.setItem(verifiedSummaryKey,JSON.stringify({
+    format:'bc1q21-professional-verified-creator-preview-v1',
+    network:'regtest',diagnosticOnly:true,transactionVerified:true,
+    broadcast:false,canBroadcast:false,
+    psbtSha256:verified.approvedPsbtSha256,txid:verified.finalizedTxid,
+    releaseCount:reviewedPlan?.releases.length,totalSats:reviewedPlan?.totalSats,
+    releases:reviewedPlan.releases.map(r=>({date:r.date,amountSats:r.amountSats})),
+    fundingInputCount:approvedUnsigned.fundingInputCount,
+    networkFeeSats:approvedUnsigned.networkFeeSats,
+    totalOutputCount:approvedUnsigned.totalOutputCount
+   }));
+   document.getElementById('verified-next').hidden=false;
+   document.getElementById('camera-help').textContent='Signed Jade response verified for this disposable regtest transaction. Continue to Finish; nothing has been broadcast.';
+   scanStatus.textContent='Jade signature verified for this gift. Transaction prepared, not broadcast.';
+  }
+ });
+}else{scanStatus.textContent='Jade camera verifier unavailable. Scanning disabled.';}
+
+// Development-only browser-session handoff: never grants signing authorization.
+const diagnosticHandoffKey='bc1q21-professional-diagnostic-jade-handoff';
+const diagnosticPreviewKey='bc1q21-professional-regtest-unsigned-preview';
+(async()=>{
+ try{
+  const freshHandoffJson=sessionStorage.getItem(diagnosticHandoffKey);
+sessionStorage.removeItem(diagnosticHandoffKey);
+if(freshHandoffJson!==null){
+ sessionStorage.removeItem(diagnosticPreviewKey);
+}
+const handoff=JSON.parse(
+ freshHandoffJson!==null
+  ? freshHandoffJson
+  : sessionStorage.getItem(diagnosticPreviewKey)||'null'
+);
+  if(!reviewedPlan||handoff?.format!=='bc1q21-professional-diagnostic-jade-handoff-v1'||
+     handoff.diagnosticOnly!==true||handoff.signingAuthorized!==false||
+     handoff.canBroadcast!==false) return;
+  if(freshHandoffJson!==null){
+ sessionStorage.removeItem(verifiedSummaryKey);
+ document.getElementById('verified-next').hidden=true;
+}
+  const unsigned=handoff.unsigned;
+  if(unsigned?.format!=='bc1q21-professional-funded-distribution-unsigned-psbt-v1'||
+     unsigned.network!=='regtest'||unsigned.signed!==false||
+     unsigned.broadcast!==false||unsigned.hardwareSignatureVerified!==false||
+     typeof unsigned.psbtSha256!=='string'||!/^[0-9a-f]{64}$/.test(unsigned.psbtSha256))
+   throw Error('Invalid disposable regtest transaction');
+  const inspect=window.bc1q21ProfessionalVerifyUnsignedCreatorPsbt;
+  if(typeof inspect!=='function')throw Error('Independent transaction verifier unavailable');
+  const result=inspect({unsigned,intent:handoff.intent});
+  if(result?.matchesIntent!==true||result.network!=='regtest'||
+     result.signingAuthorized!==false||result.canBroadcast!==false||
+     handoff.intent?.gifts?.length!==reviewedPlan.releases.length||
+     handoff.intent.gifts.some((gift,i)=>
+      gift.date!==reviewedPlan.releases[i].date||
+      gift.valueSats!==reviewedPlan.releases[i].amountSats))
+   throw Error('Jade transaction does not match the approved gift plan');
+  const render=window.bc1q21ProfessionalRenderCreatorUnsignedQr;
+  if(typeof render!=='function')throw Error('QR renderer unavailable');
+  const qr=await render(unsigned);
+  if(qr.approvedPsbtSha256!==unsigned.psbtSha256||
+     qr.signingAuthorized!==false||qr.canBroadcast!==false||
+     !Array.isArray(qr.images)||!qr.images.length)
+   throw Error('Unsigned transaction QR does not match');
+  if(!Number.isSafeInteger(unsigned.networkFeeSats)||unsigned.networkFeeSats<0||
+     !Number.isSafeInteger(unsigned.giftOutputCount)||
+     unsigned.giftOutputCount!==reviewedPlan.releases.length||
+     !Number.isSafeInteger(unsigned.fundingInputCount)||unsigned.fundingInputCount<1||
+     !Number.isSafeInteger(unsigned.totalOutputCount)||
+     unsigned.totalOutputCount<unsigned.giftOutputCount)
+   throw Error('Unsigned transaction counts or network fee do not match gift review');
+  approvedUnsigned=unsigned;
+if(freshHandoffJson!==null){
+ sessionStorage.setItem(diagnosticPreviewKey,JSON.stringify(handoff));
+}
+  document.getElementById('transaction-review-details').textContent=
+   unsigned.giftOutputCount+' gift release(s) · '+
+   reviewedPlan.totalSats.toLocaleString()+' sats total gift · '+
+   unsigned.networkFeeSats.toLocaleString()+' sats network fee · '+
+   unsigned.fundingInputCount+' funding input(s) · '+
+   (unsigned.totalOutputCount-unsigned.giftOutputCount)+' additional output(s), including any change.';
+  const rows=document.getElementById('jade-release-rows');
+  rows.replaceChildren();
+  for(const [i,gift] of handoff.intent.gifts.entries()){
+   const row=document.createElement('tr');
+   for(const value of [String(i+1),gift.date,gift.valueSats.toLocaleString()]){
+    const cell=document.createElement('td');
+    cell.style.padding='8px';
+    cell.style.borderBottom='1px solid #e1e8f0';
+    cell.textContent=value;
+    row.appendChild(cell);
+   }
+   rows.appendChild(row);
+  }
+  document.getElementById('jade-release-schedule').hidden=false;
+  document.getElementById('transaction-review').hidden=false;
+  document.getElementById('diagnostic-label').hidden=false;
+  document.getElementById('qr-panel').hidden=false;
+  const image=document.getElementById('qr');
+  const pause=document.getElementById('pause');
+  let frame=0;
+  const advance=()=>{frame=(frame+1)%qr.images.length;image.src=qr.images[frame];};
+  image.src=qr.images[0];
+  document.getElementById('frame-count').textContent=qr.images.length+' animated frame(s) · regtest preview';
+  let frameDelay=280;
+  const speedButton=document.getElementById('qr-speed');
+  const speedStatus=document.getElementById('qr-speed-status');
+  const startAnimation=()=>{if(timer)clearInterval(timer);timer=setInterval(advance,frameDelay);};
+  startAnimation();
+  speedButton.onclick=()=>{
+   frameDelay=frameDelay===280?500:280;
+   speedButton.textContent=frameDelay===280?'Slow down QR':'Normal QR speed';
+   speedStatus.textContent=(frameDelay===280?'Normal':'Slow')+' speed: '+frameDelay+' ms per frame';
+   if(timer)startAnimation();
+  };
+  pause.onclick=()=>{if(timer){clearInterval(timer);timer=null;pause.textContent='Resume QR';}
+    else{startAnimation();pause.textContent='Pause QR';}};
+  cameraController?.refresh();
+  document.getElementById('camera-help').textContent='Ready for Jade’s signed response. Select Scan signed Jade QR, allow camera access, and hold the QR steady in front of the camera.';
+  document.getElementById('status').textContent='Regtest developer preview loaded. Scan the QR only with a disposable Jade test wallet. No real signing authorization or broadcasting.';
+ }catch(error){
+  approvedUnsigned=null;
+  document.getElementById('transaction-review').hidden=true;
+  cameraController?.invalidate();
+  document.getElementById('camera-help').textContent='Camera scanning requires a valid disposable regtest handoff from Add Funds.';
+  document.getElementById('status').textContent='Jade preview unavailable: '+error.message;
+ }
+})();
+
+// Fail closed until an actual trusted authorization issuer is implemented.
+// Previously this UI accepted caller-provided booleans masquerading as trust.
+// Such booleans are forgeable and must never enable a signing QR.
+window.bc1q21ProfessionalShowTrustedCreatorPsbt=async function(){
+ approvedUnsigned=null;
+ sessionStorage.removeItem(verifiedSummaryKey);
+ sessionStorage.removeItem(diagnosticPreviewKey);
+ document.getElementById('verified-next').hidden=true;
+ cameraController?.invalidate();
+ if(timer){clearInterval(timer);timer=null;}
+ document.getElementById('qr-panel').hidden=true;
+ document.getElementById('transaction-review').hidden=true;
+ document.getElementById('status').textContent=
+  'Jade signing locked: trusted wallet-origin authentication and independent gift approval are not yet implemented.';
+ throw Error('No trusted Professional signing authorization issuer is installed');
+};
+
+</script><script>
+(function(){
+ try{
+ const p=JSON.parse(sessionStorage.getItem('bc1q21-professional-profile-draft')||'null');
+ if(!p||typeof p.business!=='string'||!p.business.trim())return;
+ const header=document.getElementById('professional-brand-header'),img=header?.querySelector('img'),heading=header?.querySelector('h1');
+ if(!header||!heading)return;
+ if(typeof p.logoData==='string'&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(p.logoData)){img.src=p.logoData;img.alt=p.business+' logo';}else img?.remove();
+ const name=document.createElement('strong');name.textContent=p.business.trim().slice(0,100);name.style.fontSize='1.25rem';heading.before(name);
+ const info=document.createElement('p');info.style.cssText='font-size:.82rem;line-height:1.5;margin:4px 0';info.textContent=['contact','address','email','phone'].map(k=>p[k]).filter(v=>typeof v==='string'&&v.trim()).join(' · ').slice(0,400);heading.after(info);
+ const credit=document.createElement('footer');credit.textContent='Powered by bc1q21';credit.style.cssText='text-align:center;color:#64748b;font-size:.85rem;margin:20px';document.querySelector('main')?.append(credit);
+ }catch(e){console.warn('Professional branding unavailable',e)}
+})();
+</script><script type="module" src="./creator-jade-review.browser.mjs"></script><script type="module" src="./recipient-jade-review.browser.mjs"></script></template><script src="./browser-integration/creator-browser.bundle.js"></script><script type="module" src="./creator-workspace-route.mjs"></script></body></html>

@@ -1,0 +1,110 @@
+# bc1q21 Professional — Engineering Handover and Restart Guide
+
+**Snapshot:** 2026-10-13. **Scope:** isolated experimental Professional branch only. **Authoritative code:** GitHub repository `bc1q21/bc1q21`, branch `professional/isolated-release-prototype`. **Do not merge or deploy this branch.**
+
+## Read this first in a fresh chat
+
+The user is building **bc1q21 Professional**, an eventual advanced version of the existing retail bc1q21 Bitcoin gifting platform. The retail product is live and **must not be modified**. Do not edit, commit to, merge into, or deploy GitHub `main`. All Professional engineering must remain in `professional/isolated-release-prototype` and use **synthetic/regtest transactions only**. Never request real wallet seed phrases, private keys, or real BTC; never broadcast transactions. Keep the product name exactly **bc1q21** in lowercase.
+
+The user is not a programmer. They expect the assistant to lead engineering, inspect the actual branch, implement and test changes, verify GitHub Actions, and explain milestones concisely. They prefer one step at a time when their participation is needed. A previous attempt to move chats lost engineering context; **read this handover and the referenced source files and workflow before proposing changes**. Do not reconstruct architecture from guesses or redesign the product.
+
+## Product model — do not change
+
+Professional must retain the familiar retail bc1q21 gift workflow: a gift creator chooses amount, dates, number of releases, and duration; a gift is funded and delivered via a gift card; the beneficiary redeems releases after unlock. **User-confirmed KISS constraint:** Professional must preserve the **identical retail workflow and behavior**, reusing retail code wherever feasible; only seed/recovery-word handling and other private wallet operations move across an air gap. Keep changes minimal and limited to enforcing that boundary. **No hardware vendor is preferred or mandated:** Jade Plus, Coldcard, and other suitable air-gapped signers are interchangeable candidates, subject to verified compatibility. Do not design the product around Jade or assume a separate companion device is necessary. The Professional distinction is that **independently user-generated recovery words and private signing material** stay entirely offline/air-gapped. Professional never generates recovery words. The networked website handles **public-only** information, unsigned PSBTs and non-secret transaction information. The gift creator controls creation and delivery. Offline Jade Plus QR signing has been tested as a proof of concept. This is **not** an authorization to put seeds into a browser, server, connected laptop, or GitHub.
+
+The present prototype is **one input, one output, legacy P2SH CLTV, synthetic/regtest**. It is not yet the full retail-equivalent multi-release implementation, not a complete production wallet architecture, and not a production security audit.
+
+## Tested building blocks
+
+- Offline Jade Plus public QR and synthetic PSBT signing experiments; existing captured Jade signed fixture; separate independent Bitcoin Core regtest mempool-acceptance experiments. These are limited proofs, not production approval.
+- `public-handoff.mjs`: strict public-only CLTV handoff validation.
+- `public-funding-release-integration.mjs`: builds unsigned release PSBT using public funding data.
+- `approved-release-gate.mjs`, `transaction-confirmation.mjs`, `confirmation-session.mjs`, `one-time-approved-handoff.mjs`: independent transaction-intent checks, explicit confirmation and one-time approval.
+- `controlled-qr-session.mjs`: controlled confirmation, QR export and signed-return integration.
+- `verify-signed-psbt-return.mjs`: checks returned PSBT is bound to approved unsigned transaction and rejects unexpected metadata.
+- `verify-returned-signature.mjs`: checks synthetic CLTV ECDSA signature cryptographically; enforces SIGHASH_ALL.
+- `finalize-verified-release.mjs`, `audit-finalized-transaction.mjs`, `finalize-and-audit-release.mjs`: build finalized transaction only after checks and independently audit raw transaction; **never broadcast**.
+- `in-memory-replay-guard.mjs`: optional shared in-process public funding-outpoint claims; claims consumed on failed return.
+- `local-durable-replay-guard.mjs`: **prototype** atomic local-file outpoint claims surviving separate guard instances on a shared filesystem. Optional via the controlled-session `replayGuard` parameter; not mandatory or production-grade. No distributed coordination, trusted storage model, cross-host guarantee or blockchain UTXO status verification. Claims intentionally are not rolled back.
+- Numerous `Professional/*.check.mjs` and `Professional/*.test.mjs` regressions, plus isolated HTML/QR demos.
+
+**Important limitations:** The approval gate does not prove an independent human actually reviewed transaction details; the in-memory and local-file replay guards are opt-in prototypes; lower-level APIs still exist; the complete real-hardware end-to-end signing-return path and full multi-release product have not been validated. Bitcoin Core acceptance checks are separate and do not imply every newly finalized transaction was independently accepted by Core.
+
+## CI and reconciliation
+
+Workflow: `.github/workflows/professional-tests.yml` runs only on the isolated Professional branch or manual dispatch; includes Node tests, independent bitcoinjs checks, offline demo builds and Chromium browser checks. Inspect the workflow and **latest Actions run status**, not just a previous green run.
+
+Last previously confirmed green before the replay changes: https://github.com/bc1q21/bc1q21/actions/runs/38439074641 .
+
+After durable replay guard work, a regression `Professional/in-memory-replay-guard.check.mjs` expected the text `Invalid PSBT base64` while the verifier correctly rejected the malformed input with `Invalid PSBT structure`. A focused assertion update allows either fail-closed rejection path; commit `efe2ebe5356daa6d6e6b05d2557a4e536a4b1b39`. Check the Actions run started from that commit and record its final result. Do **not** claim green until GitHub reports completed/success. A new commit adding this handover may trigger another CI run.
+
+Useful GitHub Actions URL: https://github.com/bc1q21/bc1q21/actions?query=branch%3Aprofessional%2Fisolated-release-prototype .
+
+## Planned work after the break — prioritize, do not endlessly add tests
+
+1. **Reconcile** the current CI suite and ensure a green isolated branch; investigate any failure by inspecting job logs, fixing root causes, and rerunning.
+2. Audit the prototype boundaries and consolidate duplicated test paths. Confirm the actual controlled entry point uses approved PSBT, verified signed return and independent final audit. Avoid claiming the optional replay guard is mandatory.
+3. Validate durable replay semantics under restart, corruption, concurrency and recovery; determine production-appropriate persistence/locking architecture and Bitcoin UTXO-state verification. Local-file guard is only a proof of concept.
+4. Evaluate a **vendor-neutral** air-gapped mechanism for the existing retail gift operations, including offline schedule recovery and Bitcoin signing. Jade Plus is only one previously tested candidate; Coldcard or another suitable signer may be simpler. Run disposable regtest-only verification without broadcasting. This may require coordinated user interaction; do not request seeds.
+5. Design and implement retail-equivalent multiple gift releases and unlock dates with offline signing, safe fee and recovery handling; then threat-model and acceptance-test the complete Professional experience.
+6. Plan deployment architecture and independent security review separately. No production release without explicit user authorization and comprehensive review.
+
+## Safety and working conventions
+
+- No commits to `main`, no retail website changes, no merges, no deployment, no real Bitcoin and no transaction broadcasts.
+- Do not treat CI green as proof of complete security or product readiness.
+- Maintain a clear distinction between **code committed**, **CI passing**, **Bitcoin Core regtest verified**, **Jade hardware verified**, and **production-ready**.
+- When the user returns in a new chat, first read this document and current GitHub branch/Actions results, then summarize exactly where work stopped and recommend the **single next engineering task**.
+- If the GitHub connector is unavailable, say so rather than assuming branch state. Never ask user to paste private keys or recovery words.
+
+## Suggested new-chat opener
+
+“Please continue the bc1q21 Professional engineering project. First read `Professional/ENGINEERING_HANDOVER.md` on GitHub branch `professional/isolated-release-prototype` in repo `bc1q21/bc1q21`, check the latest GitHub Actions results, and confirm the exact next step. Do not touch retail bc1q21 or `main`, do not deploy, and use only synthetic/regtest data.”
+
+## Creator-to-beneficiary handoff (user-confirmed, non-negotiable)
+The gift creator independently creates, safeguards, and delivers the recovery words **and** the normal bc1q21 gift card to the beneficiary, whether personally, through a will or estate, or another private arrangement. **bc1q21 does not generate, hold, escrow, transmit, deliver, recover, or manage those recovery words**, and does not mediate this handoff. The beneficiary later uses those privately received recovery words with their own compatible air-gapped wallet to authorize the ordinary retail-style gift release. This is a user responsibility, **not** an unresolved platform credential-delivery requirement. Keep retail gift-card output and release UX unchanged except for the minimum air-gapped private-operation exchange.
+
+
+---
+
+## 2026-10-14 checkpoint — current authoritative continuation (read before older snapshot)
+
+**User explicitly requested a new-chat handover and a concise status assessment.** This section supersedes stale “last green” and “next step” statements earlier in this file. Work remains strictly on `professional/isolated-release-prototype`; NEVER edit `main`, merge, deploy, broadcast, or use real seed/private-key material. The creator independently creates and privately hands **both** gift card and recovery words to the beneficiary; bc1q21 never generates or transfers words. Keep identical retail gift choices, schedules, card and beneficiary release workflow. Hardware neutral and KISS.
+
+### Progress achieved since prior snapshot
+
+- Retail-format **public gift distribution intent**: `public-exchange-envelope.mjs`, `public-gift-distribution-accounting.mjs`, `signed-gift-output-intent-check.mjs` and tests. Validate ordered CLTV gift outputs, service-fee and optional change, miner fee, exact trailing zero-value encrypted first-date OP_RETURN, funding outpoints and amounts. These do **not** verify signatures or blockchain.
+- Public **UTXO comparison**: `trusted-utxo-snapshot-check.mjs`, `bitcoin-core-gettxout-adapter.mjs`, `gift-distribution-snapshot-gate.mjs`, `gift-distribution-core-response-gate.mjs`. Parse caller-supplied Bitcoin Core `gettxout` data and compare expected funding; there is **no trusted live node connection, snapshot provenance attestation, or independent signature verification**.
+- Disposable **four-release CLTV** test: `public-multi-release-gift-integration.check.mjs`, using fixed public account xpub, four dates/outputs, funding and tamper tests. Passed CI at https://github.com/bc1q21/bc1q21/actions/runs/38615732629 .
+- Disposable wallet-derived retail AES: `disposable-wallet-retail-date-interoperability.check.mjs` tests retail `BC1Q21G1` encryption and independent offline decrypt with public test wallet secret. Passed CI https://github.com/bc1q21/bc1q21/actions/runs/38615981987 .
+- Combined **encryption → synthetic funding transaction → offline first-date unlock → public four-release schedule**: `disposable-encrypted-four-release-flow.check.mjs`. Passed CI https://github.com/bc1q21/bc1q21/actions/runs/38616189786 .
+- `OFFLINE_SIGNER_RETAIL_COMPATIBILITY_GATE.md` and `OFFLINE_SIGNER_EVIDENCE_REGISTER.md` document hardware-neutral go/no-go criteria H-01 through H-08, with a clear **NO-GO** for actual device/production integration pending evidence.
+- Public device test vectors: `public-device-comparison-vectors.mjs` and `.check.mjs`; four CLTV derivation paths, pubkeys, redeem scripts, P2SH addresses/scripts; passed CI https://github.com/bc1q21/bc1q21/actions/runs/38616662193 .
+- Public device observation comparison: `public-device-cltv-observation-check.mjs` and `.check.mjs` compare candidate-supplied **public-only** observations with vectors. No actual device observations collected. The CI run for `f6f08196` **FAILED** https://github.com/bc1q21/bc1q21/actions/runs/38616816299 because the strict comparison's field list omitted `locktime`, which the reference vectors correctly contain. Root cause was identified from logs and a focused fix committed as **`a5a64964fbd4cd5dfe1582d088525165cad572b2`**. **Check the latest Actions result for that fix and this handover commit; do not assume green.**
+
+### Engineering assessment — important distinction
+
+**The software-only feasibility and synthetic regression phase is advanced, but the actual Professional product is NOT near production-ready.** The main unknowns are physical offline wallet capability for (1) exact wallet-derived AES first-date encryption/decryption and constrained schedule-only return, (2) exact legacy P2SH CLTV multi-release signing, (3) independent verified signed funding return and trustworthy Bitcoin UTXO verification, (4) real hardware transport/approval/secret-isolation proof, and (5) integration into retail-equivalent creator and beneficiary UI followed by security review. Ordinary PSBT support does not prove (1) or (2). Existing separate Jade fixture/signing experiments are not full retail-compatible device acceptance.
+
+### Next actions, in priority order
+
+1. Check CI after `a5a64964` and this handover; fix any failing regressions before proceeding.
+2. **Stop proliferating synthetic tests for their own sake.** Decide the smallest real-device public-only evaluation: identify an available candidate device and firmware/transport, compare its actual public account/CLTV observations to vectors without entering real seed words into the website. If device lacks required AES or CLTV capabilities, record a NO-GO and present minimal alternatives **before** redesigning architecture.
+3. Only after hardware feasibility evidence, implement minimal actual retail UI handoff and offline signing/unlock, with full transaction/script verification, safe recovery and security review.
+4. Never mistake green CI for hardware certification or production readiness.
+
+### Suggested new-chat opener
+
+“Continue bc1q21 Professional from the 2026-10-14 checkpoint in `Professional/ENGINEERING_HANDOVER.md` on GitHub branch `professional/isolated-release-prototype`. First check current Actions, especially the strict observation `locktime` fix; then tell me the single next meaningful engineering step. Keep retail `main` untouched; no deployment or real Bitcoin.”
+
+---
+
+## 2026-10-16 authoritative PAUSE — supersedes earlier continuation instructions
+
+**User direction:** continue all safe software-only work, then STOP before another live Jade Plus session, record a durable GitHub handover and take a break. This checkpoint is the current continuation authority. **No device power-on, new hardware signature, real funds, production deployment, retail edit or main-branch merge authorized.**
+
+**Read FIRST:** [`Professional/JADE_PLUS_NEXT_SESSION_CHECKPOINT_2026-10-16.md`](JADE_PLUS_NEXT_SESSION_CHECKPOINT_2026-10-16.md) and the appended 2026-10-16 sections of [`Professional/OFFLINE_SIGNER_EVIDENCE_REGISTER.md`](OFFLINE_SIGNER_EVIDENCE_REGISTER.md). The detailed next-session objective, hardware/public-key/AES feasibility gates, reproducible run IDs, acceptance limitations, safety boundaries and suggested resume prompt are recorded there. Earlier proposed “next steps” in this handover are historical and must not override this checkpoint.
+
+**Verified green run:** [four staged software-signed regtest releases #38948176903](https://github.com/bc1q21/bc1q21/actions/runs/38948176903), four separately confirmed regtest-only releases with signed pre-locktime rejection, invalid-sequence and wrong-locktime rejection. Software fixture keys are **not** Jade keys. Separately, [funded Jade hardware ECDSA + Core acceptance #38944732136](https://github.com/bc1q21/bc1q21/actions/runs/38944732136) established **one** Jade-signed funded CLTV spend accepted by Bitcoin Core, **not broadcast**. Public-only four-output funding [#38947073663](https://github.com/bc1q21/bc1q21/actions/runs/38947073663) and public four-release schedule [#38945182627](https://github.com/bc1q21/bc1q21/actions/runs/38945182627) passed separately.
+
+**PAUSE POINT:** Next meaningful unknown is actual Jade Plus **device-attested public derivation / four-key origin**, followed by determining whether exact retail wallet-derived offline AES is possible. **Do not claim Jade supports AES without proof.** Both need user-supervised hardware or an explicit architecture decision. Jade stays **OFF**; Professional **NO-GO** for real funds or deployment. On return, check GitHub current state and ask for permission before hardware actions. Continue one simple step at a time.

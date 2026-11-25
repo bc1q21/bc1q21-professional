@@ -1,0 +1,97 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { snapshotFundedDistributionIntent } from './funded-distribution-intent.mjs';
+
+const script = 'a914' + '11'.repeat(20) + '87';
+const date = '2030-01-01';
+const locktime = Math.floor(Date.parse(date + 'T00:00:00.000Z') / 1000);
+const plan = Object.freeze({
+  format: 'bc1q21-professional-retail-plan-preview-v1',
+  status: 'UNFUNDED_PREVIEW_NOT_SIGNABLE',
+  releases: [{date, amountSats: 12000}], totalSats: 12000
+});
+const fixture = () => ({
+  network: 'regtest', plan,
+  utxos: [{txid: 'ab'.repeat(32), vout: 0, valueSats: 15000,
+    scriptPubKeyHex: '0014' + '22'.repeat(20)}],
+  giftOutputs: [{date, locktime, valueSats: 12000, scriptPubKeyHex: script}],
+  changeOutput: {valueSats: 2000, scriptPubKeyHex: '0014' + '33'.repeat(20)},
+  networkFeeSats: 1000
+});
+test('funded intent freezes public funding and planned CLTV outputs without signing', () => {
+  const result = snapshotFundedDistributionIntent(fixture());
+  assert.equal(result.signed, false);
+  assert.equal(result.broadcastAuthorized, false);
+  assert.equal(result.signatureVerified, false);
+  assert.equal(result.gifts[0].locktime, locktime);
+  assert.ok(Object.isFrozen(result.inputs[0]));
+  assert.ok(Object.isFrozen(result.gifts[0]));
+});
+test('rejects mainnet, duplicate outpoints, altered date, altered amount, altered fee', () => {
+  for (const mutation of [
+    x => { x.network = 'mainnet'; },
+    x => { x.utxos.push({...x.utxos[0]}); },
+    x => { x.giftOutputs[0].date = '2031-01-01'; },
+    x => { x.giftOutputs[0].valueSats = 11999; },
+    x => { x.networkFeeSats = 999; },
+    x => { x.giftOutputs[0].locktime++; },
+  ]) {
+    const x = fixture(); mutation(x);
+    assert.throws(() => snapshotFundedDistributionIntent(x));
+  }
+});
+test('rejects absent funding, missing outputs, fractional amounts and changed plan', () => {
+  for (const mutation of [
+    x => { x.utxos = []; },
+    x => { x.giftOutputs = []; },
+    x => { x.utxos[0].valueSats = 15000.5; },
+    x => { x.plan = {...plan, totalSats: 13000}; },
+  ]) {
+    const x = fixture(); mutation(x);
+    assert.throws(() => snapshotFundedDistributionIntent(x));
+  }
+});
+
+test('rejects tampered release totals, dates and self-authorizing preview flags', () => {
+ for (const mutation of [
+  x => { x.plan = {...plan, releases:[{date,amountSats:11999}]}; },
+  x => { x.plan = {...plan, releases:[{date:'2030-02-30',amountSats:12000}]}; },
+  x => { x.plan = {...plan, signingAuthorized:true}; },
+  x => { x.plan = {...plan, fundingAuthorized:true}; },
+  x => { x.plan = {...plan, broadcastAuthorized:true}; }
+ ]) {const x=fixture();mutation(x);assert.throws(()=>snapshotFundedDistributionIntent(x));}
+});
+
+test('accepts valid calendar release date and rejects impossible dates', () => {
+ assert.equal(snapshotFundedDistributionIntent(fixture()).gifts[0].date, '2030-01-01');
+ for (const invalid of ['2030-02-30','2030-13-01','2030-00-10']) {
+  const x=fixture(); x.plan={...plan,releases:[{date:invalid,amountSats:12000}]};
+  x.giftOutputs[0].date=invalid;
+  assert.throws(()=>snapshotFundedDistributionIntent(x));
+ }
+});
+
+test('rejects altered funding outpoint, funding script, gift script and change destination', () => {
+ for (const mutation of [
+  x => { x.utxos[0].txid = '00'; },
+  x => { x.utxos[0].vout = -1; },
+  x => { x.utxos[0].scriptPubKeyHex = 'not-hex'; },
+  x => { x.giftOutputs[0].scriptPubKeyHex = 'not-hex'; },
+  x => { x.changeOutput.scriptPubKeyHex = 'not-hex'; },
+  x => { x.changeOutput.valueSats = 2001; },
+  x => { x.utxos[0].valueSats = 14999; }
+ ]) {
+  const input = fixture();
+  mutation(input);
+  assert.throws(() => snapshotFundedDistributionIntent(input));
+ }
+});
+test('preserves exactly the validated outpoints, gift script and change destination', () => {
+ const input = fixture();
+ const result = snapshotFundedDistributionIntent(input);
+ assert.deepEqual(result.inputs[0], input.utxos[0]);
+ assert.equal(result.gifts[0].scriptPubKeyHex, input.giftOutputs[0].scriptPubKeyHex);
+ assert.deepEqual(result.change, input.changeOutput);
+ assert.equal(result.networkFeeSats, input.networkFeeSats);
+ assert.equal(result.inputTotalSats, result.outputTotalSats + result.networkFeeSats);
+});

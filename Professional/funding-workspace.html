@@ -1,0 +1,718 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'unsafe-inline' 'self'; img-src 'self' data:; connect-src https: http://127.0.0.1:* http://localhost:*; form-action 'none'; base-uri 'none'">
+<title>bc1q21 Professional — Add Funds</title><style>
+:root{font:16px system-ui,Segoe UI,sans-serif;color:#172c43;background:#f3f6fa}*{box-sizing:border-box}body{margin:0}main{max-width:920px;margin:24px auto;padding:20px}header,.panel{background:white;border:1px solid #d9e2ed;border-radius:10px;padding:24px;margin-bottom:18px}header{display:flex;align-items:flex-start;gap:14px;min-height:115px}header .advisor-details{flex:1 1 auto;min-width:0;font-size:.82rem;line-height:1.4}header .advisor-details p{margin:3px 0;overflow-wrap:anywhere}header .advisor-details .advisor-name{font-weight:750;font-size:1rem}header .wizard-heading{margin-left:auto;align-self:flex-end;text-align:right;flex:0 0 auto}header .wizard-heading h1{font-size:1.5rem;white-space:nowrap}header .wizard-heading p{margin:4px 0;font-size:.8rem}header img{width:125px;max-height:100px;object-fit:contain;object-position:top left;align-self:flex-start}h1{color:#09518b;margin:0}.bar{background:#09518b;color:white;border-radius:8px;padding:14px;margin:18px 0}.notice{padding:14px;background:#fff1da;border-left:4px solid #bc7b17;border-radius:5px}.status{background:#eaf1f8;padding:14px;border-radius:6px}table{width:100%;border-collapse:collapse}td,th{text-align:left;border-bottom:1px solid #dce4ee;padding:12px}button,a.button{background:#09518b;color:white;border:0;border-radius:7px;padding:12px 18px;font:inherit;cursor:pointer;text-decoration:none;display:inline-block;margin:8px 8px 8px 0}button:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#dce9f5!important;color:#164568!important}code{overflow-wrap:anywhere}@media(max-width:600px){header{display:block}table{font-size:.88rem}}
+main > section.panel:first-of-type{display:none}#professional-developer-tools{display:block}#customer-payment{margin:0 auto 18px}#customer-payment>h2{text-align:center;font-size:1.75rem}main>nav{display:none}@media(max-width:600px){header{display:flex;flex-wrap:wrap}header .wizard-heading{flex-basis:100%;text-align:right}header .wizard-heading h1{font-size:1.3rem}}
+/* Professional payment shell: match the 920px Plan Ready content width at 100% zoom.
+   All customer-facing shell elements share one width; mobile stays fluid.
+   Presentation-only changes; no payment or signing logic altered. */
+:root{background:#fff;color:#355c70}
+body{background:#fff}
+main{width:100%;max-width:960px;margin:82px auto 8px;padding:12px 20px}
+main>header,.professional-steps,main>.bar,#customer-payment,footer{width:100%;max-width:920px;margin-left:auto;margin-right:auto}
+main>header{border:0;border-radius:0;background:#fff;min-height:152px;padding:12px 0 8px;margin-bottom:0;display:flex;gap:12px;align-items:flex-start}
+main>header img{width:auto;height:125px;max-height:none;max-width:240px;object-fit:contain;object-position:top left;flex-shrink:0}
+main>header .advisor-details{font-size:.82rem;align-self:flex-start}
+main>header .advisor-details p{margin:0 0 2px;line-height:1.45}
+main>header .wizard-heading{align-self:flex-start;margin-top:22px}
+main>header .wizard-heading h1{font-size:2rem;font-weight:800;line-height:1.15;color:#355c70}
+.professional-steps{margin-top:8px;margin-bottom:22px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:relative;text-align:center}
+.professional-steps:before{content:"";position:absolute;top:18px;left:0;right:0;height:4px;background:linear-gradient(to right,#355c70 0 67%,#e2e7ec 67% 100%);z-index:0}
+.professional-step{position:relative;z-index:1;color:#63778b;font-size:.85rem}
+.professional-step .bubble{width:36px;height:36px;border:3px solid #e2e7ec;border-radius:50%;background:#fff;margin:0 auto 6px;display:grid;place-items:center;font-size:1rem;font-weight:700}
+.professional-step.done .bubble{background:#355c70;color:#fff;border-color:#355c70}
+.professional-step.active .bubble{border-color:#355c70;color:#355c70}
+.professional-step.active{color:#355c70;font-weight:700}
+main>.bar{background:#355c70;border-radius:8px 8px 0 0;margin-top:0;margin-bottom:0;display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:88px}
+main>.bar .section-name{font-size:1.12rem;line-height:1.35;font-weight:700;font-family:system-ui,Segoe UI,sans-serif}
+.professional-help{margin-left:auto;background:#fff;color:#1f5aa5;border:3px solid #1f5aa5;border-radius:14px;padding:10px 18px;min-width:220px;justify-content:center;white-space:nowrap;font-size:15px;font-weight:800;letter-spacing:.06em;display:inline-flex;align-items:center;gap:12px;cursor:default}
+.professional-help .help-icon{display:inline-grid;place-items:center;border-radius:50%;background:#1f5aa5;color:#fff;width:34px;height:34px;flex:0 0 34px;font-size:18px;font-weight:900}
+#customer-payment{background:#fff;border-radius:0 0 8px 8px;border-top:0;margin-bottom:18px;padding:24px 22px 22px;font-size:1rem}
+#customer-payment>h2{text-align:left;font-size:1.75rem;margin-top:0;margin-bottom:42px}
+#customer-payment .status{background:#eaf4ed;border-left:3px solid #39744d}
+#customer-payment>div[style*="min-height:210px"]{background:#fff;border-color:#c9d6cc}
+footer{text-align:right!important;padding-right:0!important}
+@media(max-width:600px){
+ main{padding:8px}
+ main>header{min-height:0;display:flex;flex-wrap:wrap;gap:8px}
+ main>header img{width:115px;max-height:95px}
+ main>header .wizard-heading{flex-basis:100%;text-align:right}
+ main>header .wizard-heading h1{font-size:1.5rem}
+ .professional-step{font-size:.7rem}
+ .professional-step .bubble{width:30px;height:30px}
+ .professional-steps:before{top:15px}
+ main>.bar{min-height:54px}
+ main>.bar .section-name{font-size:.83rem}
+ .professional-help{font-size:.66rem;padding:6px}
+ #customer-payment{padding:14px}
+}
+</style><link rel="stylesheet" href="./customer-controls.css" integrity="sha384-fkMvXDYPH605EEcCTeKEr6x2KMS1FSaO3YCC0Ec0ATWB/qaDs55lAX/UKGLxK3ZM"><script src="./creator-memory.js"></script></head><body><div class="professional-preview-banner" style="max-width:900px;margin:8px auto 0;padding:5px 12px;font-size:12px;color:#8a5000;text-align:center" role="note">bc1q21 Professional · REGTEST DEVELOPMENT — No real Bitcoin or automatic broadcast</div><main><header><img src="./assets/original/bc1q21-logo.png" alt="bc1q21"><div class="advisor-details"><p class="practice-identity" hidden></p></div><div class="wizard-heading"><h1>Gifting Wizard</h1></div></header><div class="professional-steps" aria-label="Gift creation progress: step 3 of 4, Add Funds">
+<div class="professional-step done"><div class="bubble">1</div><div>Plan</div></div>
+<div class="professional-step done"><div class="bubble">2</div><div>Recovery</div></div>
+<div class="professional-step active" aria-current="step"><div class="bubble">3</div><div>Add Funds</div></div>
+<div class="professional-step"><div class="bubble">4</div><div>Finish</div></div>
+</div><div class="bar"><strong class="section-name">Add Funds &amp; Create Gift Addresses (Step 3 of 4)</strong><span class="professional-help" title="Step-specific help is not connected in this development preview"><span class="help-icon">?</span>I CAN GUIDE YOU</span></div>
+<section class="panel"><p class="notice"><strong>Development preview — do not send Bitcoin.</strong> Real Bitcoin funding is disabled. Disposable local regtest funding tools are available in the developer section below, but no customer payment request or mainnet deposit address is issued.</p>
+<h2>Approved gift plan</h2><p id="status" class="status" role="status">Loading your approved gift plan…</p><div id="details" hidden><p><strong>Total gift:</strong> <span id="total"></span> sats</p><table><thead><tr><th>Release</th><th>Unlock date</th><th>Amount</th></tr></thead><tbody id="releases"></tbody></table></div></section>
+<section class="panel" id="customer-payment"><h2>Make Your Gift Payment</h2><p style="text-align:center">When payment integration is ready, this page will display your Bitcoin payment request. The application will verify the payment before continuing.</p>
+<div id="professional-missing-plan-recovery" hidden class="notice"><strong>No gift schedule was transferred to this page.</strong> For isolated regtest development, load the existing 100,000-sat, five-annual-release test scenario without repeating the wizard. This is a disposable test fixture, not customer approval or permission to fund.<p><button type="button" id="professional-load-test-plan">Load 100,000-sat test schedule</button></p></div>
+<div class="status" style="font-size:1.12rem"><strong>Estimated payment:</strong> <span id="customer-payment-amount">Calculating…</span><br><small id="customer-payment-breakdown"></small></div>
+<div style="text-align:center;padding:16px;border:2px dashed #a9bed2;border-radius:12px;margin:20px auto;max-width:330px"><strong>Regtest receiving address QR — development only</strong><canvas id="customer-address-qr" width="240" height="240" hidden></canvas><p id="customer-qr-placeholder">Awaiting a validated test address. Do not send Bitcoin.</p></div><p id="customer-payment-address" class="status" style="overflow-wrap:anywhere">No test address derived.</p>
+<p style="text-align:center"><button type="button" id="copy-test-funding-address" disabled>Copy test receiving address</button></p>
+<p style="text-align:center"><button type="button" id="customer-import-public-wallet" class="secondary" disabled>Connect Jade public wallet QR (regtest only)</button></p>
+<p class="status" id="customer-funding-status" role="status"><strong>Payment status:</strong> Awaiting a verified funding address. No Bitcoin has been requested or received.<br><strong>Next:</strong> Jade Plus signing becomes available only after sufficient funding is verified.</p>
+</section>
+<section class="panel" id="professional-wallet-setup"><details><summary style="cursor:pointer;font-weight:700">Development wallet setup and funding diagnostics (not part of the customer payment screen)</summary>
+<div style="margin-top:20px;padding:18px;border:1px solid #b6cadd;border-radius:9px">
+<h3>Import disposable public test wallet</h3>
+<p>For this disposable regtest preview, import the <strong>public account xpub</strong> from your Jade test wallet. This derives the public funding key at <code>m/84'/0'/0'/0/0</code> without handling recovery words or private keys.</p>
+<label for="funding-xpub" style="display:block;margin:12px 0 6px">Jade account xpub (public only)</label>
+<input id="funding-xpub" type="text" autocomplete="off" spellcheck="false" placeholder="xpub…" style="width:100%;padding:12px;border:1px solid #aebdcc;border-radius:7px">
+<button type="button" id="derive-funding-key">Preview public funding key</button>
+<div id="public-wallet-qr-import" style="margin:14px 0;padding:14px;border:1px solid #b6cadd;border-radius:9px">
+<p><strong>Import public account QR (development preview)</strong></p>
+<p>Reads supported Jade animated public-account exports locally. Capture alone is not wallet-possession verification or permission to fund. Starting or stopping this camera preserves imported accounts and pending identity requests.</p>
+<button type="button" id="public-wallet-camera-start">Scan public xpub QR</button>
+<button type="button" id="public-wallet-camera-stop" disabled>Stop public-wallet camera</button>
+<video id="public-wallet-camera-video" playsinline muted style="display:block;width:400px;max-width:100%;min-height:160px;background:#162638;margin:10px 0"></video>
+<canvas id="public-wallet-camera-canvas" hidden></canvas>
+<p id="public-wallet-camera-status" class="status" role="status">No public account QR scanned. Funding and signing are not authorized.</p>
+</div>
+<p id="funding-key-status" class="status" role="status">No Jade public wallet imported.</p>
+<div id="jade-address-check" hidden style="margin:16px 0;padding:16px;border:1px solid #b6cadd;border-radius:9px">
+<h3>Jade Plus device address check — regtest diagnostic only</h3>
+<p>Compare the complete derived test address below with the address independently displayed or verified on your Jade Plus. This is a procedural check, <strong>not proof of wallet ownership</strong> and not permission to send Bitcoin.</p>
+<p><strong>Expected test address:</strong> <code id="jade-check-address"></code></p>
+<label style="display:block;margin:12px 0"><input type="checkbox" id="jade-address-ack"> I checked the complete address on my Jade Plus device and it matches.</label>
+<p id="jade-address-check-status" class="status" role="status">Device address check not acknowledged. Funding and signing remain disabled.</p>
+<div style="margin-top:14px;padding:14px;border:1px solid #b6cadd;border-radius:9px"><h3>Check test funding status</h3><p>Read-only check of confirmed disposable regtest outputs using the local Bitcoin Core testing service. This does not request payment or authorize signing.</p><button type="button" id="scan-funding" disabled>Check regtest funding status</button><p id="scan-status" class="status" role="status">Import the public wallet first. Signing remains locked.</p></div>
+</div>
+<div id="funding-key-result" hidden><p><strong>Derived test address (NOT FOR DEPOSITS):</strong><br><code id="funding-test-address"></code></p><p><strong>Derivation:</strong> <code>m/84'/0'/0'/0/0</code></p><p class="notice">This address is mathematically derived from the supplied xpub, but wallet ownership has not been authenticated. Any displayed regtest address QR is a diagnostic preview, not a payment request or proof of wallet ownership.</p>
+<h3>Time-locked gift outputs</h3><p>These recipient addresses and unlock dates are computed from the approved gift schedule and public wallet keys. They are not deposit instructions.</p>
+<div style="overflow-x:auto"><table><thead><tr><th>Unlock date</th><th>Amount</th><th>Recipient output (preview)</th></tr></thead><tbody id="gift-output-preview"></tbody></table></div>
+</div>
+</div>
+<p class="notice">This public-wallet identification step does not authenticate wallet ownership or issue a payment request. Keep real Bitcoin and recovery words out of this prototype.</p></details>
+<details id="professional-developer-tools"><summary style="cursor:pointer;font-weight:700">Developer tools — disposable regtest testing only</summary>
+<p class="notice">Technical controls below are not part of the customer payment experience. They cannot authorize mainnet funding or signing.</p>
+<h3>Regtest funding diagnostics</h3><p>For isolated developer testing, inspect a disposable public wallet and regtest funding status below.</p>
+<div class="status"><strong>Funding address:</strong> Not yet generated<br><strong>Received:</strong> Not checked<br><strong>Confirmations:</strong> Not checked<br><strong>Jade Plus signing:</strong> Locked until verified funding</div>
+<div style="margin-top:20px;padding:18px;border:1px solid #b6cadd;border-radius:9px">
+<h3>Automatic regtest funding check (development only)</h3>
+<p>After importing the disposable Jade public wallet, check confirmed funding outputs without entering a transaction ID. No real deposits are permitted.</p>
+<p class="status">The read-only regtest funding status check is available above, alongside the public wallet identification step.</p>
+<p class="notice">This check reads disposable regtest funding information only. It cannot authorize payments, signatures, or broadcasting.</p>
+<details><summary>Prepare unsigned regtest gift transaction</summary>
+<p>Uses freshly checked public funding data from your selected independent regtest service. Review the gift outputs, service fee, beneficiary discovery value, mining fee and change. Preparation is not signing authorization.</p>
+<label for="network-fee">Regtest network fee (sats; development estimate only)</label>
+<input id="network-fee" type="number" min="100" max="10000" step="1" value="1000" style="width:150px;padding:10px">
+<p>Any remaining balance of at least 546 sats is returned to the public change output derived at <code>m/84'/0'/0'/0/1</code>. No customer deposit address or signing approval is created.</p>
+<label for="service-public-key">Disposable regtest service public key (compressed hex; no private key)</label>
+<input id="service-public-key" maxlength="66" autocomplete="off" spellcheck="false">
+<p>The service key and creator fingerprint below come from the independently pinned public registration. They cannot be edited here.</p>
+<label for="jade-fingerprint">Disposable Jade master fingerprint (8 hex characters)</label>
+<input id="jade-fingerprint" maxlength="8" autocomplete="off" spellcheck="false" placeholder="a1b2c3d4">
+<button type="button" id="construct-unsigned" disabled>Construct unsigned transaction (locked)</button>
+<p id="unsigned-status" class="status" role="status">No verified funding UTXOs available. Signing remains locked.</p>
+<div id="unsigned-review" hidden>
+<h4>Unsigned gift transaction review (not for signing)</h4>
+<p><strong>Funding inputs:</strong> <span id="review-inputs"></span><br>
+<strong>Time-locked gifts:</strong> <span id="review-gifts"></span><br>
+<strong>Network fee:</strong> <span id="review-fee"></span> sats<br>
+<strong>Change:</strong> <span id="review-change"></span> sats<br>
+<strong>Transaction commitment:</strong> <code id="review-hash"></code></p>
+<p class="notice">This is a consistency review only. Wallet origin, recipient recovery, fee policy, and independent gift approval are not yet authenticated. Jade signing remains disabled.</p>
+<label style="display:block;margin:12px 0"><input type="checkbox" id="review-acknowledged"> I have checked the number of gifts, their release dates, and the network fee. This is a review acknowledgement, not authorization to sign.</label>
+<p id="review-ack-status" role="status">Review acknowledgement pending.</p>
+<button type="button" id="diagnostic-qr" disabled>Preview unsigned Jade QR (regtest developer only)</button>
+<p id="diagnostic-qr-status" class="status" role="status">This preview does not authorize signing or broadcasting.</p>
+<div id="diagnostic-qr-panel" hidden><img id="diagnostic-qr-image" alt="Developer-only unsigned regtest transaction QR" style="display:block;width:320px;max-width:100%;margin:15px auto"><p id="diagnostic-frame-count"></p><button type="button" id="diagnostic-pause">Pause QR</button></div>
+<div id="diagnostic-signed-panel" hidden>
+<h4>Verify returned Jade QR (developer-only regtest)</h4>
+<p>After the disposable Jade test signs the exact unsigned transaction, scan the signed QR here. A decoded QR is not proof of a valid signature.</p>
+<video id="diagnostic-camera" playsinline muted style="display:block;width:400px;max-width:100%;min-height:180px;background:#162638;margin:12px auto"></video>
+<canvas id="diagnostic-camera-canvas" hidden></canvas>
+<button type="button" id="diagnostic-scan" disabled>Scan signed Jade QR</button>
+<button type="button" id="diagnostic-stop" disabled>Stop camera</button>
+<p id="diagnostic-signed-status" class="status" role="status">No returned signature verified. Broadcasting disabled.</p>
+</div>
+</div>
+</details>
+<details><summary>Manual regtest outpoint lookup (developer fallback)</summary>
+<h3>Check a regtest deposit (development only)</h3>
+<p>Enter a disposable regtest transaction ID and output number. The app checks Bitcoin Core directly; you do not need to paste a transaction JSON document. Do not send real Bitcoin.</p>
+<label for="funding-txid">Regtest transaction ID</label>
+<input id="funding-txid" type="text" maxlength="64" autocomplete="off" spellcheck="false" style="width:100%;padding:12px;border:1px solid #aebdcc;border-radius:7px" placeholder="64-character transaction ID">
+<label for="funding-vout" style="display:block;margin:12px 0 6px">Output number</label>
+<input id="funding-vout" type="number" min="0" max="4294967295" step="1" value="0" style="width:120px;padding:12px">
+<button type="button" id="inspect-funding" disabled>Check regtest funding</button>
+<p id="inspection-status" class="status" role="status">First import a disposable Jade public wallet. Signing remains locked.</p></details>
+</div>
+<p><button disabled>Show funding QR</button><button disabled>Continue to Jade Plus →</button></p>
+<p class="status"><strong>Next:</strong> After the funding and wallet-identity checks are integrated, this step will hand the exact unsigned gift transaction to the Jade Plus page. You will review the schedule, scan the animated QR with Jade, and scan the signed QR back. The separate development tools above do not authorize that handoff.</p>
+<p><button type="button" class="customer-nav-control" id="handoff-jade" disabled>Continue to Jade Plus preview →</button><a class="button secondary" href="./jade-signing-workspace.html">Preview Jade Plus signing page (disabled) →</a></p>
+<p id="handoff-jade-status" class="status" role="status">Construct the disposable regtest transaction before continuing. This preview is not signing authorization.</p>
+<div class="status" style="border-left:4px solid #09518b;margin:16px 0">
+<strong>Your next steps</strong>
+<ol style="line-height:1.8;margin-bottom:0">
+<li>Check the gift schedule and funding details above.</li>
+<li>In the development section, construct the disposable regtest transaction and acknowledge your review.</li>
+<li>Select <strong>Continue to Jade Plus preview</strong>. The animated QR and signed-QR camera are on the next page.</li>
+</ol>
+</div>
+</details><div class="wizard-actions"><a class="button secondary customer-nav-control" href="./retail-mirror/index.html" id="return-to-plan" aria-label="Back to review your gift plan">Back</a></div></section><nav style="max-width:920px;margin:0 auto 22px;padding:16px;text-align:center;background:#e2edf6;border-radius:8px"><a href="./customer-walkthrough.html" style="color:#09518b;font-weight:700">← Customer walkthrough &amp; all five stages</a></nav></main>
+<section class="panel"><h2>Prepare approved plan — browser-local regtest only</h2><p>Your plan and transaction remain in this open application’s memory. No bc1q21 transaction service is used.</p><button type="button" id="save-coordinator-plan">Save approved plan</button><p id="coordinator-plan-status" role="status" aria-live="polite">Approve a schedule, verify public wallet information and choose an independent regtest service.</p>
+<label for="independent-service">Independent regtest Esplora service URL (never a bc1q21 endpoint)</label><input id="independent-service" type="url" autocomplete="off" placeholder="http://127.0.0.1:3002/api"><label for="public-wallet-pin">Independently verified public wallet digest</label><input id="public-wallet-pin" maxlength="64" autocomplete="off" spellcheck="false"><label for="coordinator-registration">Public wallet registration and public account exports (JSON only — never recovery words)</label><input type="file" id="coordinator-registration" accept=".json,application/json"><button type="button" id="register-coordinator-wallet">Verify public wallet for saved plan</button>
+<label for="coordinator-outpoints">Disposable regtest funding outpoints (one TXID:output-index per line)</label><textarea id="coordinator-outpoints" rows="3" maxlength="3000"></textarea><button type="button" id="inspect-coordinator-funding">Inspect funding — read only / refresh</button>
+<p>Verify the full wallet digest independently. A digest contained in the imported file is not independent verification. The service must support regtest, browser CORS and complete UTXO responses. No real Bitcoin.</p></section>
+<template id="legacy-lab-scripts"><script type="module" src="./creator-plan-acceptance.browser.mjs"></script>
+<script src="./browser-integration/professional-verifier.bundle.js"></script>
+<script type="module">
+import {prepareProfessionalFundingPreview} from './prepare-funding-preview.mjs';
+'use strict';
+(function(){const professionalIdentity=(()=>{try{const profile=JSON.parse(sessionStorage.getItem('bc1q21-professional-profile-draft')||'null');return typeof profile?.business==='string'&&profile.business.trim().length>0&&profile.business.length<=100?profile.business.trim():null;}catch{return null}})();
+const professionalProfile=(()=>{try{return JSON.parse(sessionStorage.getItem('bc1q21-professional-profile-draft')||'null')}catch{return null}})();
+if(professionalProfile?.business){
+ const header=document.querySelector('main > header');
+ const img=header?.querySelector('img');
+ if(img){
+  if(typeof professionalProfile.logoData==='string'&&/^data:image\/(png|jpeg|webp);base64,[A-Za-z0-9+/=]+$/.test(professionalProfile.logoData)){img.src=professionalProfile.logoData;img.alt=professionalProfile.business+' logo';}
+  else img.remove();
+ }
+ const details=header?.querySelector('.advisor-details');
+ if(details){
+  const brand=document.createElement('p');brand.className='advisor-name';brand.textContent=professionalProfile.business.slice(0,100);
+  const lines=['contact','address','email','phone'].filter(k=>typeof professionalProfile[k]==='string'&&professionalProfile[k].trim()).map(k=>{const line=document.createElement('p');line.textContent=professionalProfile[k].trim().slice(0,200);return line;});
+  details.replaceChildren(brand,...lines);
+ }
+ const credit=document.createElement('footer');credit.textContent='Powered by bc1q21';credit.style.cssText='text-align:right;color:#64748b;font-size:.85rem;margin:20px auto;max-width:920px';document.querySelector('main').append(credit);
+}
+if(professionalIdentity){for(const element of document.querySelectorAll('.practice-identity')){if(!professionalProfile?.business){element.textContent=professionalIdentity;element.hidden=false;}}}
+
+ // Recover only an approved non-secret schedule after a direct page visit.
+ // Wallet keys, signatures and funding authorization are never persisted here.
+ const planKey='bc1q21-professional-approved-plan-preview';
+ if(!sessionStorage.getItem(planKey)){
+  try{
+   const raw=localStorage.getItem('bc1q21-professional-last-approved-plan-preview');
+   if(raw){
+    const p=JSON.parse(raw);
+    if(p?.format==='bc1q21-professional-retail-plan-preview-v1'&&
+       p.status==='UNFUNDED_PREVIEW_NOT_SIGNABLE'&&
+       p.signingAuthorized===false&&p.fundingAuthorized===false&&p.broadcastAuthorized===false&&
+       Array.isArray(p.releases)&&p.releases.length>0&&p.releases.length<=60&&
+       Number.isSafeInteger(p.totalSats)&&p.totalSats>0&&
+       p.releases.every(r=>typeof r?.date==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)&&
+        Number.isSafeInteger(r.amountSats)&&r.amountSats>0)&&
+       p.releases.reduce((sum,r)=>sum+r.amountSats,0)===p.totalSats){
+     sessionStorage.setItem(planKey,raw);
+    }
+   }
+  }catch{/* Invalid or unavailable saved plans remain unavailable. */}
+ }
+ const back=document.getElementById('return-to-plan');
+ back?.addEventListener('click',event=>{if(sessionStorage.getItem('bc1q21-professional-return-allowed')==='yes'&&history.length>1){event.preventDefault();history.back();}});
+ const storedPlan=(()=>{try{return JSON.parse(sessionStorage.getItem('bc1q21-professional-approved-plan-preview')||'null')}catch{return null}})();
+ if(storedPlan&&Array.isArray(storedPlan.releases)&&Number.isSafeInteger(storedPlan.totalSats)&&storedPlan.totalSats>0){
+  const count=storedPlan.releases.length;
+  const service=1000+250*Math.max(0,count-1);
+  const estimatedNetwork=500+250*count;
+  const estimatedTotal=storedPlan.totalSats+service+estimatedNetwork;
+  document.getElementById('customer-payment-amount').textContent=estimatedTotal.toLocaleString()+' sats (estimate)';
+  document.getElementById('customer-payment-breakdown').textContent='Gift '+storedPlan.totalSats.toLocaleString()+' sats + service fee '+service.toLocaleString()+' sats + estimated mining fees '+estimatedNetwork.toLocaleString()+' sats. Final payment amount must be recalculated before funding.';
+ }else{
+  document.getElementById('customer-payment-amount').textContent='Gift plan unavailable';
+  document.getElementById('professional-missing-plan-recovery').hidden=false;
+ }
+ document.getElementById('professional-load-test-plan').addEventListener('click',()=>{
+  if(sessionStorage.getItem(planKey))return;
+  const dates=['2027-11-03','2028-11-03','2029-11-03','2030-11-03','2031-11-03'];
+  const plan={
+   format:'bc1q21-professional-retail-plan-preview-v1',
+   status:'UNFUNDED_PREVIEW_NOT_SIGNABLE',
+   signingAuthorized:false,fundingAuthorized:false,broadcastAuthorized:false,
+   totalSats:100000,
+   releases:dates.map(date=>({date,amountSats:20000}))
+  };
+  sessionStorage.setItem(planKey,JSON.stringify(plan));
+  // Intentionally do not save a test fixture as a customer-approved plan.
+  window.location.reload();
+ });
+ const status=document.getElementById('status');
+ let publicFundingScript=null;
+ let publicFundingAddress=null;
+ let scannedUtxos=null;
+ let derivedPlanSnapshot=null;
+ const currentPlanSnapshot=()=>sessionStorage.getItem('bc1q21-professional-approved-plan-preview');
+ const copyTestAddressButton=document.getElementById('copy-test-funding-address');
+ copyTestAddressButton.addEventListener('click',async()=>{
+  if(!publicFundingAddress||!derivedXpub||!planStillMatches()||
+    document.getElementById('funding-xpub').value.trim()!==derivedXpub||
+    document.getElementById('customer-address-qr').hidden)return;
+  try{await navigator.clipboard.writeText(publicFundingAddress);
+   copyTestAddressButton.textContent='Test address copied';
+  }catch{copyTestAddressButton.textContent='Copy unavailable';}
+ });
+
+ const planStillMatches=()=>!!derivedPlanSnapshot&&currentPlanSnapshot()===derivedPlanSnapshot;
+ let latestUnsigned=null;
+ let latestIntent=null;
+ let diagnosticTimer=null;
+ let diagnosticCamera=null;
+ const diagnosticButton=document.getElementById("diagnostic-qr");
+ const diagnosticPanel=document.getElementById("diagnostic-qr-panel");
+ const handoffButton=document.getElementById('handoff-jade');
+ const handoffKey='bc1q21-professional-diagnostic-jade-handoff';
+ const clearHandoff=()=>{sessionStorage.removeItem(handoffKey);handoffButton.disabled=true;};
+ const refreshHandoff=()=>{
+  handoffButton.disabled=!(latestUnsigned&&latestIntent&&scannedUtxos?.length&&reviewAck.checked&&derivedXpub&&
+   document.getElementById('funding-xpub').value.trim()===derivedXpub&&planStillMatches());
+ };
+
+ handoffButton.addEventListener('click',()=>{
+  try{
+   if(!latestUnsigned||!latestIntent||!scannedUtxos?.length||!derivedXpub||
+      document.getElementById('funding-xpub').value.trim()!==derivedXpub||
+      !reviewAck.checked||!planStillMatches()||latestUnsigned.network!=='regtest'||latestUnsigned.signed!==false||
+      latestUnsigned.broadcast!==false||latestUnsigned.hardwareSignatureVerified!==false)
+    throw Error('A fresh disposable regtest transaction is required');
+   sessionStorage.setItem(handoffKey,JSON.stringify({
+    format:'bc1q21-professional-diagnostic-jade-handoff-v1',
+    diagnosticOnly:true,signingAuthorized:false,canBroadcast:false,
+    unsigned:latestUnsigned,intent:latestIntent
+   }));
+   window.location.assign('./jade-signing-workspace.html');
+  }catch(error){
+   clearHandoff();
+   document.getElementById('handoff-jade-status').textContent='Cannot open Jade preview: '+error.message;
+  }
+ });
+ const stopDiagnostic=()=>{clearHandoff();
+  if(diagnosticTimer){clearInterval(diagnosticTimer);diagnosticTimer=null;}
+  diagnosticCamera?.invalidate();
+  document.getElementById('diagnostic-signed-panel').hidden=true;
+  diagnosticPanel.hidden=true;diagnosticButton.disabled=true;latestUnsigned=null;latestIntent=null;
+ };
+ let derivedXpub=null;
+ let latestScanId=0;
+ const unsignedReview=document.getElementById("unsigned-review");
+ const reviewAck=document.getElementById("review-acknowledged");
+ reviewAck.addEventListener("change",()=>{
+  refreshHandoff();
+  document.getElementById("review-ack-status").textContent=reviewAck.checked?
+   "Review acknowledged locally. Hardware wallet identity and signing authorization remain unverified.":
+   "Review acknowledgement pending.";
+ });
+ const resetUnsigned=()=>{scannedUtxos=null;constructButton.disabled=true;unsignedReview.hidden=true;reviewAck.checked=false;stopDiagnostic();};
+ const constructButton=document.getElementById("construct-unsigned");
+ const unsignedStatus=document.getElementById("unsigned-status");
+ for(const id of ['network-fee','jade-fingerprint','service-public-key']){
+  document.getElementById(id).addEventListener('input',()=>{
+   unsignedReview.hidden=true;reviewAck.checked=false;stopDiagnostic();
+   unsignedStatus.textContent='Transaction parameters changed. Reconstruct and review the unsigned transaction.';
+  });
+ }
+ diagnosticButton.addEventListener('click',async()=>{
+  diagnosticButton.disabled=true;
+  const status=document.getElementById('diagnostic-qr-status');
+  try{
+   if(!latestUnsigned||!scannedUtxos?.length||!planStillMatches())throw Error('Fresh unsigned regtest transaction and unchanged gift plan required');
+   const renderingUnsigned=latestUnsigned;
+   if(!derivedXpub||document.getElementById('funding-xpub').value.trim()!==derivedXpub)
+    throw Error('Wallet information changed');
+   const render=globalThis.bc1q21ProfessionalRenderCreatorUnsignedQr;
+   if(typeof render!=='function')throw Error('Jade QR renderer unavailable');
+   const qr=await render(latestUnsigned);
+   if(latestUnsigned!==renderingUnsigned||!scannedUtxos?.length||!derivedXpub||!planStillMatches()||
+      document.getElementById('funding-xpub').value.trim()!==derivedXpub)
+    throw Error('Transaction or wallet changed while rendering QR');
+   if(qr.approvedPsbtSha256!==latestUnsigned.psbtSha256||
+      qr.signingAuthorized!==false||qr.canBroadcast!==false||
+      !Array.isArray(qr.images)||!qr.images.length)
+    throw Error('Invalid unsigned QR preview');
+   if(diagnosticTimer)clearInterval(diagnosticTimer);
+   const img=document.getElementById('diagnostic-qr-image');
+   const pause=document.getElementById('diagnostic-pause');
+   let frame=0;
+   img.src=qr.images[0];diagnosticPanel.hidden=false;
+   handoffButton.disabled=false;
+   document.getElementById('diagnostic-signed-panel').hidden=false;
+   diagnosticCamera?.refresh();
+   document.getElementById('diagnostic-frame-count').textContent=
+    qr.frameCount+' QR frame(s) · diagnostic only';
+   const tick=()=>{frame=(frame+1)%qr.images.length;img.src=qr.images[frame];};
+   diagnosticTimer=setInterval(tick,280);
+   pause.textContent='Pause QR';
+   pause.onclick=()=>{
+    if(diagnosticTimer){clearInterval(diagnosticTimer);diagnosticTimer=null;pause.textContent='Resume QR';}
+    else{diagnosticTimer=setInterval(tick,280);pause.textContent='Pause QR';}
+   };
+   status.textContent='Disposable regtest unsigned QR preview only. Jade wallet origin and independent approval remain unverified. Do not sign or broadcast.';
+  }catch(error){
+   diagnosticPanel.hidden=true;
+   status.textContent='QR preview unavailable: '+String(error.message||error);
+  }finally{diagnosticButton.disabled=!latestUnsigned;}
+ });
+ const attach=globalThis.bc1q21ProfessionalAttachCreatorCamera;
+ if(typeof attach==='function'){
+  diagnosticCamera=attach({
+   video:document.getElementById('diagnostic-camera'),
+   canvas:document.getElementById('diagnostic-camera-canvas'),
+   startButton:document.getElementById('diagnostic-scan'),
+   stopButton:document.getElementById('diagnostic-stop'),
+   statusElement:document.getElementById('diagnostic-signed-status'),
+   getApprovedUnsigned:()=>diagnosticPanel.hidden?null:latestUnsigned,
+   onVerified:verified=>{
+    if(!latestUnsigned||verified.approvedPsbtSha256!==latestUnsigned.psbtSha256||
+       verified.signatureCryptographicallyVerified!==true||
+       verified.transactionIntentBound!==true||verified.canBroadcast!==false){
+     document.getElementById('diagnostic-signed-status').textContent=
+      'Returned signature rejected. No broadcast.';
+     return;
+    }
+    document.getElementById('diagnostic-signed-status').textContent=
+     'All '+verified.inputSignaturesVerified+
+     ' Jade signature(s) cryptographically verified for the exact unsigned gift transaction ('+
+     verified.approvedPsbtSha256+'). Finalized regtest TXID: '+
+     verified.finalizedTxid+'. Broadcasting remains disabled.';
+   }
+  });
+ }else{
+  document.getElementById('diagnostic-signed-status').textContent=
+   'Camera verifier unavailable. No signing or broadcasting.';
+ }
+ const scanButton=document.getElementById('scan-funding');
+ scanButton.addEventListener('click',async()=>{
+  const output=document.getElementById('scan-status');
+  scanButton.disabled=true;
+  resetUnsigned();
+  const scanId=++latestScanId;
+  const scanXpub=derivedXpub;
+  output.textContent='Checking confirmed regtest outputs with Bitcoin Core…';
+  try{
+   if(!publicFundingAddress||!publicFundingScript)throw Error('Public wallet required');
+   if(!planStillMatches())throw Error('Gift plan changed; reimport public wallet and rescan');
+   const response=await fetch('http://127.0.0.1:18761/professional/regtest/scan-funding',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({address:publicFundingAddress,scriptPubKeyHex:publicFundingScript}),
+    cache:'no-store',credentials:'omit'
+   });
+   if(!response.ok)throw Error('Local regtest Core scan unavailable');
+   const result=await response.json();
+   if(scanId!==latestScanId||scanXpub!==derivedXpub||document.getElementById('funding-xpub').value.trim()!==scanXpub||!planStillMatches())throw Error('Wallet or gift plan changed during funding check');
+   if(result.format!=='bc1q21-professional-regtest-auto-funding-observation-v1'||
+      result.network!=='regtest'||!Array.isArray(result.confirmedUtxos)||
+      !Number.isSafeInteger(result.totalConfirmedSats)||result.totalConfirmedSats<0||
+      result.walletOriginAuthenticated!==false||result.canSign!==false||
+      result.canBroadcast!==false||result.signingAuthorized!==false)
+    throw Error('Invalid Core scan response');
+   if(result.confirmedUtxos.length>0){
+    const outpoints=new Set();
+    let total=0;
+    for(const item of result.confirmedUtxos){
+     if(!/^[a-f0-9]{64}$/.test(item.txid)||!Number.isSafeInteger(item.vout)||
+        !Number.isSafeInteger(item.valueSats)||item.valueSats<=0||
+        item.scriptPubKeyHex!==publicFundingScript||item.confirmations<1||
+        item.canSign!==false||item.canBroadcast!==false)
+      throw Error('Untrusted funding scan entry');
+     const key=item.txid+':'+item.vout;
+     if(outpoints.has(key))throw Error('Duplicate Core outpoint');
+     outpoints.add(key);total+=item.valueSats;
+    }
+    if(!Number.isSafeInteger(total)||total!==result.totalConfirmedSats)
+     throw Error('Core funding total mismatch');
+    scannedUtxos=result.confirmedUtxos.map(item=>({
+     txid:item.txid,vout:item.vout,valueSats:item.valueSats,
+     scriptPubKeyHex:item.scriptPubKeyHex
+    }));
+    constructButton.disabled=false;
+    unsignedStatus.textContent='Confirmed inputs ready for unsigned regtest construction. No signing approval.';
+   }
+   output.textContent=result.confirmedUtxos.length+' confirmed regtest output(s), '+
+    result.totalConfirmedSats.toLocaleString()+
+    ' sats observed. Jade wallet identity and signing approval remain unverified.';
+  }catch(error){
+   output.textContent='Automatic funding check unavailable: '+String(error.message||error)+
+    '. Signing remains locked.';
+  }finally{scanButton.disabled=!publicFundingAddress||!planStillMatches();}
+ });
+
+ constructButton.addEventListener('click',()=>{
+  constructButton.disabled=true;
+  try{
+   unsignedReview.hidden=true;reviewAck.checked=false;stopDiagnostic();
+   if(!scannedUtxos?.length)throw Error('Confirmed regtest inputs required');
+   if(!planStillMatches())throw Error('Gift plan changed; reimport public wallet and rescan');
+   if(!derivedXpub||document.getElementById('funding-xpub').value.trim()!==derivedXpub)throw Error('Public wallet changed; reimport and rescan');
+   const plan=JSON.parse(sessionStorage.getItem('bc1q21-professional-approved-plan-preview')||'null');
+   if(!plan||plan.format!=='bc1q21-professional-retail-plan-preview-v1'||
+      plan.status!=='UNFUNDED_PREVIEW_NOT_SIGNABLE'||plan.signingAuthorized!==false)
+    throw Error('Approved gift schedule required');
+   if(!Array.isArray(plan.releases)||plan.releases.length>24)
+    throw Error('Jade Plus creator currently supports at most 24 gift releases');
+   const inputTotal=scannedUtxos.reduce((n,u)=>n+u.valueSats,0);
+   const fee=Number(document.getElementById('network-fee').value);
+   if(!Number.isSafeInteger(fee)||fee<100||fee>10000)
+    throw Error('Development fee must be 100–10,000 sats');
+const serviceFeeSats=1000+250*Math.max(0,plan.releases.length-1);
+const remaining=inputTotal-plan.totalSats-serviceFeeSats-fee;
+   if(!Number.isSafeInteger(remaining)||remaining<0||(remaining>0&&remaining<546))
+    throw Error('Insufficient funding or dust change; no transaction prepared');
+   const change=remaining>0?globalThis.bc1q21ProfessionalPreviewChangeOutput({
+    accountXpub:derivedXpub
+   }):null;
+   if(change&&(change.format!=='bc1q21-professional-public-change-preview-v1'||
+      change.walletOriginAuthenticated!==false||change.canSign!==false||
+      !/^[a-f0-9]+$/.test(change.scriptPubKeyHex)))
+    throw Error('Unsafe public change output');
+const serviceFeeOutput=globalThis.bc1q21ProfessionalPreviewServiceFeeOutput({
+ publicKeyHex:document.getElementById('service-public-key').value.trim(),
+ valueSats:serviceFeeSats
+});
+   const builder=globalThis.bc1q21ProfessionalConstructUntrustedCreatorPsbt;
+   if(typeof builder!=='function')throw Error('Browser PSBT builder unavailable');
+   const built=builder({
+    plan,accountXpub:document.getElementById('funding-xpub').value.trim(),
+    masterFingerprintHex:document.getElementById('jade-fingerprint').value.trim(),
+utxos:scannedUtxos,networkFeeSats:fee,
+serviceFeeOutput,
+    changeOutput:change?{valueSats:remaining,scriptPubKeyHex:change.scriptPubKeyHex}:null
+   });
+   if(built.format!=='bc1q21-professional-untrusted-creator-construction-v1'||
+      built.giftScriptsChecked!==true||built.chainVerified!==false||
+      built.signingAuthorized!==false||built.canSign!==false||
+      built.canBroadcast!==false||built.unsigned?.signed!==false)
+    throw Error('Unsafe unsigned PSBT construction');
+   // The browser builder already creates the validated funded intent. Verify that
+   // the exact observed outpoints, gift schedule and fee survived that boundary.
+   const expectedGifts=globalThis.bc1q21ProfessionalPreviewGiftOutputs({
+    accountXpub:derivedXpub,releases:plan.releases
+   });
+   if(expectedGifts?.network!=='regtest'||
+      expectedGifts.canSign!==false||
+      expectedGifts.outputs?.length!==plan.releases.length||
+      expectedGifts.fundingScriptPubKeyHex?.toLowerCase()!==publicFundingScript)
+    throw Error('Public gift derivation differs from reviewed wallet');
+   const intent=built.intent;
+   if(intent?.format!=='bc1q21-professional-funded-distribution-intent-v1'||
+      intent.network!=='regtest'||intent.signed!==false||
+      intent.signatureVerified!==false||intent.broadcastAuthorized!==false||
+      intent.inputs?.length!==scannedUtxos.length||
+      intent.gifts?.length!==plan.releases.length||
+      intent.networkFeeSats!==fee||intent.inputTotalSats!==inputTotal||
+      !intent.serviceFee||
+      intent.serviceFee.valueSats!==serviceFeeSats||
+      intent.serviceFee.scriptPubKeyHex!==serviceFeeOutput.scriptPubKeyHex||
+      intent.gifts.some((gift,i)=>gift.date!==plan.releases[i].date||
+       gift.valueSats!==plan.releases[i].amountSats||
+       gift.locktime!==expectedGifts.outputs[i].locktime||
+       gift.scriptPubKeyHex!==expectedGifts.outputs[i].scriptPubKeyHex.toLowerCase())||
+      intent.inputs.some((input,i)=>input.txid!==scannedUtxos[i].txid.toLowerCase()||
+       input.vout!==scannedUtxos[i].vout||input.valueSats!==scannedUtxos[i].valueSats||
+       input.scriptPubKeyHex!==scannedUtxos[i].scriptPubKeyHex.toLowerCase()||
+       input.scriptPubKeyHex!==publicFundingScript)||
+      (remaining===0?intent.change!==null:
+       intent.change?.valueSats!==remaining||
+       intent.change?.scriptPubKeyHex!==change.scriptPubKeyHex.toLowerCase())||
+      !planStillMatches())
+    throw Error('Funded intent differs from reviewed gift plan or observed Bitcoin Core inputs');
+   const inspectPsbt=globalThis.bc1q21ProfessionalVerifyUnsignedCreatorPsbt;
+   if(typeof inspectPsbt!=='function')throw Error('Independent PSBT verifier unavailable');
+   const inspection=inspectPsbt({unsigned:built.unsigned,intent});
+   if(inspection?.matchesIntent!==true||inspection.network!=='regtest'||
+      inspection.signingAuthorized!==false||inspection.canBroadcast!==false)
+    throw Error('Independent unsigned PSBT inspection failed');
+   document.getElementById('review-inputs').textContent=String(built.unsigned.fundingInputCount);
+   document.getElementById('review-gifts').textContent=String(built.unsigned.giftOutputCount);
+   document.getElementById('review-fee').textContent=fee.toLocaleString();
+   document.getElementById('review-change').textContent=remaining.toLocaleString();
+   document.getElementById('review-hash').textContent=built.unsigned.psbtSha256;
+   document.getElementById('review-ack-status').textContent='Review acknowledgement pending.';
+   unsignedReview.hidden=false;
+   latestUnsigned=built.unsigned;
+   latestIntent=intent;
+   diagnosticButton.disabled=false;
+   refreshHandoff();
+   document.getElementById('handoff-jade-status').textContent=
+    'Review the schedule and fee, then check the review acknowledgement to open the Jade Plus regtest preview. No real signing approval.';
+   unsignedStatus.textContent='Unsigned regtest gift transaction constructed: '+
+    built.unsigned.fundingInputCount+' input(s), '+
+    built.unsigned.giftOutputCount+' locked gift output(s), '+
+    fee.toLocaleString()+' sats network fee, '+remaining.toLocaleString()+' sats change. NOT authorized for Jade signing or broadcast.';
+  }catch(error){
+   unsignedStatus.textContent='Unsigned construction unavailable: '+String(error.message||error)+
+    '. Signing remains locked.';
+  }finally{constructButton.disabled=!scannedUtxos?.length;}
+ });
+ document.getElementById('customer-import-public-wallet').addEventListener('click',()=>{
+  document.querySelector('#professional-wallet-setup details').open=true;
+  document.getElementById('public-wallet-qr-import').scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('public-wallet-camera-start').focus({preventScroll:true});
+ });
+ const jadeAck=document.getElementById('jade-address-ack');
+ jadeAck.addEventListener('change',()=>{
+  const address=document.getElementById('jade-check-address').textContent;
+  const unchanged=!!publicFundingAddress&&planStillMatches()&&address===publicFundingAddress&&
+    derivedXpub===document.getElementById('funding-xpub').value.trim();
+  if(!unchanged){jadeAck.checked=false;}
+  document.getElementById('jade-address-check-status').textContent=jadeAck.checked&&unchanged?
+   'Device address check acknowledged for this public-wallet preview. Wallet ownership is NOT authenticated. Payment QR, signing and broadcasting remain disabled.':
+   'Device address check not acknowledged. Funding and signing remain disabled.';
+ });
+ const publicCameraAttach=globalThis.bc1q21ProfessionalAttachPublicWalletCamera;
+ if(typeof publicCameraAttach==='function'){
+  publicCameraAttach({
+   video:document.getElementById('public-wallet-camera-video'),
+   canvas:document.getElementById('public-wallet-camera-canvas'),
+   startButton:document.getElementById('public-wallet-camera-start'),
+   stopButton:document.getElementById('public-wallet-camera-stop'),
+   statusElement:document.getElementById('public-wallet-camera-status'),
+   onPublicXpub:xpub=>{
+    const field=document.getElementById('funding-xpub');
+    field.value=xpub;
+    field.dispatchEvent(new Event('input',{bubbles:true}));
+    document.getElementById('funding-key-status').textContent=
+     'Public account QR imported. Deriving disposable regtest receiving address…';
+    document.getElementById('derive-funding-key').click();
+   }
+  });
+ }else{
+  document.getElementById('public-wallet-camera-start').disabled=true;
+  document.getElementById('public-wallet-camera-status').textContent=
+   'Public-wallet QR importer is not available in this browser bundle. Rebuild the Professional-only bundle before using the scanner.';
+ }
+ document.getElementById('funding-xpub').addEventListener('input',()=>{
+  ++latestScanId;publicFundingAddress=null;publicFundingScript=null;derivedXpub=null;derivedPlanSnapshot=null;
+  document.getElementById('customer-address-qr').hidden=true;
+  copyTestAddressButton.disabled=true;copyTestAddressButton.textContent='Copy test receiving address';
+  document.getElementById('customer-payment-address').textContent='No test address derived.';
+  document.getElementById('customer-qr-placeholder').textContent='Awaiting a validated test address. Do not send Bitcoin.';
+
+  jadeAck.checked=false;document.getElementById('jade-address-check').hidden=true;
+  document.getElementById('jade-check-address').textContent='';
+  document.getElementById('jade-address-check-status').textContent='Device address check not acknowledged. Funding and signing remain disabled.';
+  resetUnsigned();scanButton.disabled=true;
+  document.getElementById('funding-key-result').hidden=true;
+  document.getElementById('scan-status').textContent='Public wallet changed. Reimport the wallet and check funding again.';
+  document.getElementById('customer-funding-status').textContent='Public wallet changed. Previous address comparison is no longer valid. Reimport the wallet before continuing. Do not send Bitcoin.';
+ });
+ const inspectButton=document.getElementById('inspect-funding');
+ inspectButton.addEventListener('click',async()=>{
+  const output=document.getElementById('inspection-status');
+  inspectButton.disabled=true;
+  output.textContent='Checking this output against local regtest Bitcoin Core…';
+  try{
+   if(!publicFundingScript)throw Error('Jade public wallet preview required');
+   if(!planStillMatches())throw Error('Gift plan changed; reimport public wallet');
+   const txid=document.getElementById('funding-txid').value.trim();
+   const vout=Number(document.getElementById('funding-vout').value);
+   if(!/^[0-9a-f]{64}$/i.test(txid)||!Number.isSafeInteger(vout)||
+      vout<0||vout>0xffffffff)throw Error('Valid transaction ID and output number required');
+   const response=await fetch('http://127.0.0.1:18761/professional/regtest/observe-utxo',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({txid,vout,scriptPubKeyHex:publicFundingScript}),
+    cache:'no-store',credentials:'omit'
+   });
+   if(!response.ok)throw Error('Funding output unavailable, unconfirmed or mismatched');
+   const result=await response.json();
+   if(result.format!=='bc1q21-professional-core-observed-utxo-v1'||
+      result.network!=='regtest'||result.txid!==txid.toLowerCase()||
+      result.vout!==vout||result.scriptPubKeyHex!==publicFundingScript||
+      !Number.isSafeInteger(result.valueSats)||result.valueSats<=0||
+      !Number.isSafeInteger(result.confirmations)||result.confirmations<1||
+      result.walletOriginAuthenticated!==false||
+      result.signingAuthorized!==false||result.canSign!==false||
+      result.canBroadcast!==false)throw Error('Invalid Core observation');
+   output.textContent='Regtest funding observed: '+result.valueSats.toLocaleString()+
+    ' sats, '+result.confirmations+' confirmation(s). Wallet identity and gift approval remain pending. Jade signing stays locked.';
+  }catch(error){
+   output.textContent='Funding not verified: '+String(error.message||error)+
+    '. Signing remains locked.';
+  }finally{inspectButton.disabled=!publicFundingScript;}
+ });
+
+ document.getElementById('derive-funding-key').addEventListener('click',()=>{
+  const status=document.getElementById('funding-key-status');
+  document.getElementById('funding-key-result').hidden=true;
+  jadeAck.checked=false;document.getElementById('jade-address-check').hidden=true;
+  document.getElementById('jade-check-address').textContent='';
+  document.getElementById('jade-address-check-status').textContent='Device address check not acknowledged. Funding and signing remain disabled.';
+  ++latestScanId;publicFundingScript=null;publicFundingAddress=null;derivedXpub=null;derivedPlanSnapshot=null;resetUnsigned();inspectButton.disabled=true;scanButton.disabled=true;
+  try{
+   const derive=globalThis.bc1q21ProfessionalPreviewFundingPublicKey;
+   if(typeof derive!=='function')throw Error('Professional browser verifier is unavailable');
+   const result=derive({accountXpub:document.getElementById('funding-xpub').value.trim()});
+   if(result.paymentAuthorized!==false||result.canSign!==false)throw Error('Unsafe funding preview');
+   const plan=JSON.parse(sessionStorage.getItem('bc1q21-professional-approved-plan-preview')||'null');
+   if(!plan||plan.format!=='bc1q21-professional-retail-plan-preview-v1')
+    throw Error('Reviewed gift plan required');
+   const outputs=globalThis.bc1q21ProfessionalPreviewGiftOutputs({
+     accountXpub:document.getElementById('funding-xpub').value.trim(),releases:plan.releases
+   });
+   if(outputs.canRequestPayment!==false||outputs.canSign!==false||
+      outputs.outputs.length!==plan.releases.length)
+    throw Error('Unsafe gift output preview');
+   const table=document.getElementById('gift-output-preview');
+   table.replaceChildren();
+   for(const output of outputs.outputs){
+    const row=document.createElement('tr');
+    for(const value of [output.date,output.valueSats.toLocaleString()+' sats',output.giftAddress]){
+     const cell=document.createElement('td');cell.textContent=value;row.appendChild(cell);
+    }
+    table.appendChild(row);
+   }
+   if(typeof result.scriptPubKeyHex!=='string'||!/^[0-9a-f]+$/i.test(result.scriptPubKeyHex))throw Error('Invalid funding script');
+   derivedPlanSnapshot=currentPlanSnapshot();
+   publicFundingScript=result.scriptPubKeyHex.toLowerCase();
+   publicFundingAddress=result.address;derivedXpub=document.getElementById('funding-xpub').value.trim();inspectButton.disabled=false;scanButton.disabled=false;
+   document.getElementById('customer-payment-address').textContent='Regtest-only address (not for real BTC): '+result.address;
+   const qrCanvas=document.getElementById('customer-address-qr');
+   qrCanvas.hidden=true;
+   const render=globalThis.bc1q21ProfessionalRenderFundingAddressQr;
+   if(typeof render==='function')void render({address:result.address,canvas:qrCanvas}).then(()=>{
+    if(publicFundingAddress===result.address&&derivedXpub===document.getElementById('funding-xpub').value.trim()&&planStillMatches()){qrCanvas.hidden=false;copyTestAddressButton.disabled=false;copyTestAddressButton.textContent='Copy test receiving address';document.getElementById('customer-qr-placeholder').textContent='Test-network QR only. No payment authorization.';}
+   }).catch(e=>{document.getElementById('customer-qr-placeholder').textContent='QR preview unavailable: '+String(e.message||e);});
+
+   document.getElementById('inspection-status').textContent='Public funding script prepared. Enter a disposable regtest transaction ID to check Bitcoin Core.';
+   document.getElementById('funding-test-address').textContent=result.address;
+   document.getElementById('jade-check-address').textContent=result.address;
+   document.getElementById('jade-address-check').hidden=false;
+   document.getElementById('funding-key-result').hidden=false;
+   status.textContent='Public funding key and '+outputs.outputs.length+' gift-specific time-locked output(s) derived. No deposit request is enabled.';
+   document.getElementById('customer-funding-status').textContent='Public Jade wallet information imported for disposable regtest inspection. Device identity and payment authorization remain unverified. Do not send Bitcoin.';
+  }catch(e){status.textContent='Unable to derive public funding key: '+String(e.message||e);}
+ });
+
+ try{
+  const raw=sessionStorage.getItem('bc1q21-professional-approved-plan-preview');
+  if(!raw)throw Error('No reviewed gift plan in this browser session. Return to planning.');
+  const plan=JSON.parse(raw);
+  if(plan?.format!=='bc1q21-professional-retail-plan-preview-v1'||
+    plan.status!=='UNFUNDED_PREVIEW_NOT_SIGNABLE'||
+    plan.signingAuthorized!==false||plan.fundingAuthorized!==false||
+    plan.broadcastAuthorized!==false||
+    !Array.isArray(plan.releases)||!plan.releases.length||plan.releases.length>60)
+    throw Error('The stored gift plan is not a valid Professional planning preview.');
+  let total=0;
+  for(const [i,r] of plan.releases.entries()){
+   if(typeof r?.date!=='string'||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(r.date)||
+     !Number.isSafeInteger(r.amountSats)||r.amountSats<=0)
+    throw Error('Invalid release '+(i+1));
+   total+=r.amountSats;
+  }
+  if(!Number.isSafeInteger(total)||total!==plan.totalSats)throw Error('Gift total mismatch');
+  const prepared=prepareProfessionalFundingPreview({plan});
+  document.getElementById('total').textContent=prepared.giftTotalSats.toLocaleString();
+  const body=document.getElementById('releases');
+  plan.releases.forEach((r,i)=>{
+   const tr=document.createElement('tr');
+   for(const value of [String(i+1),r.date,r.amountSats.toLocaleString()+' sats']){
+    const td=document.createElement('td');td.textContent=value;tr.appendChild(td);
+   }
+   body.appendChild(tr);
+  });
+  document.getElementById('details').hidden=false;
+  status.textContent='Gift plan loaded: '+prepared.releases.length+' release(s). Funding preparation is awaiting Jade public-wallet identity and a verified fee quote. No Bitcoin address or payment request has been issued.';
+ }catch(e){status.textContent=String(e.message||e);}
+})();
+</script></template><script src="./browser-integration/creator-browser.bundle.js"></script><script type="module" src="./creator-browser-funding.mjs"></script></body></html>

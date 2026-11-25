@@ -1,0 +1,163 @@
+{
+  "format": "bc1q21-professional-historical-funded-gift-public-evidence-v1",
+  "network": "regtest",
+  "giftLinkFundingAddress": "bcrt1q8sv4wu29suwkccwu7j44n0ea7fsa8j8nqqdut7",
+  "fundingTxid": "0980e079e7317e3115346ceb8448fe43526e6999f96b61e0cff09313b2eb1bcd",
+  "releaseOutputs": [
+    {
+      "index": 0,
+      "vout": 2,
+      "sats": 12000,
+      "scriptPubKeyHex": "a914cbfdf5c9c69604dbe761d23b9752c6b8c0a15b9287"
+    },
+    {
+      "index": 1,
+      "vout": 3,
+      "sats": 13000,
+      "scriptPubKeyHex": "a914f6a4a575f75cbf0beec736a7ac168aff5da6846187"
+    },
+    {
+      "index": 2,
+      "vout": 4,
+      "sats": 14000,
+      "scriptPubKeyHex": "a914451f9fde06e26a7a864a922abebb3335da11826087"
+    },
+    {
+      "index": 3,
+      "vout": 5,
+      "sats": 15000,
+      "scriptPubKeyHex": "a9140498b9135d7c167a69b6ad859851d7029ce5b47287"
+    },
+    {
+      "index": 4,
+      "vout": 6,
+      "sats": 16000,
+      "scriptPubKeyHex": "a914b0e8da1e30475a9d5777f0712711e1f857f744c687"
+    },
+    {
+      "index": 5,
+      "vout": 7,
+      "sats": 17000,
+      "scriptPubKeyHex": "a914c7ab7b0d31f60884577db927b33d4b6ca2f3c4dd87"
+    },
+    {
+      "index": 6,
+      "vout": 8,
+      "sats": 18000,
+      "scriptPubKeyHex": "a9144730ea008bc6a1afc3db9f754f7a73fcc5dd501a87"
+    },
+    {
+      "index": 7,
+      "vout": 9,
+      "sats": 19000,
+      "scriptPubKeyHex": "a914978dab73cf0175fbbcaa33b8701cc7cdf3ff742387"
+    },
+    {
+      "index": 8,
+      "vout": 10,
+      "sats": 20000,
+      "scriptPubKeyHex": "a914bbf2e0837e351db62b8a865aec537c827d0fc97987"
+    },
+    {
+      "index": 9,
+      "vout": 11,
+      "sats": 21000,
+      "scriptPubKeyHex": "a9142f431f606ef2e3f2982693874361bfd1e585720b87"
+    },
+    {
+      "index": 10,
+      "vout": 12,
+      "sats": 22000,
+      "scriptPubKeyHex": "a91469f40eed9222e4ecc87aed38cfed03497eddaa0e87"
+    },
+    {
+      "index": 11,
+      "vout": 13,
+      "sats": 23000,
+      "scriptPubKeyHex": "a914495c2a1082e4d54433aa1990a124a635667bf91a87"
+    },
+    {
+      "index": 12,
+      "vout": 14,
+      "sats": 24000,
+      "scriptPubKeyHex": "a914b6da3a83eb93ae1d0a661fe5e1a7e2745498b21487"
+    },
+    {
+      "index": 13,
+      "vout": 15,
+      "sats": 25000,
+      "scriptPubKeyHex": "a91488e6393c5b995af905805121271b1e17d7e729f787"
+    },
+    {
+      "index": 14,
+      "vout": 16,
+      "sats": 26000,
+      "scriptPubKeyHex": "a914afb22b32be203e7bbfd287b8734e1e0ae5fdbdf387"
+    },
+    {
+      "index": 15,
+      "vout": 17,
+      "sats": 27000,
+      "scriptPubKeyHex": "a914a26fdb6cf31a8559b16dacf2451427b0cc51799d87"
+    },
+    {
+      "index": 16,
+      "vout": 18,
+      "sats": 28000,
+      "scriptPubKeyHex": "a91423aab0628c3beb5cf9bf514c71ecf68c11b82eef87"
+    },
+    {
+      "index": 17,
+      "vout": 19,
+      "sats": 29000,
+      "scriptPubKeyHex": "a914016780512ccdd894bde3453f1c432e4d1507a49a87"
+    },
+    {
+      "index": 18,
+      "vout": 20,
+      "sats": 30000,
+      "scriptPubKeyHex": "a914a8297631a1c1c11e5289191e1524b7b477a654ff87"
+    },
+    {
+      "index": 19,
+      "vout": 21,
+      "sats": 31000,
+      "scriptPubKeyHex": "a914fa053dba7dd7a081a995144523ba713b148031ff87"
+    },
+    {
+      "index": 20,
+      "vout": 22,
+      "sats": 32000,
+      "scriptPubKeyHex": "a914b90512421c19b99e91669c829487ce211a17b9d187"
+    },
+    {
+      "index": 21,
+      "vout": 23,
+      "sats": 33000,
+      "scriptPubKeyHex": "a914331fb9f4173f9d7a5354c9fe80ba6ac95bf42e2687"
+    },
+    {
+      "index": 22,
+      "vout": 24,
+      "sats": 34000,
+      "scriptPubKeyHex": "a914fcf79a0023e9f3ec9618b926edad39d0f6640e8d87"
+    },
+    {
+      "index": 23,
+      "vout": 25,
+      "sats": 35000,
+      "scriptPubKeyHex": "a91493cb67c1a51b1a93c398b9600d7890caf675c6ac87"
+    }
+  ],
+  "evidenceOrigin": "SOFTWARE-GENERATED SIMULATION; NOT historical funding, Core observation or hardware evidence",
+  "creatorAuthenticated": false,
+  "independentCommitmentAuthenticated": false,
+  "scheduleAuthenticated": false,
+  "beneficiaryAuthorized": false,
+  "broadcastAuthorized": false,
+  "synthetic": true,
+  "hardwareVerified": false,
+  "chainFunded": false,
+  "networkContacted": false,
+  "broadcast": false
+}

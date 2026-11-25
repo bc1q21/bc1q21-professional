@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'self'; img-src 'self' data:; connect-src 'self' https: http://127.0.0.1:* http://localhost:*; worker-src 'self'; media-src blob:; form-action 'none'; base-uri 'none'">
+<title>bc1q21 Professional — Gift recipient</title>
+<style>
+:root{color-scheme:light;font:16px system-ui,Arial,sans-serif;background:#f4f7fb;color:#16263a}
+*{box-sizing:border-box}body{margin:0}main{max-width:930px;margin:0 auto;padding:24px 18px 65px}
+header{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:8px 0 20px;border-bottom:3px solid #064c85}header img{max-height:100px;max-width:50%;object-fit:contain}.section-bar{background:#09518b;color:#fff;padding:12px 16px;border-radius:7px;margin:12px 0}
+.brand{color:#064c85;font-size:1.7rem;font-weight:800}.tag{font-size:.74rem;font-weight:700;color:#fff;background:#34465c;padding:7px 10px;border-radius:6px}
+section{background:#fff;border:1px solid #d9e2ee;border-radius:12px;padding:20px;margin:18px 0;box-shadow:0 2px 6px #1428400c}
+h1{font-size:1.65rem;margin:20px 0 8px}h2{font-size:1.13rem;margin:0 0 13px}p{line-height:1.5}.muted{color:#506174}.warn{background:#fff1dc;border-left:4px solid #ba760d;padding:12px 16px}.pledge{background:#eaf5ee;border-left:4px solid #167447;padding:12px 16px}
+.mono{font:0.85rem ui-monospace,monospace;word-break:break-word}.overview{text-align:center;background:#14283e;color:white}.overview h2{color:#e0ecff}.big{font-size:2rem;font-weight:800;letter-spacing:.02em}
+table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:12px;border-bottom:1px solid #e1e6ed}th{font-size:.82rem;color:#4b6075}td:last-child{text-align:right}
+button{font:inherit;border:0;padding:13px 18px;border-radius:7px;color:white;background:#07568e;font-weight:700;cursor:pointer}button[disabled]{cursor:not-allowed;background:#a7b2c0}button.secondary{background:#e8eff5;color:#18466b}
+.status{font-size:.82rem;font-weight:700;border-radius:16px;background:#e8eef4;padding:5px 9px;white-space:nowrap}
+.step{display:flex;gap:12px;margin:12px 0}.number{background:#dbeaf6;color:#074b7b;border-radius:50%;width:27px;height:27px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:700}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0 0}
+#message{font-weight:600}small{line-height:1.45}
+@media(max-width:550px){main{padding:14px 10px}section{padding:14px}header{align-items:start}.brand{font-size:1.4rem}.big{font-size:1.5rem}td,th{padding:10px 5px}}
+</style>
+</head>
+<body><main>
+<header><img src="./assets/original/bc1q21-logo.png" alt="bc1q21 logo"><div class="tag">PROFESSIONAL · LOCAL REGTEST BETA</div></header><div class="section-bar"><strong>Gift recipient</strong></div>
+<h1>Your Gift Overview</h1>
+<p class="muted">This is the gift-specific recipient page reached through a gift card's link or QR code. It is not the general bc1q21 homepage.</p>
+<p class="warn" hidden><strong>Archived offline demonstration only.</strong> Fictional gift and wallet address. No real Bitcoin. No wallet connection, live blockchain queries, transaction construction, private-key signing, or broadcast. Imported disposable regtest PSBTs can be inspected and displayed as unsigned QR diagnostics.</p>
+<section><h2>Gift identification</h2><p>Recipient link context:</p><p class="mono" id="giftId"></p><p class="muted" id="linkStatus"></p><small>The retail recipient link is based on the funding address: /gift/&lt;address&gt; or ?a=&lt;address&gt;. This prototype never queries that address or assumes possession of it authorizes spending.</small></section>
+<section class="overview"><h2>Your total gift value</h2><div class="big" id="giftTotal">0.00066000 BTC</div><p id="giftTotalContext">66,000 disposable regtest satoshis in four example releases</p></section>
+<section hidden><h2>Preview a Professional gift plan</h2><p class="muted">Open the unfunded planning file exported by the Professional creator wizard. This is a local <strong>recipient preview only</strong>, not an authenticated gift, funded balance, or release authorization.</p><label for="draftGiftFile">Open unfunded Professional plan (JSON)</label><input id="draftGiftFile" type="file" accept=".json,application/json"><p id="draftGiftStatus" role="status">No creator draft loaded.</p><div id="draftGiftDetails" hidden><h3 id="draftGiftHeading"></h3><p id="draftGiftOccasion"></p><p id="draftGiftTotal"></p><div style="overflow-x:auto"><table><thead><tr><th>Release</th><th>Planned date</th><th>Amount</th><th>Regtest unlock height</th></tr></thead><tbody id="draftGiftRows"></tbody></table></div><p class="warn">UNFUNDED DRAFT. The dates and block heights are supplied by the creator, not verified against the chain. These addresses must not be funded. Recipient signing and release remain disabled.</p></div>
+<p><label for="dateGiftPreviewFile">Open date-based unsigned gift preview (JSON, regtest only):</label> <input id="dateGiftPreviewFile" type="file" accept=".json,application/json"></p><p id="dateGiftPreviewStatus" role="status">No date-based preview loaded. Signing and broadcasting remain disabled.</p><div id="dateGiftPreviewDetails" hidden></div>
+</section>
+<section><h2>Security: your wallet stays offline</h2><p class="pledge">Do not type your 12 recovery words into this page. Your Jade or other hardware signer keeps the private signing keys offline. A gift link is a locator, never authorization to spend.</p><p>Scan your public account and review exact unsigned claim transactions through air-gapped Jade QR. The local regtest beta verifies signatures before a separate send authorization.</p></section>
+<section><h2>Gift release schedule</h2><div style="overflow-x:auto"><table><thead><tr><th>Release</th><th>Unlock date (UTC)</th><th>Amount</th><th>Current status</th></tr></thead>
+<tbody id="giftScheduleRows"><tr><td>1</td><td>130</td><td>12,000 sats</td><td><span class="status">Tested</span></td></tr>
+<tr><td>2</td><td>140</td><td>15,000 sats</td><td><span class="status">Tested</span></td></tr>
+<tr><td>3</td><td>150</td><td>18,000 sats</td><td><span class="status">Tested</span></td></tr>
+<tr><td>4</td><td>160</td><td>21,000 sats</td><td><span class="status">Tested</span></td></tr></tbody></table></div>
+<p class="muted" id="scheduleProvenance">These are known public synthetic fixtures from our isolated regtest work—not live balances, spendable UTXO discoveries, or dates derived from the recipient's real gift.</p></section>
+<section id="verifiedHandoffSection"><h2>Open complete customer handoff</h2><p>Import the single funded regtest handoff package and enter the SHA-256 fingerprint received through a separate authenticated channel. This replaces manually importing a gift file and five separate PSBT files. The fingerprint does not prove customer identity or blockchain funding. Signing and broadcast remain unauthorized.</p><label for="completeHandoffFile">Customer handoff package (JSON)</label> <input id="completeHandoffFile" type="file" accept=".json,application/json"><label for="completeHandoffDigest">Independent SHA-256 fingerprint</label> <input id="completeHandoffDigest" type="text" maxlength="64" size="65" autocomplete="off" spellcheck="false"><button id="verifyCompleteHandoff" type="button">Verify and load five releases</button><p id="completeHandoffStatus" role="status">No independently checked customer handoff loaded.</p></section>
+<section><h2>Selected gift release</h2><label for="selectedRelease">Choose a release to review:</label> <select id="selectedRelease"><option value="">Select release</option><option value="1">Release 1 — 12,000 sats</option><option value="2">Release 2 — 15,000 sats</option><option value="3">Release 3 — 18,000 sats</option><option value="4">Release 4 — 21,000 sats</option></select><p id="selectedReleaseStatus" role="status">No release selected. Signing remains locked.</p><p><label for="publicGiftFile">Load a public gift record (JSON, offline):</label> <input id="publicGiftFile" type="file" accept=".json,application/json"></p><p id="giftRecordStatus" role="status">No public gift record loaded. A local file is not proof of blockchain validity.</p><p><strong>Gift record source:</strong> <span id="giftRecordSource">No record loaded</span></p><p id="selectedReleaseEvidence" class="mono" aria-live="polite">No gift-specific transaction evidence loaded.</p><p id="utxoEvidenceStatus" role="status">No trusted Bitcoin Core UTXO evidence connected. Signing remains disabled.</p><p><label for="coreUtxoFile">Inspect Bitcoin Core gettxout response (JSON, offline diagnostic):</label> <input id="coreUtxoFile" type="file" accept=".json,application/json"></p><p id="coreUtxoStatus" role="status">No Core response inspected. Imported JSON cannot establish trusted RPC provenance.</p></section>
+<section><h2>Release payments — offline signer</h2>
+<div class="step"><div class="number">1</div><div>Review the matured release, destination and fee on this gift-specific page.</div></div>
+<div class="step"><div class="number">2</div><div>Open the unsigned transaction as animated QR frames, and review it on Jade.</div></div>
+<div class="step"><div class="number">3</div><div>Scan Jade's signed QR back into the page and verify the returned PSBT publicly.</div></div>
+<div class="step"><div class="number">4</div><div>Broadcast only after verifying authorization, maturity, signature and transaction details.</div></div>
+<div class="actions"><button id="sign" disabled aria-describedby="message">Sign matured release with offline wallet</button><button class="secondary" id="explain">Why is signing disabled?</button></div>
+<p id="message" role="status">Gift-specific release remains disabled while the Jade camera is integrated.</p><p class="warn">Jade signed-QR camera test: <a href="./browser-integration/professional-verification-diagnostic.html">Open the existing offline signing camera diagnostic</a>. This verifies a fixed regtest fixture, not the gift shown above.</p>
+<div class="warn"><h3>Gift-specific Jade camera — isolated integration</h3><p>Load the approved unsigned PSBT evidence for the selected gift release (local JSON: approvedUnsignedBase64, expectedApprovedSha256, releaseNumber). This does not authenticate the gift or authorize spending.</p><input id="giftPsbtFile" type="file" accept=".json,application/json"><div class="actions"><button type="button" id="showUnsignedQr" disabled>Show selected unsigned QR (diagnostic)</button><button type="button" id="hideUnsignedQr" disabled>Hide QR</button></div><p id="unsignedQrStatus" role="status">No unsigned QR displayed. Do not sign unauthenticated gift data.</p><img id="unsignedQrImage" alt="Animated unsigned Jade PSBT QR" width="300" height="300" style="display:none;max-width:100%;"><div class="actions"><button type="button" id="giftCameraStart" disabled>Scan signed Jade QR for selected release</button><button type="button" id="giftCameraStop" disabled>Stop gift camera</button></div><p id="giftCameraStatus" role="status">No gift-specific PSBT loaded. No signing or broadcast.</p><button type="button" id="saveVerifiedJadePsbt" disabled>Save verified signed PSBT (regtest)</button><p id="signedPsbtStatus" role="status">No signed return verified.</p><p><label for="redemptionReceiptFile">Inspect regtest redemption receipt (JSON):</label> <input type="file" id="redemptionReceiptFile" accept=".json,application/json"></p><p id="redemptionReceiptStatus" role="status">No redemption receipt inspected. Local files do not prove chain confirmation.</p></div>
+<div class="warn"><h3>Signed QR camera — regtest diagnostic only</h3><p>Scan the disposable Jade test signature. This does not sign or release the gift shown above.</p><video id="jadeVideo" playsinline muted style="width:100%;max-width:460px;background:#18283b;min-height:160px"></video><canvas id="jadeCanvas" hidden></canvas><div class="actions"><button type="button" id="startCamera">Start test camera</button><button type="button" id="stopCamera" disabled>Stop camera</button></div><p id="cameraStatus" role="status">Camera stopped.</p></div>
+</section>
+</main>
+<script type="application/x-professional-legacy-module" data-src="./recipient-package-import.browser.mjs"></script>
+<script src="./browser-integration/creator-browser.bundle.js"></script>
+<script type="module" src="./beneficiary-browser.mjs"></script>
+<script type="application/x-professional-legacy-diagnostic">
+'use strict';
+(function(){
+ const params=new URLSearchParams(location.search);
+ const value=params.get('a')||params.get('address')||'';
+ const gift=document.getElementById('giftId'),status=document.getElementById('linkStatus');
+ // Address is text, never HTML. No seed, private-key field, camera, networking or storage.
+ const valid=/^[a-zA-Z0-9]{26,90}$/.test(value);
+ gift.textContent=valid?value:'DEMO-ONLY — no gift address provided';
+ status.textContent=valid?'Gift-specific address from recipient link (not queried or authenticated).':'A real gift link will supply a public funding-address locator.';
+ document.getElementById('explain').addEventListener('click',()=>{
+  document.getElementById('message').textContent='The isolated prototype supports offline unsigned PSBT QR display and signed Jade QR verification for supplied regtest gift evidence. It does not yet authenticate the gift record, discover trusted live on-chain release state, construct a verified release PSBT from that state, authorize spending, or broadcast. No keys are requested.';
+ });
+})();
+
+// Display-only planning state. Never used as a public gift record or PSBT authorization.
+let datePreviewGeneration = 0;
+let activeDatePreview = null;
+function renderDatePreview(gifts) {
+  const total = gifts.reduce((sum, gift) => sum + BigInt(gift.valueSats), 0n);
+  document.getElementById('giftTotal').textContent = (Number(total) / 1e8).toFixed(8) + ' BTC';
+  document.getElementById('giftTotalContext').textContent = total.toLocaleString('en-US') +
+    ' sats planned across ' + gifts.length + ' releases — UNFUNDED, NOT VERIFIED';
+  const schedule = document.getElementById('giftScheduleRows');
+  schedule.replaceChildren();
+  const select = document.getElementById('selectedRelease');
+  select.replaceChildren(new Option('Select release', ''));
+  for (const [index, gift] of gifts.entries()) {
+    const number = index + 1;
+    const tr = document.createElement('tr');
+    for (const value of [number, gift.date, gift.valueSats.toLocaleString('en-US') + ' sats', 'Unfunded']) {
+      const td = document.createElement('td');
+      td.textContent = String(value);
+      tr.append(td);
+    }
+    schedule.append(tr);
+    select.add(new Option('Release ' + number + ' — ' + gift.valueSats.toLocaleString('en-US') +
+      ' sats (unfunded preview)', String(number)));
+  }
+  document.getElementById('scheduleProvenance').textContent =
+    'Planned dates and amounts from a locally imported unsigned regtest preview. ' +
+    'No confirmed funding, authenticated gift record, chain verification, maturity or spending authorization.';
+  select.value = '';
+  select.dispatchEvent(new Event('change'));
+}
+
+document.getElementById('dateGiftPreviewFile').addEventListener('change', async event => {
+  const token = ++datePreviewGeneration;
+  const status = document.getElementById('dateGiftPreviewStatus');
+  const details = document.getElementById('dateGiftPreviewDetails');
+  details.hidden = true;
+  details.replaceChildren();
+  status.textContent = 'No date-based preview loaded.';
+  activeDatePreview = null;
+  if (!globalThis.bc1q21ProfessionalPublicGiftRecord) renderPublicReleaseOptions(null);
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    if (file.size > 80000) throw Error('Preview exceeds 80 KB');
+    const data = JSON.parse(await file.text());
+    if (token !== datePreviewGeneration) return;
+    if (data?.format !== 'bc1q21-professional-diagnostic-jade-handoff-v1' ||
+        data.diagnosticOnly !== true ||
+        data.signingAuthorized !== false ||
+        data.canBroadcast !== false ||
+        data.unsigned?.format !== 'bc1q21-professional-funded-distribution-unsigned-psbt-v1' ||
+        data.unsigned.network !== 'regtest' ||
+        data.unsigned.signed !== false ||
+        data.unsigned.broadcast !== false ||
+        data.intent?.format !== 'bc1q21-professional-funded-distribution-intent-v1' ||
+        data.intent.network !== 'regtest' ||
+        data.intent.signed !== false ||
+        data.intent.signatureVerified !== false ||
+        data.intent.broadcastAuthorized !== false)
+      throw Error('Not a supported unsigned regtest diagnostic');
+    const gifts = data.intent.gifts;
+    if (!Array.isArray(gifts) || gifts.length < 1 || gifts.length > 24 ||
+        gifts.length !== data.unsigned.giftOutputCount)
+      throw Error('Invalid release count');
+    let total = 0n, previousDate = '', previousLocktime = 0;
+    const rows = [];
+    for (const [index, gift] of gifts.entries()) {
+      if (typeof gift.date !== 'string' ||
+          !/^\d{4}-\d{2}-\d{2}$/.test(gift.date) ||
+          !Number.isSafeInteger(gift.locktime) ||
+          gift.locktime < 500000000 ||
+          gift.locktime <= previousLocktime ||
+          gift.date <= previousDate ||
+          !Number.isSafeInteger(gift.valueSats) ||
+          gift.valueSats < 1)
+        throw Error('Invalid release ' + (index + 1));
+      const date = new Date(gift.locktime * 1000);
+      if (!Number.isFinite(date.getTime()) ||
+          date.toISOString().slice(0, 10) !== gift.date)
+        throw Error('Date and locktime mismatch');
+      total += BigInt(gift.valueSats);
+      if (total > 2100000000000000n) throw Error('Invalid total');
+      rows.push([index + 1, gift.date, gift.valueSats.toLocaleString('en-US') + ' sats', 'Unfunded']);
+      previousDate = gift.date;
+      previousLocktime = gift.locktime;
+    }
+    const heading = document.createElement('h3');
+    heading.textContent = 'Unsigned date-based gift preview';
+    details.append(heading);
+    const summary = document.createElement('p');
+    summary.textContent = total.toLocaleString('en-US') +
+      ' sats planned across ' + gifts.length + ' releases. NOT FUNDED.';
+    details.append(summary);
+    const table = document.createElement('table');
+    const header = document.createElement('tr');
+    for (const name of ['Release', 'Planned date', 'Amount', 'Status']) {
+      const th = document.createElement('th');
+      th.textContent = name;
+      header.append(th);
+    }
+    const thead = document.createElement('thead');
+    thead.append(header);
+    table.append(thead);
+    const tbody = document.createElement('tbody');
+    for (const values of rows) {
+      const tr = document.createElement('tr');
+      for (const value of values) {
+        const td = document.createElement('td');
+        td.textContent = String(value);
+        tr.append(td);
+      }
+      tbody.append(tr);
+    }
+    table.append(tbody);
+    details.append(table);
+    const warning = document.createElement('p');
+    warning.className = 'warn';
+    warning.textContent = 'UNFUNDED DIAGNOSTIC ONLY. No confirmed gift, claim authorization, signing or broadcast.';
+    details.append(warning);
+    // Keep imported planning data separate from the gift-specific verification path.
+    // A preview must never supply a bc1q21ProfessionalPublicGiftRecord.
+    globalThis.bc1q21ProfessionalPublicGiftRecord = null;
+    document.getElementById('giftRecordSource').textContent = 'No record loaded';
+    document.getElementById('giftRecordStatus').textContent =
+      'No authenticated public gift record loaded. Preview is unfunded.';
+    activeDatePreview = gifts.map(g => ({date:g.date, valueSats:g.valueSats}));
+    renderDatePreview(activeDatePreview);
+    details.hidden = false;
+    status.textContent = 'Date-based unsigned regtest preview loaded. Not chain-verified or claimable.';
+  } catch (error) {
+    if (token === datePreviewGeneration)
+      status.textContent = 'Rejected preview: ' + String(error.message || error);
+  }
+});
+
+let draftImportGeneration=0;
+document.getElementById('draftGiftFile').addEventListener('change',async event=>{
+ const token=++draftImportGeneration,file=event.target.files?.[0],status=document.getElementById('draftGiftStatus'),details=document.getElementById('draftGiftDetails');
+ details.hidden=true;document.getElementById('draftGiftRows').replaceChildren();status.textContent='No creator draft loaded.';
+ if(!file)return;
+ try{
+  if(file.size>80000)throw Error('Draft exceeds 80 KB');
+  const data=JSON.parse(await file.text());
+  if(token!==draftImportGeneration)return;
+  if(!data||data.format!=='bc1q21-professional-unfunded-regtest-plan-v1'||data.network!=='regtest'||data.status!=='UNFUNDED_DRAFT_DO_NOT_SEND'||data.fundingConfirmed!==false||data.signingAuthorized!==false||data.broadcastAuthorized!==false||data.walletOriginAuthenticated!==false||data.chainVerified!==false)throw Error('Not a supported unfunded Professional draft');
+  if(!data.gift||typeof data.gift.recipient!=='string'||data.gift.recipient.length>100||typeof data.gift.occasion!=='string'||data.gift.occasion.length>100||typeof data.gift.practiceName!=='string'||data.gift.practiceName.length>100||!Array.isArray(data.releases)||data.releases.length<1||data.releases.length>24)throw Error('Invalid gift draft details');
+  let total=0n,previousHeight=0,previousDate='';
+  for(const [index,item] of data.releases.entries()){
+   if(item.releaseNumber!==index+1||typeof item.plannedDate!=='string'||!/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/.test(item.plannedDate)||item.plannedDate<=previousDate||!Number.isSafeInteger(item.unlockBlockHeight)||item.unlockBlockHeight<=previousHeight||item.unlockBlockHeight>499999999||typeof item.amountSats!=='string'||!/^[1-9][0-9]*$/.test(item.amountSats)||typeof item.regtestAddress!=='string'||item.regtestAddress.length>100||typeof item.redeemScriptHex!=='string'||item.redeemScriptHex.length>500||typeof item.signerPubkeyHex!=='string'||item.signerPubkeyHex.length!==66)throw Error('Invalid release '+(index+1));
+   total+=BigInt(item.amountSats);if(total>2100000000000000n)throw Error('Invalid gift amount');
+   previousHeight=item.unlockBlockHeight;previousDate=item.plannedDate;
+  }
+  if(total.toString()!==data.totalSats)throw Error('Draft total mismatch');
+  document.getElementById('draftGiftHeading').textContent='Planned gift for '+(data.gift.recipient||'recipient');
+  document.getElementById('draftGiftOccasion').textContent=data.gift.occasion+' · Prepared by '+data.gift.practiceName;
+  document.getElementById('draftGiftTotal').textContent=total.toLocaleString('en-US')+' sats planned · not funded';
+  const tbody=document.getElementById('draftGiftRows');
+  data.releases.forEach(item=>{const row=document.createElement('tr');for(const value of [item.releaseNumber,item.plannedDate,BigInt(item.amountSats).toLocaleString('en-US')+' sats',item.unlockBlockHeight]){const cell=document.createElement('td');cell.textContent=String(value);row.append(cell);}tbody.append(row);});
+  details.hidden=false;status.textContent='Local creator draft preview loaded. NOT a verified gift; no recipient signing or release.';
+ }catch(error){if(token===draftImportGeneration)status.textContent='Cannot open draft: '+String(error.message||error);}
+});
+document.getElementById('selectedRelease').addEventListener('change',event=>{
+ const n=Number(event.target.value),label=document.getElementById('selectedReleaseStatus');
+ const evidence=document.getElementById('selectedReleaseEvidence');
+ evidence.textContent='No gift-specific transaction evidence loaded.';
+ document.getElementById('coreUtxoStatus').textContent='No Core response inspected. Imported JSON cannot establish trusted RPC provenance.';
+ document.getElementById('utxoEvidenceStatus').textContent='No trusted Bitcoin Core UTXO evidence connected. Signing remains disabled.';
+ if(!n){label.textContent='No release selected. Signing remains locked.';return;}
+ if(activeDatePreview && !globalThis.bc1q21ProfessionalPublicGiftRecord){
+  const planned=activeDatePreview[n-1];
+  if(!planned){label.textContent='Invalid preview release. Signing remains locked.';return;}
+  label.textContent='Release '+n+' planned for '+planned.date+' ('+
+   planned.valueSats.toLocaleString('en-US')+' sats). UNFUNDED PREVIEW ONLY; signing disabled.';
+  return;
+ }
+ label.textContent='Release '+n+' selected for review only. Gift-specific signing is not enabled.';
+ // Public metadata is deliberately not inferred from the gift URL or mock schedule.
+ // Integration requires an independently validated public gift record.
+ if(!globalThis.bc1q21ProfessionalPublicGiftRecord)return;
+ try{
+  const locator=new URLSearchParams(location.search).get('a')||new URLSearchParams(location.search).get('address')||'';
+  const selected=globalThis.bc1q21ProfessionalSelectPublicGiftRelease({
+   gift:globalThis.bc1q21ProfessionalPublicGiftRecord,recipientLocator:locator,releaseNumber:n});
+  evidence.textContent='Funding transaction: '+selected.fundingTxid+' | Output: '+selected.fundingVout+' | Lock height: '+selected.lockHeight+' | Input: '+selected.inputSats+' sats. Public consistency only; not chain verified.';
+  document.getElementById('utxoEvidenceStatus').textContent='Selected outpoint '+selected.fundingTxid+':'+selected.fundingVout+' requires authenticated Bitcoin Core confirmation, unspent status, maturity and authorization. No signing or broadcast.';
+ }catch(error){label.textContent='Selected release rejected: '+String(error.message||error);}
+});
+// Once a public gift record is supplied, display its releases rather than mock amounts.
+function renderPublicGiftOverview(record){
+ const rows=document.getElementById('giftScheduleRows');
+ rows.replaceChildren();
+ const releases=record?[...record.releases].sort((a,b)=>a.releaseNumber-b.releaseNumber):[
+  {releaseNumber:1,lockHeight:130,inputSats:12000},{releaseNumber:2,lockHeight:140,inputSats:15000},
+  {releaseNumber:3,lockHeight:150,inputSats:18000},{releaseNumber:4,lockHeight:160,inputSats:21000}];
+ const total=releases.reduce((sum,r)=>sum+BigInt(r.inputSats),0n);
+ document.getElementById('giftTotal').textContent=(Number(total)/1e8).toFixed(8)+' BTC';
+ document.getElementById('giftTotalContext').textContent=total.toLocaleString('en-US')+' sats across '+releases.length+' releases — '+(record?'imported untrusted gift record; NOT verified balance':'disposable regtest demonstration');
+ for(const r of releases){
+  const tr=document.createElement('tr');
+  for(const value of [r.releaseNumber,r.lockHeight,Number(r.inputSats).toLocaleString('en-US')+' sats',record?'Unverified':'Demo']){
+   const td=document.createElement('td');td.textContent=String(value);tr.append(td);
+  }
+  rows.append(tr);
+ }
+}
+function renderPublicReleaseOptions(record){
+ renderPublicGiftOverview(record);
+ const select=document.getElementById('selectedRelease');
+ select.replaceChildren(new Option('Select release',''));
+ if(record){
+  for(const r of [...record.releases].sort((a,b)=>a.releaseNumber-b.releaseNumber)){
+   select.add(new Option('Release '+r.releaseNumber+' — '+r.inputSats.toLocaleString('en-US')+' sats (unverified)',String(r.releaseNumber)));
+  }
+ }else{
+  for(const [n,sats] of [[1,12000],[2,15000],[3,18000],[4,21000]])
+   select.add(new Option('Release '+n+' — '+sats.toLocaleString('en-US')+' sats (demo)',String(n)));
+ }
+ document.getElementById('scheduleProvenance').textContent=record?'Release selector uses the locally imported public gift record. Its schedule and amounts are NOT authenticated, chain-verified, or spendable evidence.':'These are synthetic regtest demonstration releases—not a recipient\'s actual gift.';
+ select.value='';
+ select.dispatchEvent(new Event('change'));
+}
+let coreImportGeneration=0;
+function invalidateCoreEvidence(){
+ coreImportGeneration++;
+ document.getElementById('coreUtxoStatus').textContent='No Core response inspected for the current release. Imported JSON cannot establish trusted RPC provenance.';
+}
+document.getElementById('selectedRelease').addEventListener('change',invalidateCoreEvidence);
+document.getElementById('publicGiftFile').addEventListener('change',invalidateCoreEvidence);
+document.getElementById('coreUtxoFile').addEventListener('change',async event=>{
+ const importToken=++coreImportGeneration;
+ const status=document.getElementById('coreUtxoStatus');
+ status.textContent='No Core response inspected. Imported JSON cannot establish trusted RPC provenance.';
+ const file=event.target.files?.[0];
+ if(!file)return;
+ if(file.size>65536){status.textContent='Rejected Core response: file too large.';return;}
+ try{
+  const gift=globalThis.bc1q21ProfessionalPublicGiftRecord;
+  const n=Number(document.getElementById('selectedRelease').value);
+  if(!gift||!n)throw Error('Load a gift record and select its release first');
+  const locator=new URLSearchParams(location.search).get('a')||new URLSearchParams(location.search).get('address')||'';
+  const release=globalThis.bc1q21ProfessionalSelectPublicGiftRelease({gift,recipientLocator:locator,releaseNumber:n});
+  const response=JSON.parse(await file.text());
+  if(importToken!==coreImportGeneration||gift!==globalThis.bc1q21ProfessionalPublicGiftRecord||n!==Number(document.getElementById('selectedRelease').value))return;
+  const parsed=globalThis.bc1q21ProfessionalParseCoreGettxout(release.fundingTxid,release.fundingVout,response);
+  if(response?.bestblock!==undefined&&(!/^[0-9a-f]{64}$/i.test(response.bestblock)))throw Error('Invalid Core bestblock identifier');
+  if(parsed.valueSats!==release.inputSats||parsed.scriptPubKeyHex!==release.fundingScriptHex)throw Error('Core response amount or script does not match selected release');
+  status.textContent='PASS: supplied Core response matches selected release outpoint, amount and script. UNTRUSTED FILE — not independently chain-verified. Signing disabled.';
+ }catch(error){if(importToken===coreImportGeneration)status.textContent='Rejected Core response: '+String(error.message||error);}
+});
+let publicGiftImportGeneration=0;
+document.getElementById('publicGiftFile').addEventListener('change',async event=>{
+ const importToken=++publicGiftImportGeneration;
+ const status=document.getElementById('giftRecordStatus');
+ globalThis.bc1q21ProfessionalPublicGiftRecord=null;
+ activeDatePreview=null;
+ renderPublicReleaseOptions(null);
+ document.getElementById('giftRecordSource').textContent='No record loaded';
+ document.getElementById('selectedReleaseEvidence').textContent='No gift-specific transaction evidence loaded.';
+ const file=event.target.files?.[0];
+ if(!file){status.textContent='No public gift record loaded.';return;}
+ if(file.size>65536){status.textContent='Rejected: public gift record exceeds 64 KiB.';return;}
+ try{
+  const record=JSON.parse(await file.text());
+  if(importToken!==publicGiftImportGeneration)return;
+  const locator=new URLSearchParams(location.search).get('a')||new URLSearchParams(location.search).get('address')||'';
+  if(!Array.isArray(record.releases)||record.releases.length===0)throw Error('No releases');
+  for(const release of record.releases)globalThis.bc1q21ProfessionalSelectPublicGiftRelease({gift:record,recipientLocator:locator,releaseNumber:release.releaseNumber});
+  activeDatePreview=null;
+  document.getElementById('dateGiftPreviewDetails').hidden=true;
+  document.getElementById('dateGiftPreviewStatus').textContent='Planning preview superseded by imported public gift record (still unverified).';
+  globalThis.bc1q21ProfessionalPublicGiftRecord=record;
+  renderPublicReleaseOptions(record);
+  document.getElementById('giftRecordSource').textContent='Local JSON file (untrusted)';
+  status.textContent='Public gift record loaded for '+record.releases.length+' releases. File content is not authenticated or chain-verified.';
+  document.getElementById('selectedRelease').dispatchEvent(new Event('change'));
+ }catch(error){if(importToken===publicGiftImportGeneration)status.textContent='Rejected public gift record: '+String(error.message||error);}
+});
+// A local PSBT is never treated as trusted authorization. This integrates the
+// already-proven camera decoder with exact gift-specific signature verification.
+let giftCameraReceiver=null, giftPsbtEvidence=null, unsignedQrTimer=null, unsignedQrGeneration=0, giftImportGeneration=0, giftCameraGeneration=0;
+let verifiedSignedReturn=null;
+const signedSaveButton=document.getElementById('saveVerifiedJadePsbt');
+function clearSignedReturn(){verifiedSignedReturn=null;signedSaveButton.disabled=true;document.getElementById('signedPsbtStatus').textContent='No signed return verified.';}
+signedSaveButton.addEventListener('click',()=>{
+ if(!verifiedSignedReturn)return;
+ const blob=new Blob([JSON.stringify(verifiedSignedReturn,null,2)+'\n'],{type:'application/json'});
+ const url=URL.createObjectURL(blob);
+ const link=document.createElement('a');link.href=url;link.download='bc1q21-professional-verified-jade-release-'+verifiedSignedReturn.releaseNumber+'.json';
+ document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+const giftCameraStart=document.getElementById('giftCameraStart');
+const giftCameraStop=document.getElementById('giftCameraStop');
+const giftCameraStatus=document.getElementById('giftCameraStatus');
+function stopGiftCamera(){giftCameraGeneration++;if(giftCameraReceiver){giftCameraReceiver.stop();giftCameraReceiver=null;}giftCameraStop.disabled=true;giftCameraStart.disabled=!giftPsbtEvidence;if(typeof startCamera!=='undefined')startCamera.disabled=false;}
+function hideUnsignedQr(){unsignedQrGeneration++;if(unsignedQrTimer){clearInterval(unsignedQrTimer);unsignedQrTimer=null;}document.getElementById('unsignedQrImage').style.display='none';document.getElementById('unsignedQrImage').removeAttribute('src');document.getElementById('hideUnsignedQr').disabled=true;document.getElementById('unsignedQrStatus').textContent='No unsigned QR displayed. Do not sign unauthenticated gift data.';}
+function clearGiftPsbt(){clearSignedReturn();giftImportGeneration++;hideUnsignedQr();document.getElementById('showUnsignedQr').disabled=true;stopGiftCamera();giftPsbtEvidence=null;giftCameraStart.disabled=true;giftCameraStatus.textContent='No gift-specific PSBT loaded. No signing or broadcast.';}
+document.getElementById('selectedRelease').addEventListener('change',clearGiftPsbt);
+document.getElementById('publicGiftFile').addEventListener('change',clearGiftPsbt);
+document.getElementById('giftPsbtFile').addEventListener('change',async event=>{
+ clearGiftPsbt();const importToken=giftImportGeneration;const file=event.target.files?.[0];if(!file)return;
+ try{
+  if(file.size>160000)throw Error('PSBT evidence file too large');
+  const gift=globalThis.bc1q21ProfessionalPublicGiftRecord;
+  const n=Number(document.getElementById('selectedRelease').value);
+  if(!gift||!n)throw Error('Select a loaded gift release first');
+  const locator=new URLSearchParams(location.search).get('a')||new URLSearchParams(location.search).get('address')||'';
+  const release=globalThis.bc1q21ProfessionalSelectPublicGiftRelease({gift,recipientLocator:locator,releaseNumber:n});
+  const evidence=JSON.parse(await file.text());
+  if(importToken!==giftImportGeneration)throw Error('Gift or selected release changed during import');
+  if(evidence.releaseNumber!==n)throw Error('PSBT belongs to another release');
+  if(typeof globalThis.bc1q21ProfessionalVerifyGiftReleaseBinding!=='function')throw Error('Gift PSBT verifier unavailable');
+  const binding=globalThis.bc1q21ProfessionalVerifyGiftReleaseBinding({gift,release:{...gift.releases.find(r=>r.releaseNumber===n)},approvedUnsignedBase64:evidence.approvedUnsignedBase64,expectedApprovedSha256:evidence.expectedApprovedSha256});
+  if(binding.transactionMatchesSuppliedRelease!==true)throw Error('PSBT mismatch');
+  giftPsbtEvidence=Object.freeze({gift,release:gift.releases.find(r=>r.releaseNumber===n),approvedUnsignedBase64:evidence.approvedUnsignedBase64,expectedApprovedSha256:evidence.expectedApprovedSha256});
+  giftCameraStart.disabled=false;
+  document.getElementById('showUnsignedQr').disabled=false;
+  giftCameraStatus.textContent='Selected gift PSBT matches supplied public gift record. UNTRUSTED source; scan for verification only. No broadcast.';
+ }catch(error){if(importToken===giftImportGeneration)giftCameraStatus.textContent='Rejected gift PSBT: '+String(error.message||error);}
+});
+document.getElementById('showUnsignedQr').addEventListener('click',async()=>{
+ hideUnsignedQr();const qrToken=unsignedQrGeneration;const evidence=giftPsbtEvidence;
+ try{
+  if(!evidence)throw Error('Load a matching selected gift PSBT first');
+  const {images}=await globalThis.bc1q21ProfessionalPrepareGiftUnsignedQr(evidence);
+  if(qrToken!==unsignedQrGeneration||evidence!==giftPsbtEvidence)return;
+  if(!images.length)throw Error('No QR frames');
+  const img=document.getElementById('unsignedQrImage');let i=0;
+  img.src=images[0];img.style.display='block';
+  unsignedQrTimer=setInterval(()=>{i=(i+1)%images.length;img.src=images[i];},180);
+  document.getElementById('hideUnsignedQr').disabled=false;
+  document.getElementById('unsignedQrStatus').textContent='Animating '+images.length+' unsigned QR frames for selected release. DIAGNOSTIC ONLY: gift provenance unverified; do not authorize a real spend.';
+ }catch(error){if(qrToken===unsignedQrGeneration){hideUnsignedQr();document.getElementById('unsignedQrStatus').textContent='Unsigned QR error: '+String(error.message||error);}}
+});
+document.getElementById('hideUnsignedQr').addEventListener('click',hideUnsignedQr);
+window.addEventListener('pagehide',hideUnsignedQr);
+giftCameraStart.addEventListener('click',async()=>{
+ stopGiftCamera();const cameraToken=giftCameraGeneration;const evidence=giftPsbtEvidence;
+ giftCameraStart.disabled=true;giftCameraStop.disabled=false;
+ if(typeof stopJadeCamera==='function')stopJadeCamera();
+ startCamera.disabled=true;
+ try{
+  if(!evidence)throw Error('Missing approved PSBT evidence');
+  giftCameraReceiver=globalThis.bc1q21ProfessionalAttachGiftCamera({
+   video:document.getElementById('jadeVideo'),canvas:document.getElementById('jadeCanvas'),
+   ...evidence,onStatus:m=>{if(cameraToken===giftCameraGeneration&&evidence===giftPsbtEvidence)giftCameraStatus.textContent=m;},
+   onVerified:result=>{if(cameraToken!==giftCameraGeneration||evidence!==giftPsbtEvidence)return;if(typeof result.verifiedSignedPsbtBase64!=='string'||!result.verifiedSignedPsbtBase64.startsWith('cHNidP'))throw Error('Verified signed PSBT bytes missing');verifiedSignedReturn=Object.freeze({format:'bc1q21-professional-verified-jade-return-v1',network:'regtest',releaseNumber:result.selectedRelease,approvedUnsignedSha256:evidence.expectedApprovedSha256,signedPsbtBase64:result.verifiedSignedPsbtBase64,signatureCryptographicallyVerified:true,chainVerified:false,broadcast:false});signedSaveButton.disabled=false;document.getElementById('signedPsbtStatus').textContent='Signed PSBT verified against selected release. Save for isolated regtest completion. Not broadcast.';giftCameraStatus.textContent='PASS: Jade signature verified for selected release '+result.selectedRelease+'. No broadcast; gift provenance and authorization still required.';stopGiftCamera();}
+  });
+  const receiver=giftCameraReceiver;
+  await receiver.start();
+  if(cameraToken!==giftCameraGeneration||evidence!==giftPsbtEvidence){receiver.stop();return;}
+ }catch(error){if(cameraToken===giftCameraGeneration){stopGiftCamera();giftCameraStatus.textContent='Gift camera error: '+String(error.message||error);}}
+});
+giftCameraStop.addEventListener('click',()=>{stopGiftCamera();giftCameraStatus.textContent='Gift camera stopped.';});
+window.addEventListener('pagehide',stopGiftCamera);
+
+// A locally imported receipt is never treated as independently verified chain state.
+let receiptImportGeneration=0;
+function resetRedemptionReceipt(){
+ receiptImportGeneration++;
+ document.getElementById('redemptionReceiptStatus').textContent='No redemption receipt inspected. Local files do not prove chain confirmation.';
+}
+document.getElementById('selectedRelease').addEventListener('change',resetRedemptionReceipt);
+document.getElementById('publicGiftFile').addEventListener('change',resetRedemptionReceipt);
+document.getElementById('redemptionReceiptFile').addEventListener('change',async event=>{
+ const token=++receiptImportGeneration;
+ const status=document.getElementById('redemptionReceiptStatus');
+ status.textContent='Inspecting untrusted receipt...';
+ try{
+  const file=event.target.files?.[0];
+  if(!file){status.textContent='No redemption receipt selected.';return;}
+  if(file.size>200000)throw Error('Receipt file too large');
+  const gift=globalThis.bc1q21ProfessionalPublicGiftRecord;
+  const releaseNumber=Number(document.getElementById('selectedRelease').value);
+  if(!gift||!releaseNumber)throw Error('Load a public gift and select its release first');
+  const release=gift.releases.find(item=>item.releaseNumber===releaseNumber);
+  if(!release)throw Error('Selected release not found');
+  const receipt=JSON.parse(await file.text());
+  if(token!==receiptImportGeneration)return;
+  if(receipt.format!=='bc1q21-professional-regtest-release-validated-v1'||
+     receipt.network!=='regtest'||receipt.releaseNumber!==releaseNumber||
+     receipt.signatureVerified!==true||receipt.bitcoinCoreAccepted!==true||
+     typeof receipt.rawTransactionHex!=='string'||
+     !/^[0-9a-f]{64}$/i.test(receipt.txid))throw Error('Invalid regtest receipt');
+  if(typeof globalThis.bc1q21ProfessionalInspectRedemptionReceipt!=='function')
+   throw Error('Redemption receipt verifier unavailable');
+  const inspected=globalThis.bc1q21ProfessionalInspectRedemptionReceipt({gift,release,receipt});
+  if(inspected.transactionMatchesSelectedRelease!==true)throw Error('Transaction mismatch');
+  // An imported receipt is not a trusted RPC response. Never unlock signing.
+  status.textContent='Matching regtest redemption transaction inspected for release '+releaseNumber+
+   ' (txid '+receipt.txid+'). Claimed broadcast: '+(receipt.broadcast===true?'yes':'no')+
+   '. UNTRUSTED FILE: confirmation and chain provenance not verified.';
+ }catch(error){if(token===receiptImportGeneration)status.textContent='Rejected redemption receipt: '+String(error.message||error);}
+});
+
+const startCamera=document.getElementById('startCamera');
+const stopCamera=document.getElementById('stopCamera');
+const cameraStatus=document.getElementById('cameraStatus');
+let cameraReceiver=null;
+function stopJadeCamera(){if(cameraReceiver){cameraReceiver.stop();cameraReceiver=null;}startCamera.disabled=false;stopCamera.disabled=true;giftCameraStart.disabled=!giftPsbtEvidence;}
+startCamera.addEventListener('click',async()=>{
+ stopGiftCamera();
+ giftCameraStart.disabled=true;
+ startCamera.disabled=true;stopCamera.disabled=false;
+ try{
+  if(typeof globalThis.bc1q21ProfessionalAttachCamera!=='function')throw Error('Jade verifier bundle unavailable');
+  cameraReceiver=globalThis.bc1q21ProfessionalAttachCamera({
+   video:document.getElementById('jadeVideo'),canvas:document.getElementById('jadeCanvas'),
+   onStatus:message=>{cameraStatus.textContent=message;},
+   onVerified:result=>{
+    if(result.signatureCryptographicallyVerified!==true||result.transactionMatches!==true||result.broadcast!==false)throw Error('Diagnostic verification failed');
+    cameraStatus.textContent='PASS: fixed regtest Jade signature verified. Gift release remains disabled.';
+    stopJadeCamera();
+   }
+  });
+  await cameraReceiver.start();
+ }catch(error){stopJadeCamera();cameraStatus.textContent='Camera error: '+String(error.message||error);}
+});
+stopCamera.addEventListener('click',()=>{stopJadeCamera();cameraStatus.textContent='Camera stopped.';});
+window.addEventListener('pagehide',stopJadeCamera);
+
+</script>
+<script type="application/x-professional-legacy-diagnostic">
+'use strict';
+// Single-package handoff uses the same independently supplied digest verifier
+// and the same gift/PSBT import handlers as the existing isolated workflow.
+// It does not grant signing, chain provenance or broadcast permission.
+(function(){
+ const $=id=>document.getElementById(id);
+ let generation=0,active=null,internalSupply=false;
+ // A manually replaced gift/PSBT must revoke the previously authenticated
+ // package context rather than silently reusing its release evidence.
+ // Draft and date-preview imports are not independently verified funded gifts.
+ // Never retain a previously checked handoff when switching evidence sources.
+ for(const id of ['draftGiftFile','dateGiftPreviewFile']){
+  $(id).addEventListener('change',()=>{if(active)revoke();});
+ }
+ for(const id of ['publicGiftFile','giftPsbtFile']){
+  $(id).addEventListener('change',()=>{
+   if(internalSupply||!active)return;
+   revoke();
+  });
+ }
+ function revoke(){
+  generation++;active=null;
+  $('completeHandoffStatus').textContent='Handoff changed; reverify independent fingerprint.';
+  // Immediately revoke any gift/PSBT previously supplied by this handoff.
+  internalSupply=true;
+  try{
+   $('publicGiftFile').value='';
+   $('publicGiftFile').dispatchEvent(new Event('change'));
+   $('giftPsbtFile').value='';
+   $('giftPsbtFile').dispatchEvent(new Event('change'));
+  }finally{internalSupply=false;}
+ }
+ $('completeHandoffFile').addEventListener('change',revoke);
+ $('completeHandoffDigest').addEventListener('input',revoke);
+ function supply(id,name,data){
+  const transfer=new DataTransfer();
+  transfer.items.add(new File([JSON.stringify(data)],name,{type:'application/json'}));
+  internalSupply=true;
+  try{
+   $(id).files=transfer.files;
+   $(id).dispatchEvent(new Event('change'));
+  }finally{internalSupply=false;}
+ }
+ $('verifyCompleteHandoff').addEventListener('click',async()=>{
+  revoke();const token=generation;
+  const status=$('completeHandoffStatus'),file=$('completeHandoffFile').files?.[0];
+  try{
+   if(!file||file.size===0||file.size>700000)throw Error('Choose a nonempty package smaller than 700 KB');
+   const data=JSON.parse(await file.text());
+   if(token!==generation)return;
+   const digest=$('completeHandoffDigest').value.trim().toLowerCase();
+   if(!/^[0-9a-f]{64}$/.test(digest))throw Error('Independent fingerprint must be 64 hexadecimal characters');
+   const result=globalThis.bc1q21ProfessionalVerifyCustomerHandoff(data,digest);
+   if(result.independentlySuppliedDigestMatches!==true)throw Error('Fingerprint mismatch');
+   const locator=new URLSearchParams(location.search).get('a')||
+    new URLSearchParams(location.search).get('address')||'';
+   if(locator!==data.gift.fundingAddress)throw Error('Package does not match recipient gift link');
+   active=data;
+   supply('publicGiftFile','verified-handoff-gift.json',data.gift);
+   // File.text() and its change handler finish asynchronously. Never report
+   // success before the existing gift importer has actually accepted the file.
+   for(let attempt=0;attempt<100;attempt++){
+    if(token!==generation||active!==data)return;
+    // The importer parses JSON into a new object; wait for its accepted status.
+    if(globalThis.bc1q21ProfessionalPublicGiftRecord?.fundingAddress===data.gift.fundingAddress &&
+       globalThis.bc1q21ProfessionalPublicGiftRecord?.releases?.length===data.gift.releases.length &&
+       $('giftRecordStatus').textContent.startsWith('Public gift record loaded'))break;
+    if($('giftRecordStatus').textContent.startsWith('Rejected public gift record:'))
+     throw Error($('giftRecordStatus').textContent);
+    await new Promise(resolve=>setTimeout(resolve,20));
+   }
+   if(token!==generation||active!==data)return;
+   if(!$('giftRecordStatus').textContent.startsWith('Public gift record loaded') ||
+      globalThis.bc1q21ProfessionalPublicGiftRecord?.fundingAddress!==data.gift.fundingAddress ||
+      globalThis.bc1q21ProfessionalPublicGiftRecord?.releases?.length!==data.gift.releases.length)
+    throw Error('Gift import did not complete');
+   status.textContent='PASS: independent fingerprint matches. Choose a release to inspect its unsigned PSBT. Funding and customer identity NOT verified.';
+   // Importing the public gift may already select release 1. Re-dispatch so
+   // the corresponding package PSBT loads even without a user selection change.
+   if($('selectedRelease').value)$('selectedRelease').dispatchEvent(new Event('change'));
+  }catch(error){if(token===generation){const message=String(error.message||error);revoke();status.textContent='Rejected handoff: '+message;}}
+ });
+ $('selectedRelease').addEventListener('change',()=>{
+  const data=active,n=Number($('selectedRelease').value);
+  // Release switching is not a new trust decision. Do not reuse an unsigned
+  // PSBT from a different release when selection becomes empty.
+  if(!data||!n)return;
+  const evidence=data.psbts.find(e=>e.releaseNumber===n);
+  if(!evidence){revoke();$('completeHandoffStatus').textContent='Rejected handoff: missing selected release PSBT';return;}
+  // Defer until all existing selection listeners have cleared stale PSBT state.
+  queueMicrotask(()=>{if(active===data&&Number($('selectedRelease').value)===n)
+   supply('giftPsbtFile','handoff-release-'+n+'.json',evidence);});
+ });
+})();
+</script>
+</body></html>

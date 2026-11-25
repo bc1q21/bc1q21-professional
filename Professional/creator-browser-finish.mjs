@@ -1,0 +1,25 @@
+import {transactionNetwork} from './browser-transaction-network.mjs';
+import {inspectIndependentFunding} from './creator-independent-service.mjs';
+import {engine,plan,brand,rows,download} from './creator-browser-common.mjs';
+brand();const $=id=>document.getElementById(id),E=engine();
+try{
+ const p=plan(),w=creatorSession.workflow,r=w.prepared,v=w.verified;rows('releases',p.releases);$('gift-details').hidden=false;
+ if(!r||!v||v.requestDigest!==r.requestDigest||E.canonical(r.plan)!==E.canonical(p))throw Error('No exact-plan signed verification exists in this open application');
+ const checked=E.verifySignedBase64(r,v.signedPsbtBase64);if(checked.txid!==v.receipt.txid)throw Error('Verified transaction changed');
+ $('summary').textContent='SIGNED — NOT BROADCAST. '+p.releases.length+' releases · '+p.totalSats+' sats.';$('verified-transaction').hidden=false;
+ $('verified-transaction-details').textContent='Locally verified transaction '+v.receipt.txid+'. Mining '+r.feeSats+' sats; service '+r.serviceFeeSats+' sats; discovery '+r.discovery.valueSats+' sats. No mempool acceptance or confirmation established.';
+ $('finish-notice').textContent='SIGNED — NOT BROADCAST. No gift delivery completed.';$('finish-transaction-status').textContent='SIGNED — NOT BROADCAST';$('handoff-stage').textContent='Signature verified locally; recipient delivery pending.';$('next-action').textContent='Save transaction and optional recovery materials before closing. Use the separate send control only after reviewing the transaction.';
+ for(const [id,text,value]of [['creator-export-transaction','Save verified signed transaction',{format:'professional-customer-held-signed-transaction-v1',network:'regtest',txid:v.receipt.txid,rawTransactionHex:v.rawTransactionHex,signedPsbtBase64:v.signedPsbtBase64}],['creator-export-recovery','Save optional public recovery record',E.recoveryManifest(r,v.rawTransactionHex)]]){
+  const b=document.createElement('button');b.id=id;b.type='button';b.textContent=text;b.onclick=()=>download(id+'.json',value);$('verified-transaction').append(b);
+ }
+
+ const network=transactionNetwork({url:w.funding.url,engine:E,applicationOrigin:location.origin});
+ w.submission??={state:'NOT SUBMITTED'};
+ const show=result=>{const text=result.state+(result.confirmations?' · '+result.confirmations+' confirmations':'');$('summary').textContent=text+' · '+p.releases.length+' releases · '+p.totalSats+' sats.';$('handoff-stage').textContent=result.state==='CONFIRMED'?'Creator confirmed; recipient delivery not yet established.':'No recipient delivery established.';$('verified-transaction-details').textContent='Verified transaction '+v.receipt.txid+' · '+text+' · mining '+r.feeSats+' sats · service '+r.serviceFeeSats+' sats.';$('finish-transaction-status').textContent=text;$('finish-broadcast-status').textContent=text;$('finish-notice').textContent=result.state==='CONFIRMED'?'Creator gift transaction confirmed on disposable regtest. Recipient delivery remains your responsibility.':text+' — no confirmed gift delivery claimed.';$('next-action').textContent=result.state==='CONFIRMED'?'Save the public recovery record and share it independently with the beneficiary.':'Refresh transaction status. Confirmation requires regtest block generation by the local operator.';};
+ const refresh=document.createElement('button');refresh.id='creator-refresh-confirmation';refresh.textContent='Refresh Bitcoin confirmation';refresh.onclick=async()=>{try{const result=await network.observe(v.rawTransactionHex);Object.assign(w.submission,result);show(result);}catch(e){$('finish-transaction-status').textContent='Verification unavailable: '+e.message;}};
+ const send=document.createElement('button');send.id='creator-broadcast';send.textContent='Send this verified transaction — regtest only';
+ send.onclick=async()=>{if(!window.confirm('Submit this exact Jade-verified transaction to your selected regtest service? This spends the selected test outputs.'))return;send.disabled=true;try{E.verifySignedBase64(r,v.signedPsbtBase64);const result=await network.submit({raw:v.rawTransactionHex,state:w.submission,revalidate:async()=>{const f=await inspectIndependentFunding({url:w.funding.url,wallet:w.registration.wallet,outpoints:r.intent.inputs,engine:E,applicationOrigin:location.origin});const rebuilt=E.prepareBetaCreation({plan:p,wallet:w.registration.wallet,utxos:f.utxos,feeEstimate:f.feeEstimate,discovery:w.registration.discovery});if(rebuilt.unsigned.unsignedPsbtBase64!==r.unsigned.unsignedPsbtBase64)throw Error('Funding or quote changed');}});show(result);}catch(e){$('finish-transaction-status').textContent=e.message;}};
+ $('verified-transaction').append(send,refresh);
+ const beneficiary=document.createElement('a');beneficiary.href='./recipient-gift-specific-prototype.html';beneficiary.target='_blank';beneficiary.rel='noopener';beneficiary.textContent='Open beneficiary gift recovery';$('verified-transaction').append(beneficiary);
+ $('print-summary').onclick=()=>window.print();
+}catch(e){$('summary').textContent='SIGNED status unavailable: '+e.message;}

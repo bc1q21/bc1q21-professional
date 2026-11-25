@@ -1,0 +1,717 @@
+{
+  "lockfileSha256": "5d86535318560b3078ba9427f9b831bb323955da7f6584693bcaff0a17dc5bce",
+  "packages": [
+    {
+      "package": "@keystonehq/alias-sampling",
+      "version": "0.1.2",
+      "file": "LICENSE",
+      "sha256": "a6e8dab625f02dd05d49b77d78caaeea31efa031f9720c3bdc937296326c36a6",
+      "installedSource": "node_modules/@keystonehq/alias-sampling/LICENSE"
+    },
+    {
+      "package": "@ngraveio/bc-ur",
+      "version": "1.1.13",
+      "file": "LICENSE",
+      "sha256": "888a9b17a4e6e5656e2936a05fabfd87ecd951a8b568c90547b3ba29d2ab2020",
+      "installedSource": "node_modules/@ngraveio/bc-ur/LICENSE"
+    },
+    {
+      "package": "@noble/curves",
+      "version": "1.9.7",
+      "file": "LICENSE",
+      "sha256": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec",
+      "installedSource": "node_modules/@noble/curves/LICENSE"
+    },
+    {
+      "package": "@noble/hashes",
+      "version": "1.8.0",
+      "file": "LICENSE",
+      "sha256": "4f221aee6e072336700c408c68ab3b96a3fc09f6aebe6f48f1bd99e5ef13faec",
+      "installedSource": "node_modules/@noble/hashes/LICENSE"
+    },
+    {
+      "package": "assert",
+      "version": "2.1.0",
+      "file": "LICENSE",
+      "sha256": "6239c6144c31e58cf925c34483606969c555574d64ffa96518ab5d7f45c75d43",
+      "installedSource": "node_modules/assert/LICENSE"
+    },
+    {
+      "package": "available-typed-arrays",
+      "version": "1.0.7",
+      "file": "LICENSE",
+      "sha256": "6d0917530cf3b3dca12c1ab7798e4d38ad0a6798ecc1bd27849a3048ba91d265",
+      "installedSource": "node_modules/available-typed-arrays/LICENSE"
+    },
+    {
+      "package": "base-x",
+      "version": "4.0.1",
+      "file": "LICENSE.md",
+      "sha256": "a192bdfbed999ea06e52a3f5a85dd27dfed6ff3ad5a55050b345baba31afb0de",
+      "installedSource": "node_modules/base-x/LICENSE.md"
+    },
+    {
+      "package": "base64-js",
+      "version": "1.5.1",
+      "file": "LICENSE",
+      "sha256": "5b37224c080cdcc97c871ada971c224e9926370fe74f11b539aa1cf9f3b1aca1",
+      "installedSource": "node_modules/base64-js/LICENSE"
+    },
+    {
+      "package": "bech32",
+      "version": "2.0.0",
+      "file": "LICENSE",
+      "sha256": "e392496fe60945ccaffa39f0441504355aebd85a0cd428ad4e9173f763b77e9d",
+      "installedSource": "node_modules/bech32/LICENSE"
+    },
+    {
+      "package": "bignumber.js",
+      "version": "9.3.1",
+      "file": "LICENCE.md",
+      "sha256": "def75ba75d6426f1c3f02addf8e175fbe6e0d8a82e541cbdffc16d2bd8fd7d6a",
+      "installedSource": "node_modules/bignumber.js/LICENCE.md"
+    },
+    {
+      "package": "bip174",
+      "version": "2.1.1",
+      "file": "LICENSE",
+      "sha256": "c798b5fdeb125feca0aad9c52f36bfa9644798264d390e65780c1f361b6382fb",
+      "installedSource": "node_modules/bip174/LICENSE"
+    },
+    {
+      "package": "bitcoinjs-lib",
+      "version": "6.1.10",
+      "file": "LICENSE",
+      "sha256": "8ee455ba600efbd5e4a639108e4ddcee6db97adba107632e4042b02eae54147d",
+      "installedSource": "node_modules/bitcoinjs-lib/LICENSE"
+    },
+    {
+      "package": "bs58",
+      "version": "5.0.0",
+      "file": "LICENSE",
+      "sha256": "57efbd615689807b8341d557af0038fae58da7e2831f29f52d02902f657deb25",
+      "installedSource": "node_modules/bs58/LICENSE"
+    },
+    {
+      "package": "bs58check",
+      "version": "3.0.1",
+      "file": "LICENSE",
+      "sha256": "31cf56ab6437d74e342b67582468ab1ba1ac9fac898b369ca15371763eeaa68c",
+      "installedSource": "node_modules/bs58check/LICENSE"
+    },
+    {
+      "package": "buffer",
+      "version": "6.0.3",
+      "file": "LICENSE",
+      "sha256": "06bafa45fdad2579ba0e43b0c9b2c6290287c99c4203c300254a462b38a307f6",
+      "installedSource": "node_modules/buffer/LICENSE"
+    },
+    {
+      "package": "call-bind",
+      "version": "1.0.9",
+      "file": "LICENSE",
+      "sha256": "39c5ec504cf6bd5cd782a7c695828e09189df79f5d94840e4f08feb97b9fd416",
+      "installedSource": "node_modules/call-bind/LICENSE"
+    },
+    {
+      "package": "call-bind-apply-helpers",
+      "version": "1.0.2",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/call-bind-apply-helpers/LICENSE"
+    },
+    {
+      "package": "call-bound",
+      "version": "1.0.4",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/call-bound/LICENSE"
+    },
+    {
+      "package": "cbor",
+      "version": "10.0.12",
+      "file": "LICENSE.md",
+      "sha256": "ddbe052c8c23d58266c31c0918d7a672945560a7ea1693322759222f9365ab44",
+      "installedSource": "node_modules/cbor/LICENSE.md"
+    },
+    {
+      "package": "cbor-sync",
+      "version": "1.0.4",
+      "file": "LICENSE.txt",
+      "sha256": "24b3561bcd0abd98b059d441d0083a2fa5f8a578912231f1244a4cd1235c9d02",
+      "installedSource": "node_modules/cbor-sync/LICENSE.txt"
+    },
+    {
+      "package": "crc",
+      "version": "3.8.0",
+      "file": "LICENSE",
+      "sha256": "cfcd9cc41041fe9ca66365198c9694d367dfc435c4d1a78813635c1b7841463a",
+      "installedSource": "node_modules/crc/LICENSE"
+    },
+    {
+      "package": "buffer",
+      "version": "5.7.1",
+      "file": "LICENSE",
+      "sha256": "06bafa45fdad2579ba0e43b0c9b2c6290287c99c4203c300254a462b38a307f6",
+      "installedSource": "node_modules/crc/node_modules/buffer/LICENSE"
+    },
+    {
+      "package": "define-data-property",
+      "version": "1.1.4",
+      "file": "LICENSE",
+      "sha256": "b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c",
+      "installedSource": "node_modules/define-data-property/LICENSE"
+    },
+    {
+      "package": "define-properties",
+      "version": "1.2.1",
+      "file": "LICENSE",
+      "sha256": "00d402c2bbe7c67369bd01ce2c16b8ed46ccc949a1ee2d6bb8f9606afa8c7434",
+      "installedSource": "node_modules/define-properties/LICENSE"
+    },
+    {
+      "package": "dunder-proto",
+      "version": "1.0.1",
+      "file": "LICENSE",
+      "sha256": "2b770a704c15de238c3f622b01b0044ddd60b49ee30608ea6991ebf19db7a7a1",
+      "installedSource": "node_modules/dunder-proto/LICENSE"
+    },
+    {
+      "package": "es-define-property",
+      "version": "1.0.1",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/es-define-property/LICENSE"
+    },
+    {
+      "package": "es-errors",
+      "version": "1.3.0",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/es-errors/LICENSE"
+    },
+    {
+      "package": "es-object-atoms",
+      "version": "1.1.2",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/es-object-atoms/LICENSE"
+    },
+    {
+      "package": "for-each",
+      "version": "0.3.5",
+      "file": "LICENSE",
+      "sha256": "d07913d776eef217a95d7ee3ee83577fc3c365b9c870f5a3411f785b81090614",
+      "installedSource": "node_modules/for-each/LICENSE"
+    },
+    {
+      "package": "function-bind",
+      "version": "1.1.2",
+      "file": "LICENSE",
+      "sha256": "773e131a7684726005a7e4688a80b4620033bc08499bc1404dd1a1eb3bca725e",
+      "installedSource": "node_modules/function-bind/LICENSE"
+    },
+    {
+      "package": "generator-function",
+      "version": "2.0.1",
+      "file": "LICENSE.md",
+      "sha256": "1ac0263302bfb8eedc54a10a44175b0df51419306d5bc1539bfd7a7da121bd08",
+      "installedSource": "node_modules/generator-function/LICENSE.md"
+    },
+    {
+      "package": "get-intrinsic",
+      "version": "1.3.0",
+      "file": "LICENSE",
+      "sha256": "39c5ec504cf6bd5cd782a7c695828e09189df79f5d94840e4f08feb97b9fd416",
+      "installedSource": "node_modules/get-intrinsic/LICENSE"
+    },
+    {
+      "package": "get-proto",
+      "version": "1.0.1",
+      "file": "LICENSE",
+      "sha256": "be46ce1e3b0479af9ce82d22b465a6d7d2ff084fca0aaf3d54172da2b5eb5781",
+      "installedSource": "node_modules/get-proto/LICENSE"
+    },
+    {
+      "package": "gopd",
+      "version": "1.2.0",
+      "file": "LICENSE",
+      "sha256": "d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5",
+      "installedSource": "node_modules/gopd/LICENSE"
+    },
+    {
+      "package": "has-property-descriptors",
+      "version": "1.0.2",
+      "file": "LICENSE",
+      "sha256": "0f0ca96f50793990031ebc488a38f7292ff70bce8ab6a8e5eeda674abc32ccdf",
+      "installedSource": "node_modules/has-property-descriptors/LICENSE"
+    },
+    {
+      "package": "has-symbols",
+      "version": "1.1.0",
+      "file": "LICENSE",
+      "sha256": "206c1adcf206dc0031b11232f5b054ec5f1662407ab1ca415247921cab2068ab",
+      "installedSource": "node_modules/has-symbols/LICENSE"
+    },
+    {
+      "package": "has-tostringtag",
+      "version": "1.0.2",
+      "file": "LICENSE",
+      "sha256": "e2560e002e13281578c75c850061d9255c33d16d732939e8c2db64c2506642fa",
+      "installedSource": "node_modules/has-tostringtag/LICENSE"
+    },
+    {
+      "package": "hasown",
+      "version": "2.0.4",
+      "file": "LICENSE",
+      "sha256": "bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a",
+      "installedSource": "node_modules/hasown/LICENSE"
+    },
+    {
+      "package": "ieee754",
+      "version": "1.2.1",
+      "file": "LICENSE",
+      "sha256": "18d45466ba3253deae04667e267a91ea8de8548f18c1125264d1c9db28194cc1",
+      "installedSource": "node_modules/ieee754/LICENSE"
+    },
+    {
+      "package": "inherits",
+      "version": "2.0.4",
+      "file": "LICENSE",
+      "sha256": "5ffe28e7ade7d8f10d85d5337a73fd793dac5c462fb9a28fbf8c5046c7fbca3b",
+      "installedSource": "node_modules/inherits/LICENSE"
+    },
+    {
+      "package": "is-arguments",
+      "version": "1.2.0",
+      "file": "LICENSE",
+      "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+      "installedSource": "node_modules/is-arguments/LICENSE"
+    },
+    {
+      "package": "is-callable",
+      "version": "1.2.7",
+      "file": "LICENSE",
+      "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+      "installedSource": "node_modules/is-callable/LICENSE"
+    },
+    {
+      "package": "is-generator-function",
+      "version": "1.1.2",
+      "file": "LICENSE",
+      "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+      "installedSource": "node_modules/is-generator-function/LICENSE"
+    },
+    {
+      "package": "is-nan",
+      "version": "1.3.2",
+      "file": "LICENSE",
+      "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+      "installedSource": "node_modules/is-nan/LICENSE"
+    },
+    {
+      "package": "is-regex",
+      "version": "1.2.1",
+      "file": "LICENSE",
+      "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+      "installedSource": "node_modules/is-regex/LICENSE"
+    },
+    {
+      "package": "is-typed-array",
+      "version": "1.1.15",
+      "file": "LICENSE",
+      "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+      "installedSource": "node_modules/is-typed-array/LICENSE"
+    },
+    {
+      "package": "isarray",
+      "version": "2.0.5",
+      "file": "LICENSE",
+      "sha256": "68f12f6e2c33688699249c01d8f9623c534da20aa71989c57b061b7bc1676d14",
+      "installedSource": "node_modules/isarray/LICENSE"
+    },
+    {
+      "package": "jsbi",
+      "version": "3.2.5",
+      "file": "LICENSE",
+      "sha256": "9568a2b155e66ac3e0ba1fd80b52b827b9460e6cf6f233125e7cbca8e206ddc3",
+      "installedSource": "node_modules/jsbi/LICENSE"
+    },
+    {
+      "package": "jsqr",
+      "version": "1.4.0",
+      "file": "LICENSE",
+      "sha256": "c6596eb7be8581c18be736c846fb9173b69eccf6ef94c5135893ec56bd92ba08",
+      "installedSource": "node_modules/jsqr/LICENSE"
+    },
+    {
+      "package": "math-intrinsics",
+      "version": "1.1.0",
+      "file": "LICENSE",
+      "sha256": "2b770a704c15de238c3f622b01b0044ddd60b49ee30608ea6991ebf19db7a7a1",
+      "installedSource": "node_modules/math-intrinsics/LICENSE"
+    },
+    {
+      "package": "nofilter",
+      "version": "3.1.0",
+      "file": "LICENSE.md",
+      "sha256": "ddbe052c8c23d58266c31c0918d7a672945560a7ea1693322759222f9365ab44",
+      "installedSource": "node_modules/nofilter/LICENSE.md"
+    },
+    {
+      "package": "object-is",
+      "version": "1.1.6",
+      "file": "LICENSE",
+      "sha256": "dc0fe5a22d9336f345ee984f9bf56f11f22877a3aa5fd16a1db9a8ca0e23a5d1",
+      "installedSource": "node_modules/object-is/LICENSE"
+    },
+    {
+      "package": "object-keys",
+      "version": "1.1.1",
+      "file": "LICENSE",
+      "sha256": "5640e5cbe2e9f57f6ccfdd8dbfbeadb875495bdbcb69d2666ce3177ccd0942e4",
+      "installedSource": "node_modules/object-keys/LICENSE"
+    },
+    {
+      "package": "object.assign",
+      "version": "4.1.7",
+      "file": "LICENSE",
+      "sha256": "a596744eec6b05682ed972bf93937668bbc8da2caed93fbf6510389de019b5c0",
+      "installedSource": "node_modules/object.assign/LICENSE"
+    },
+    {
+      "package": "possible-typed-array-names",
+      "version": "1.1.0",
+      "file": "LICENSE",
+      "sha256": "5e325595b4ea8cfec3802f545b1def5d7b73e4a5b8e9ba63e32a320f67732292",
+      "installedSource": "node_modules/possible-typed-array-names/LICENSE"
+    },
+    {
+      "package": "readable-stream",
+      "version": "3.6.2",
+      "file": "LICENSE",
+      "sha256": "ec62dc96da0099b87f4511736c87309335527fb7031639493e06c95728dc8c54",
+      "installedSource": "node_modules/readable-stream/LICENSE"
+    },
+    {
+      "package": "safe-buffer",
+      "version": "5.2.1",
+      "file": "LICENSE",
+      "sha256": "c7cc929b57080f4b9d0c6cf57669f0463fc5b39906344dfc8d3bc43426b30eac",
+      "installedSource": "node_modules/safe-buffer/LICENSE"
+    },
+    {
+      "package": "safe-regex-test",
+      "version": "1.1.0",
+      "file": "LICENSE",
+      "sha256": "d90bf0a089da4cf43d644ed240a0b3825dcdb705e64e38371d56995a4cc9e4c5",
+      "installedSource": "node_modules/safe-regex-test/LICENSE"
+    },
+    {
+      "package": "set-function-length",
+      "version": "1.2.2",
+      "file": "LICENSE",
+      "sha256": "bf9b0d665be2a689851eea667ca9f42066ea1d903b38349c51e6a44b2577680a",
+      "installedSource": "node_modules/set-function-length/LICENSE"
+    },
+    {
+      "package": "sha.js",
+      "version": "2.4.12",
+      "file": "LICENSE",
+      "sha256": "58dcf38be1438f739412b87eb70d64bf00e9976d529bb119f700d8b3167924f0",
+      "installedSource": "node_modules/sha.js/LICENSE"
+    },
+    {
+      "package": "stream-browserify",
+      "version": "3.0.0",
+      "file": "LICENSE",
+      "sha256": "96e5193183476a03da6667d217ce14110191d26ee105338086e94339edf40d5a",
+      "installedSource": "node_modules/stream-browserify/LICENSE"
+    },
+    {
+      "package": "string_decoder",
+      "version": "1.3.0",
+      "file": "LICENSE",
+      "sha256": "11f2aafb37d06b3ee5bdaf06e9811141d0da05263c316f3d627f45c20d43261b",
+      "installedSource": "node_modules/string_decoder/LICENSE"
+    },
+    {
+      "package": "to-buffer",
+      "version": "1.2.2",
+      "file": "LICENSE",
+      "sha256": "6a134e51aa31496c15a741592fc5d782b2dbf8d8b6b8524e15c8520ae0cd6374",
+      "installedSource": "node_modules/to-buffer/LICENSE"
+    },
+    {
+      "package": "typed-array-buffer",
+      "version": "1.0.3",
+      "file": "LICENSE",
+      "sha256": "b41d08bc3624d8c436fc80237d73ebb361985a67f4504bbcd703e5ca2b27254c",
+      "installedSource": "node_modules/typed-array-buffer/LICENSE"
+    },
+    {
+      "package": "typeforce",
+      "version": "1.18.0",
+      "file": "LICENSE",
+      "sha256": "d95ad0562d469442d7c580dda9a611b82ba0db00bcd590753f06bfa861148761",
+      "installedSource": "node_modules/typeforce/LICENSE"
+    },
+    {
+      "package": "util",
+      "version": "0.12.5",
+      "file": "LICENSE",
+      "sha256": "6239c6144c31e58cf925c34483606969c555574d64ffa96518ab5d7f45c75d43",
+      "installedSource": "node_modules/util/LICENSE"
+    },
+    {
+      "package": "util-deprecate",
+      "version": "1.0.2",
+      "file": "LICENSE",
+      "sha256": "0154425673db15cdfa80ecba2c9b1f1a867f7197a006764712849bfc3a93cbb7",
+      "installedSource": "node_modules/util-deprecate/LICENSE"
+    },
+    {
+      "package": "varuint-bitcoin",
+      "version": "1.1.2",
+      "file": "LICENSE",
+      "sha256": "234bc1cc59be4897338ca50ac64bd25d7a4dffd807467b0eacf0463a54984cbc",
+      "installedSource": "node_modules/varuint-bitcoin/LICENSE"
+    },
+    {
+      "package": "which-typed-array",
+      "version": "1.1.24",
+      "file": "LICENSE",
+      "sha256": "c61652db3d2808f667b48af0a358f0d85fd07ad4a0d0b1a50882dec3b764c522",
+      "installedSource": "node_modules/which-typed-array/LICENSE"
+    },
+    {
+      "package": "qrcode",
+      "version": "1.5.4",
+      "file": "license",
+      "sha256": "8df47c6ad9ac2c41eb9b2a72def9908959da0ede8dadd56c7b249c1bdb0c5ce6",
+      "scope": "bundled code, including development dependency",
+      "installedSource": "node_modules/qrcode/license"
+    },
+    {
+      "package": "dijkstrajs",
+      "version": "1.0.3",
+      "file": "LICENSE.md",
+      "sha256": "c46324e45a005413535a6fb7a97e9eacd3cc6bf30335b7d5c10b8ee3af9e60c2",
+      "scope": "bundled code, including development dependency",
+      "installedSource": "node_modules/dijkstrajs/LICENSE.md"
+    },
+    {
+      "package": "esbuild-plugin-polyfill-node",
+      "version": "0.3.0",
+      "file": "LICENSE",
+      "sha256": "3d81357ade8337905aaa45386cb23ccd4a6e1a02515f7426285ca9c7721b8d31",
+      "scope": "bundled code, including development dependency",
+      "installedSource": "node_modules/esbuild-plugin-polyfill-node/LICENSE"
+    },
+    {
+      "package": "@jspm/core",
+      "version": "2.1.0",
+      "file": "LICENSE",
+      "sha256": "b8bc5e4bbcf9023a91eccc0ee982bdfb92099adff03775bb6552925753ff1c89",
+      "scope": "bundled code, including development dependency",
+      "installedSource": "node_modules/@jspm/core/LICENSE"
+    }
+  ],
+  "coverageBasis": "69 locked non-development package/version entries plus four development-labelled packages present in distributed source bundles. Original embedded notices retained; no rebuild. Module labels identify package families, not independent proof of every historical build version.",
+  "bundledArtifacts": [
+    {
+      "path": "Professional/browser-integration/creator-browser.bundle.js",
+      "sha256": "269cd908499e7cb0320baf5404d22e1c645728bac4965c7183ed3dfe6ccf8090",
+      "observedLockedPackages": [
+        "@jspm/core",
+        "@keystonehq/alias-sampling",
+        "@ngraveio/bc-ur",
+        "@noble/curves",
+        "@noble/hashes",
+        "available-typed-arrays",
+        "base-x",
+        "bech32",
+        "bignumber.js",
+        "bip174",
+        "bitcoinjs-lib",
+        "bs58",
+        "bs58check",
+        "call-bind",
+        "call-bind-apply-helpers",
+        "call-bound",
+        "cbor",
+        "cbor-sync",
+        "crc",
+        "define-data-property",
+        "dijkstrajs",
+        "dunder-proto",
+        "es-define-property",
+        "es-errors",
+        "es-object-atoms",
+        "esbuild-plugin-polyfill-node",
+        "for-each",
+        "function-bind",
+        "get-intrinsic",
+        "get-proto",
+        "gopd",
+        "has-property-descriptors",
+        "has-symbols",
+        "has-tostringtag",
+        "hasown",
+        "inherits",
+        "is-callable",
+        "is-typed-array",
+        "isarray",
+        "jsbi",
+        "jsqr",
+        "math-intrinsics",
+        "nofilter",
+        "possible-typed-array-names",
+        "qrcode",
+        "safe-buffer",
+        "set-function-length",
+        "sha.js",
+        "to-buffer",
+        "typed-array-buffer",
+        "typeforce",
+        "varuint-bitcoin",
+        "which-typed-array"
+      ],
+      "unresolvedModuleLabels": [],
+      "missingNotices": []
+    },
+    {
+      "path": "Professional/browser-integration/professional-verifier.bundle.js",
+      "sha256": "8b72fb5efe500a73824a76c35942c2c33bc79eed9b917ab02f730de6048773eb",
+      "observedLockedPackages": [
+        "@jspm/core",
+        "@keystonehq/alias-sampling",
+        "@ngraveio/bc-ur",
+        "@noble/curves",
+        "@noble/hashes",
+        "available-typed-arrays",
+        "base-x",
+        "bech32",
+        "bignumber.js",
+        "bip174",
+        "bitcoinjs-lib",
+        "bs58",
+        "bs58check",
+        "call-bind",
+        "call-bind-apply-helpers",
+        "call-bound",
+        "cbor",
+        "cbor-sync",
+        "crc",
+        "define-data-property",
+        "dijkstrajs",
+        "dunder-proto",
+        "es-define-property",
+        "es-errors",
+        "es-object-atoms",
+        "esbuild-plugin-polyfill-node",
+        "for-each",
+        "function-bind",
+        "get-intrinsic",
+        "get-proto",
+        "gopd",
+        "has-property-descriptors",
+        "has-symbols",
+        "has-tostringtag",
+        "hasown",
+        "inherits",
+        "is-callable",
+        "is-typed-array",
+        "isarray",
+        "jsbi",
+        "jsqr",
+        "math-intrinsics",
+        "nofilter",
+        "possible-typed-array-names",
+        "qrcode",
+        "safe-buffer",
+        "set-function-length",
+        "sha.js",
+        "to-buffer",
+        "typed-array-buffer",
+        "typeforce",
+        "varuint-bitcoin",
+        "which-typed-array"
+      ],
+      "unresolvedModuleLabels": [],
+      "missingNotices": []
+    },
+    {
+      "path": "Professional/browser-integration/beneficiary-discovery.worker.js",
+      "sha256": "ffba9319b4932ea97b0a5295608a468b1f9cc10a2c0be2d46d2a364d1e9b584a",
+      "observedLockedPackages": [
+        "@jspm/core",
+        "@noble/curves",
+        "@noble/hashes",
+        "base-x",
+        "bech32",
+        "bip174",
+        "bitcoinjs-lib",
+        "bs58",
+        "bs58check",
+        "esbuild-plugin-polyfill-node",
+        "safe-buffer",
+        "typeforce",
+        "varuint-bitcoin"
+      ],
+      "unresolvedModuleLabels": [],
+      "missingNotices": []
+    },
+    {
+      "path": "Professional/tools/TEF-Signed-Return-Capture.html",
+      "sha256": "918ed17ee3e94a7949ed5e410dead799763ef8e747370145bbc8fd3a07a961e3",
+      "observedLockedPackages": [
+        "@jspm/core",
+        "@keystonehq/alias-sampling",
+        "@ngraveio/bc-ur",
+        "available-typed-arrays",
+        "bignumber.js",
+        "call-bind",
+        "call-bind-apply-helpers",
+        "call-bound",
+        "cbor-sync",
+        "crc",
+        "define-data-property",
+        "dunder-proto",
+        "es-define-property",
+        "es-errors",
+        "es-object-atoms",
+        "esbuild-plugin-polyfill-node",
+        "for-each",
+        "function-bind",
+        "get-intrinsic",
+        "get-proto",
+        "gopd",
+        "has-property-descriptors",
+        "has-symbols",
+        "has-tostringtag",
+        "hasown",
+        "inherits",
+        "is-callable",
+        "is-typed-array",
+        "isarray",
+        "jsbi",
+        "jsqr",
+        "math-intrinsics",
+        "possible-typed-array-names",
+        "safe-buffer",
+        "set-function-length",
+        "sha.js",
+        "to-buffer",
+        "typed-array-buffer",
+        "which-typed-array"
+      ],
+      "unresolvedModuleLabels": [],
+      "missingNotices": []
+    }
+  ],
+  "packageCount": 73,
+  "additionalAssetNotices": [
+    "Pico-CSS-v1.5.13-LICENSE.txt"
+  ]
+}

@@ -1,0 +1,23 @@
+// Explicit offline regeneration of PUBLIC SOFTWARE-ONLY fixtures. No Bitcoin services.
+import {writeFileSync,readFileSync} from 'node:fs';import {createHash} from 'node:crypto';
+import bitcoin from 'bitcoinjs-lib';
+import {PUBLIC_SYNTHETIC_ACCOUNT as a,syntheticPublicKey} from './public-synthetic-wallet.mjs';
+import {deriveJadePublicCltvHandoff} from '../jade-xpub-cltv-handoff.mjs';
+import {buildUnsignedCltvPsbt} from '../unsigned-cltv-psbt.mjs';
+import {buildUnsignedFundedDistributionPsbt} from '../unsigned-funded-distribution-psbt.mjs';
+const sha=b=>createHash('sha256').update(b).digest('hex');
+const provenance={synthetic:true,hardwareVerified:false,chainFunded:false,networkContacted:false,broadcast:false};
+const pub=syntheticPublicKey(0,0),locator=bitcoin.payments.p2wpkh({pubkey:pub,network:bitcoin.networks.regtest});
+const handoffs=Array.from({length:24},(_,i)=>deriveJadePublicCltvHandoff({accountXpub:a.xpub,masterFingerprintHex:a.fingerprint,childIndex:i,locktime:500+10*i}));
+const funding=new bitcoin.Transaction();funding.version=2;funding.addInput(Buffer.alloc(32,0x55),0);
+funding.addOutput(locator.output,546);funding.addOutput(bitcoin.script.compile([bitcoin.opcodes.OP_RETURN,Buffer.from('PUBLIC_SYNTHETIC_ONLY')]),0);
+for(const [i,h]of handoffs.entries())funding.addOutput(Buffer.from(h.fundingScriptPubKeyHex,'hex'),12000+1000*i);
+const proof={format:'bc1q21-professional-historical-funded-gift-public-evidence-v1',network:'regtest',giftLinkFundingAddress:locator.address,fundingTxid:funding.getId(),releaseOutputs:handoffs.map((h,i)=>({index:i,vout:i+2,sats:12000+1000*i,scriptPubKeyHex:h.fundingScriptPubKeyHex})),evidenceOrigin:'SOFTWARE-GENERATED SIMULATION; NOT historical funding, Core observation or hardware evidence',creatorAuthenticated:false,independentCommitmentAuthenticated:false,scheduleAuthenticated:false,beneficiaryAuthorized:false,broadcastAuthorized:false,...provenance};
+const h=handoffs[0],destinationScriptHex='0014'+'42'.repeat(20);
+const unsigned=buildUnsignedCltvPsbt({fundingTxHex:funding.toHex(),expectedTxid:funding.getId(),vout:2,expectedSats:12000,redeemScriptHex:h.redeemScriptHex,signerPubkeyHex:h.signerPubkeyHex,masterFingerprintHex:a.fingerprint,derivationPath:h.derivationPath,locktime:500,destinationScriptHex,destinationSats:11000});
+const handoff={format:'bc1q21-professional-same-gift-unsigned-handoff-v1',network:'regtest',fundingTxid:funding.getId(),vout:2,inputSats:12000,releaseIndex:0,locktime:500,nextBlockHeight:503,chainTipHash:'11'.repeat(32),fundingBlockHash:'22'.repeat(32),confirmedUnspentAtObservation:false,signerPubkeyHex:h.signerPubkeyHex,redeemScriptHex:h.redeemScriptHex,destinationScriptHex,payoutSats:11000,feeSats:1000,psbtSha256:sha(Buffer.from(unsigned.psbtBase64,'base64')),unsignedPsbtBase64:unsigned.psbtBase64,publicOnly:true,disposableFixture:true,recipientAuthenticated:false,walletOriginAttested:false,recipientIntentApproved:false,signingAuthorized:false,broadcastAuthorized:false,...provenance};
+const intent={format:'bc1q21-professional-funded-distribution-intent-v1',network:'regtest',inputs:[{txid:'33'.repeat(32),vout:0,valueSats:103750,scriptPubKeyHex:locator.output.toString('hex')}],gifts:handoffs.slice(0,5).map(h=>({scriptPubKeyHex:h.fundingScriptPubKeyHex,valueSats:20000})),change:{scriptPubKeyHex:locator.output.toString('hex'),valueSats:2000},serviceFee:null,networkFeeSats:1750,inputTotalSats:103750,outputTotalSats:102000,signed:false,signatureVerified:false,broadcastAuthorized:false,nextStep:'synthetic offline validation only'};
+const preview={format:'bc1q21-professional-diagnostic-jade-handoff-v1',diagnosticOnly:true,signingAuthorized:false,canBroadcast:false,unsigned:buildUnsignedFundedDistributionPsbt(intent,{masterFingerprintHex:a.fingerprint,publicKeyHex:pub.toString('hex'),path:"m/84'/0'/0'/0/0"}),intent,...provenance};
+for(const [name,obj] of [['original-funded-24-public-evidence.json',proof],['same-gift-unsigned-handoff.json',handoff],['five-release-unsigned-preview.json',preview]])writeFileSync(new URL('./'+name,import.meta.url),JSON.stringify(obj,null,2)+'\n');
+writeFileSync(new URL('./public-synthetic-funding.json',import.meta.url),JSON.stringify({fundingHex:funding.toHex(),fundingTxid:funding.getId(),account:a,...provenance},null,2)+'\n');
+console.log('Generated four coherent offline fixture files; all chain/hardware/broadcast claims are false');
