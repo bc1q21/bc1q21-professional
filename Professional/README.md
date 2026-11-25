@@ -1,11 +1,33 @@
-> November 11 lifecycle implementation: see [the isolated regtest lifecycle](lifecycle/README.md)
-> for the executable deposit → offline signing → claims → recovery workflow,
-> evidence, and remaining customer/hardware readiness boundaries. Historical
-> phase notes below are preserved; they are not the current implementation status.
+# bc1q21 Professional
 
-# bc1q21 Professional — isolated release prototype
+## Current application status
 
-Status: engineering design / NOT deployed / NOT production-ready.
+The accepted application is a browser-local, non-custodial **Regtest-only beta**.
+Gift planning, transaction preparation, verification and signing coordination run
+on the customer's device. Jade Plus signs offline through animated QR; recovery
+words and private keys must never be entered into the Professional browser.
+
+- Start the creator wizard at [creator.html](creator.html).
+- Start beneficiary discovery and claiming at
+  [recipient-gift-specific-prototype.html](recipient-gift-specific-prototype.html).
+- See [public source status and security boundaries](PUBLIC_SOURCE_STATUS.md) for
+  acceptance scope, recovery, licensing and deployment requirements.
+- See [public-source testing](PUBLIC_SOURCE_TESTING.md) for the default test suite.
+- The [lifecycle directory](lifecycle/README.md) also retains legacy engineering
+  infrastructure. It is not the production customer architecture.
+
+The recorded November 16, 2026 acceptance covered physical Jade Plus QR signing
+and a creator-to-beneficiary redemption on isolated Windows Bitcoin Core Regtest.
+It does not establish mainnet qualification or authorize real-Bitcoin payments.
+The disclaimer PDF must load and be affirmatively accepted before continuing.
+
+## Historical development notes
+
+**Everything below is historical context, not current setup instructions or a
+current feature/acceptance checklist.** References to pending legal acceptance,
+unconnected payment flows, old branches or other repository directories describe
+earlier work. They do not override the browser-local architecture above. Historical
+acceptance does not need to be repeated merely because those notes say pending.
 
 ## November 11 correction pass
 

@@ -1,21 +1,33 @@
-# Complete isolated regtest lifecycle
+# Lifecycle engines and legacy engineering infrastructure
 
-**Current November 12 status:** physical eight-role TEF possession signing and
-independent cryptographic verification PASS; its lost historical funding chain
-remains BLOCKED. Persistent host storage plus a tested, versioned wallet-free
-cold chain snapshot and an unsigned actual creator request are now prepared.
-See [persistent hardware acceptance](PERSISTENT_JADE_ACCEPTANCE.md) for the current
-checkpoint, restore commands, owner action and remaining beta gates. Older
-"physical acceptance pending" statements below refer to the original rehearsal;
-actual gift creation and claims still require new physical signatures.
+## Current architecture boundary
 
-Implemented from Professional reference `8de1af26460a8732307fa0cfc8d7b238276a62d8`
-on `professional/complete-regtest-lifecycle`, stacked on PR #2. Neither existing
-PR nor any main branch is changed by this work.
+The accepted customer application uses browser-local transaction preparation,
+verification and independent recovery with air-gapped Jade Plus QR signing. Start
+with the [Professional application guide](../README.md) and
+[public source status](../PUBLIC_SOURCE_STATUS.md).
 
-This is an executable local engineering workflow, **not an enabled customer
-payment service**. The existing browser preview remains unfunded and cannot
-sign/broadcast. Legal review restrictions and existing Jade work remain intact.
+Reusable transaction, CLTV, signature verification and recovery components in this
+directory remain part of the engineering foundation. Their presence does not mean
+that every infrastructure module is required by the browser application.
+
+The coordinator, SQLite workflow stores, operator-token services, private artifact
+stores and Docker/Core harnesses are **legacy or optional local engineering tools**.
+Do not deploy them as bc1q21-operated customer transaction services. A production
+static host must not collect or persist customer wallet or transaction data.
+
+For reproducible default checks, follow [public-source testing](../PUBLIC_SOURCE_TESTING.md).
+Optional Bitcoin, Docker or hardware scenarios require their own explicit setup
+and authorization; opening this document does not authorize running them.
+
+## Historical engineering reference
+
+**The remaining sections describe an earlier local engineering implementation.**
+They are not current customer launch instructions or evidence that the accepted
+browser workflow still awaits hardware qualification. Earlier coordinator,
+persistence and manifest-required recovery assumptions do not apply to the current
+package-independent browser discovery path. The recorded November 16 Regtest
+acceptance does not qualify mainnet use.
 
 ## Components
 
@@ -118,15 +130,3 @@ unaccounted spent outputs. Current balances are not inferred from a preview.
 Next acceptance: review the public evidence and rerun this isolated workflow.
 Only after that review should a separately authorized hardware/regtest test and
 trusted customer-service integration be scheduled. No real-Bitcoin beta is ready.
-
-## Historical Jade compatibility follow-up
-
-See [historical findings](JADE_HISTORICAL_COMPATIBILITY.md) and the
-[prepared physical regtest acceptance procedure](JADE_REGTEST_ACCEPTANCE.md).
-The new public export, standard-PSBT possession proof, 60-byte display profile
-and generic return tools advance the existing architecture; physical Jade
-acceptance is still pending. No historical signed payload is included.
-
-November 12 TEF origin clarification: the confirmed standalone QR account
-`m/84'/0'/0'` is supported with explicit origin selection while Core stays
-strictly regtest. See [TEF resolution and immediate fingerprint step](TEF_ACCOUNT_ORIGIN_RESOLUTION.md).
