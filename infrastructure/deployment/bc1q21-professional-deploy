@@ -1,0 +1,182 @@
+#!/usr/bin/python3 -I
+"""Review draft: Retail's exact-SHA SSH model, adapted for static atomic releases.
+Root-installed code/policy only. No app scripts, services, packages or rebuilds.
+"""
+import base64,fcntl,hashlib,json,os,pathlib,re,shutil,stat,subprocess,sys,tempfile,time,urllib.request,urllib.error,uuid
+ROOT=pathlib.Path('/opt/bc1q21-professional')
+STATE=ROOT/'.deployment'
+CONFIG=pathlib.Path('/etc/bc1q21-professional-deploy')
+REPO='/var/lib/bc1q21-professional-deploy/repo.git'
+USER='professional-deploy'
+URL='https://github.com/bc1q21/bc1q21-professional.git'
+ORIGIN='https://professional.bc1q21.com'
+def need(x,message):
+ if not x:raise RuntimeError(message)
+def sha(b):return hashlib.sha256(b).hexdigest()
+def trusted(p,directory=False):
+ p=pathlib.Path(p)
+ for q in [*reversed(p.parents),p]:
+  st=q.lstat();need(st.st_uid==0 and not st.st_mode&0o022 and not stat.S_ISLNK(st.st_mode),'unsafe root-controlled path')
+  need(not set(os.listxattr(q,follow_symlinks=False)) & {'system.posix_acl_access','system.posix_acl_default'},'unexpected filesystem ACL')
+ st=p.stat();need(p.is_dir() if directory else stat.S_ISREG(st.st_mode) and st.st_nlink==1,'unexpected filesystem type')
+ return p
+# Selected git reads happen as separate unprivileged deployment user, never root.
+def git(*args,limit=20*1024*1024):
+ cmd=['/usr/sbin/runuser','-u',USER,'--','/usr/bin/env','-i','PATH=/usr/bin:/bin','HOME=/var/lib/bc1q21-professional-deploy','GIT_CONFIG_NOSYSTEM=1','GIT_CONFIG_GLOBAL=/dev/null','GIT_NO_REPLACE_OBJECTS=1','/usr/bin/git','--git-dir='+REPO,'-c','core.hooksPath=/dev/null','-c','protocol.file.allow=never','-c','fetch.fsckObjects=true','-c','transfer.fsckObjects=true',*args]
+ with tempfile.TemporaryFile() as out,tempfile.TemporaryFile() as err:
+  p=subprocess.Popen(cmd,stdout=out,stderr=err,start_new_session=True)
+  end=time.monotonic()+120
+  try:
+   while p.poll() is None:
+    need(time.monotonic()<end and out.tell()<=limit and err.tell()<=65536,'git timeout or output limit');time.sleep(.05)
+   need(p.returncode==0 and out.tell()<=limit and err.tell()<=65536,'git operation failed');out.seek(0);return out.read(limit+1)
+  except BaseException:
+   import signal
+   try:os.killpg(p.pid,signal.SIGKILL)
+   except ProcessLookupError:pass
+   p.wait();raise
+
+def object_bytes(kind,oid,limit):
+ b=git('cat-file',kind,oid,limit=limit)
+ need(hashlib.sha1(kind.encode()+b' '+str(len(b)).encode()+b'\0'+b).hexdigest()==oid,'Git object integrity mismatch');return b
+
+def selected_object(root_tree,path,cache):
+ tree=root_tree
+ parts=path.split('/')
+ for index,name in enumerate(parts):
+  if tree not in cache:
+   raw=object_bytes('tree',tree,4*1024*1024);entries={};i=0
+   while i<len(raw):
+    j=raw.index(b' ',i);k=raw.index(b'\0',j);mode=raw[i:j].decode();entry=raw[j+1:k].decode();oid=raw[k+1:k+21].hex()
+    need(len(oid)==40 and entry not in entries,'malformed Git tree');entries[entry]=(mode,oid);i=k+21
+   cache[tree]=entries
+  need(name in cache[tree],'allowlisted source missing');mode,oid=cache[tree][name]
+  if index<len(parts)-1:need(mode=='40000','non-directory Git path');tree=oid
+  else:return mode,oid
+
+def relative(p):
+ need(isinstance(p,str) and re.fullmatch('[A-Za-z0-9_.+/-]+',p) and not p.startswith('/') and all(s not in ('','.','..','.git') for s in p.split('/')),'unsafe allowlist path');return p
+
+def validate_policy(policy):
+ need(set(policy)=={'schema','repository','entries','max_bytes'} and policy['schema']==2 and policy['repository']=='bc1q21/bc1q21-professional','wrong file policy')
+ need(type(policy['max_bytes']) is int and 0<policy['max_bytes']<=64*1024*1024 and isinstance(policy['entries'],list) and 0<len(policy['entries'])<=1000,'file policy limit')
+ sources=set();destinations=set()
+ for e in policy['entries']:
+  need(set(e)=={'path','destinations','git_mode','role'} and e['git_mode'] in ('100644','100755') and e['role'] in ('runtime','notice'),'invalid policy entry')
+  src=relative(e['path']);need(src not in sources,'duplicate source');sources.add(src)
+  need(isinstance(e['destinations'],list) and 0<len(e['destinations'])<=2,'invalid destinations')
+  for dst in e['destinations']:
+   relative(dst);need(dst.startswith(('site/Professional/','notices/')) and dst not in destinations,'invalid or duplicate destination');destinations.add(dst)
+ return destinations
+
+def syncdir(p):
+ fd=os.open(p,os.O_RDONLY|os.O_DIRECTORY)
+ try:os.fsync(fd)
+ finally:os.close(fd)
+def put(p,b,mode=0o600):
+ fd=os.open(p,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,mode)
+ with os.fdopen(fd,'wb') as f:f.write(b);f.flush();os.fsync(f.fileno())
+def inventory(root):
+ result={}
+ for p in sorted(root.rglob('*')):
+  need(not p.is_symlink(),'release symlink prohibited')
+  if p.is_file():trusted(p);result[str(p.relative_to(root))]={'bytes':p.stat().st_size,'sha256':sha(p.read_bytes())}
+  else:trusted(p,True)
+ return result
+
+def switch(target):
+ target=trusted(target,True)
+ need(target.is_relative_to(ROOT/'releases'),'target outside Professional releases')
+ tmp=ROOT/('.current-'+uuid.uuid4().hex);os.symlink(str(target),tmp);os.replace(tmp,ROOT/'current');syncdir(ROOT)
+
+class NoRedirect(urllib.request.HTTPRedirectHandler):
+ def redirect_request(self,*a,**k):return None
+
+def public_api(path):
+ opener=urllib.request.build_opener(urllib.request.ProxyHandler({}),NoRedirect())
+ req=urllib.request.Request('https://api.github.com/repos/bc1q21/bc1q21-professional/'+path,headers={'User-Agent':'Professional-static-deploy','Accept':'application/vnd.github+json'})
+ with opener.open(req,timeout=15) as response:
+  need(response.status==200,'public source API unavailable');raw=response.read(4*1024*1024+1);need(len(raw)<=4*1024*1024,'source API response limit');return json.loads(raw)
+def verify_main(commit):
+ head=public_api('branches/main')['commit']['sha'];need(re.fullmatch('[0-9a-f]{40}',head),'invalid main identity')
+ if head!=commit:
+  comparison=public_api('compare/'+commit+'...'+head)
+  need(comparison['status']=='ahead' and comparison['behind_by']==0 and comparison['merge_base_commit']['sha']==commit,'target is not on public main')
+
+def health(docroot,expected):
+ # Root-only dedicated read credential, not owner's personal password.
+ conf=trusted(CONFIG/'health.json');need(not conf.stat().st_mode&0o077,'private health credential required')
+ c=json.loads(conf.read_text());need(set(c)=={'username','password'} and all(isinstance(v,str) and v and '\n' not in v and '\r' not in v for v in c.values()) and ':' not in c['username'],'invalid health configuration')
+ token='Basic '+base64.b64encode((c['username']+':'+c['password']).encode()).decode();opener=urllib.request.build_opener(NoRedirect());deadline=time.monotonic()+120
+ def get(path,auth,limit):
+  need(time.monotonic()<deadline,'health deadline')
+  try:
+   req=urllib.request.Request(ORIGIN+'/'+path,headers={'Authorization':token} if auth else {})
+   with opener.open(req,timeout=min(10,max(1,deadline-time.monotonic()))) as r:return r.status,{k.lower():v for k,v in r.headers.items()},r.read(limit+1)
+  except urllib.error.HTTPError as e:return e.code,{k.lower():v for k,v in e.headers.items()},b''
+ for path,e in expected.items():
+  if not path.startswith('site/Professional/'):continue
+  route=path[len('site/Professional/'):]
+  status,headers,_=get(route,False,1);need(status==401 and 'basic' in headers.get('www-authenticate','').lower(),'password protection check failed')
+  status,headers,body=get(route,True,e['bytes']);need(status==200 and len(body)==e['bytes'] and sha(body)==e['sha256'],'deployed asset check failed')
+  suffix=pathlib.Path(route).suffix;mime=headers.get('content-type','').split(';')[0].lower()
+  types={'.html':{'text/html'},'.css':{'text/css'},'.js':{'application/javascript','text/javascript'},'.mjs':{'application/javascript','text/javascript'},'.png':{'image/png'},'.pdf':{'application/pdf'}}
+  need(mime in types.get(suffix,{'text/plain','text/markdown','application/octet-stream'}),'asset MIME check failed')
+  need(headers.get('x-content-type-options','').lower()=='nosniff','security header check failed')
+  if suffix in ('.html','.pdf'):need(headers.get('x-frame-options','').upper()=='SAMEORIGIN','frame policy check failed')
+
+def main(commit):
+ need(os.geteuid()==0 and re.fullmatch('[0-9a-f]{40}',commit),'root and exact commit required')
+ for p in (ROOT,ROOT/'releases',STATE,CONFIG):trusted(p,True)
+ trusted(pathlib.Path(__file__).resolve())
+ lock=STATE/'lock'
+ if not lock.exists():put(lock,b'')
+ trusted(lock);fd=os.open(lock,os.O_RDWR|os.O_NOFOLLOW|os.O_NONBLOCK)
+ try:fcntl.flock(fd,fcntl.LOCK_EX|fcntl.LOCK_NB)
+ except BlockingIOError:raise RuntimeError('deployment already running')
+ current=ROOT/'current';need(current.is_symlink(),'existing current symlink required');old=trusted(current.resolve(strict=True),True);need(old.is_relative_to(ROOT/'releases'),'current outside Professional releases')
+ need(not (STATE/'pending.json').exists(),'previous interrupted deployment requires owner recovery; no activation')
+ policy_path=trusted(CONFIG/'professional-static-allowlist.json');policy_bytes=policy_path.read_bytes();policy=json.loads(policy_bytes);destinations=validate_policy(policy)
+ # Bare repo is a separate unprivileged public-source cache, never the docroot.
+ git('fetch','--no-tags',URL,'main');verify_main(commit);need(git('rev-parse',commit+'^{commit}').decode().strip()==commit,'source identity mismatch');git('merge-base','--is-ancestor',commit,'FETCH_HEAD')
+ commit_bytes=object_bytes('commit',commit,4*1024*1024);tree=commit_bytes.split(b'\n',1)[0].decode().removeprefix('tree ');need(re.fullmatch('[0-9a-f]{40}',tree),'invalid commit tree');tree_cache={}
+ release=ROOT/'releases'/('git-'+commit);need(not release.exists(),'release already exists; do not overwrite')
+ stage=pathlib.Path(tempfile.mkdtemp(prefix='.professional-stage-',dir=ROOT/'releases'));switched=False
+ try:
+  total=0
+  for e in policy['entries']:
+   mode,oid=selected_object(tree,e['path'],tree_cache)
+   need(mode==e['git_mode'],'source file type/mode mismatch')
+   b=git('cat-file','blob',oid,limit=policy['max_bytes']);total+=len(b);need(total<=policy['max_bytes'],'source size limit')
+   need(hashlib.sha1(b'blob '+str(len(b)).encode()+b'\0'+b).hexdigest()==oid,'source blob mismatch')
+   for dst in e['destinations']:
+    target=stage/dst;target.parent.mkdir(parents=True,exist_ok=True,mode=0o755);put(target,b,0o444)
+  expected=inventory(stage);need(set(expected)==destinations,'release allowlist mismatch')
+  for parent,dirs,files in os.walk(stage,topdown=False):os.chmod(parent,0o555);syncdir(parent)
+  os.rename(stage,release);syncdir(ROOT/'releases')
+  manifest={'commit':commit,'policy_sha256':sha(policy_bytes),'tree':tree,'files':expected,'previous':str(old)}
+  put(STATE/(commit+'.json'),json.dumps(manifest,sort_keys=True).encode());syncdir(STATE)
+  # Durable previous pointer retained if killed/power lost; no new services.
+  put(STATE/'pending.json',json.dumps({'previous':str(old),'candidate':str(release/'site/Professional'),'commit':commit}).encode());syncdir(STATE)
+  switch(release/'site/Professional');switched=True
+  health(release/'site/Professional',expected)
+  (STATE/'pending.json').unlink();syncdir(STATE);print('Professional deployment verified: '+commit)
+ except BaseException:
+  if switched:
+   try:
+    switch(old)
+    old_release=old.parent.parent
+    health(old,{'site/Professional/'+str(p.relative_to(old)):{'bytes':p.stat().st_size,'sha256':sha(p.read_bytes())} for p in old.rglob('*') if p.is_file()})
+    (STATE/'pending.json').unlink();syncdir(STATE)
+    print('ERROR: previous Professional release restored and HTTP-verified',file=sys.stderr)
+   except Exception:print('ALERT: restoration unverified; pending record retained for owner recovery',file=sys.stderr)
+  raise
+ finally:
+  if stage.exists():
+   for parent,dirs,files in os.walk(stage):os.chmod(parent,0o700)
+   shutil.rmtree(stage)
+if __name__=='__main__':
+ os.umask(0o027)
+ try:
+  need(len(sys.argv)==2,'exactly one approved commit argument required');main(sys.argv[1])
+ except Exception:print('ERROR: Professional deployment stopped; inspect restricted server records',file=sys.stderr);sys.exit(1)
