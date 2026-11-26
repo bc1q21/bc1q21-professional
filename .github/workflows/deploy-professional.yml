@@ -1,0 +1,34 @@
+name: Deploy Professional to Production
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: professional-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production
+      url: https://professional.bc1q21.com
+    steps:
+      # No checkout, dependency installation or repository scripts in this
+      # credential-bearing job. Environment review gates the entire job.
+      - name: Deploy exact approved Professional commit
+        uses: appleboy/ssh-action@7eaf76671a0d7eec5d98ee897acda4f968735a17 # Retail's pinned v1.2.0
+        with:
+          host: ${{ secrets.PROFESSIONAL_DEPLOY_HOST }}
+          username: ${{ secrets.PROFESSIONAL_DEPLOY_USER }}
+          key: ${{ secrets.PROFESSIONAL_DEPLOY_SSH_KEY }}
+          fingerprint: ${{ secrets.PROFESSIONAL_DEPLOY_HOST_FINGERPRINT }}
+          command_timeout: 10m
+          script: deploy ${{ github.sha }}
