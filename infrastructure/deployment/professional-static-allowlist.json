@@ -1,0 +1,358 @@
+{
+  "entries": [
+    {
+      "destinations": [
+        "notices/ASSET_LICENSE.md",
+        "site/Professional/release-notices/ASSET_LICENSE.md"
+      ],
+      "git_mode": "100644",
+      "path": "ASSET_LICENSE.md",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "notices/BRANDING_POLICY.md",
+        "site/Professional/release-notices/BRANDING_POLICY.md"
+      ],
+      "git_mode": "100644",
+      "path": "BRANDING_POLICY.md",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "notices/LICENSE",
+        "site/Professional/release-notices/LICENSE"
+      ],
+      "git_mode": "100644",
+      "path": "LICENSE",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "notices/LICENSING.md",
+        "site/Professional/release-notices/LICENSING.md"
+      ],
+      "git_mode": "100644",
+      "path": "LICENSING.md",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "notices/NOTICE",
+        "site/Professional/release-notices/NOTICE"
+      ],
+      "git_mode": "100644",
+      "path": "NOTICE",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "site/Professional/assets/documents/bc1q21_Professional_Liability_Disclaimer.pdf"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/assets/documents/bc1q21_Professional_Liability_Disclaimer.pdf",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/assets/original/bc1q21-logo.png"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/assets/original/bc1q21-logo.png",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/assets/original/pico.min.css"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/assets/original/pico.min.css",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/assets/original/style.css"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/assets/original/style.css",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/beneficiary-browser-engine.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/beneficiary-browser-engine.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/beneficiary-browser.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/beneficiary-browser.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/browser-integration/beneficiary-discovery.worker.js"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/browser-integration/beneficiary-discovery.worker.js",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/browser-integration/creator-browser.bundle.js"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/browser-integration/creator-browser.bundle.js",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/browser-transaction-network.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/browser-transaction-network.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/camera-ownership.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/camera-ownership.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-browser-common.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-browser-common.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-browser-finish.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-browser-finish.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-browser-funding.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-browser-funding.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-browser-jade.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-browser-jade.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-independent-service.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-independent-service.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-memory.js"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-memory.js",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-shell.js"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-shell.js",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-wallet-setup.browser.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-wallet-setup.browser.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator-workspace-route.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator-workspace-route.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/creator.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/creator.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/customer-controls.css"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/customer-controls.css",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/customer-walkthrough.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/customer-walkthrough.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/disclaimer-gate.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/disclaimer-gate.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/disclaimer-policy.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/disclaimer-policy.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/finish-workspace.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/finish-workspace.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/funding-workspace.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/funding-workspace.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/index.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/index.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/jade-signing-workspace.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/jade-signing-workspace.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/planner-amounts.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/planner-amounts.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/professional-branding.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/professional-branding.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/public-date-planner.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/public-date-planner.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/recipient-gift-specific-prototype.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/recipient-gift-specific-prototype.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/retail-calendar-cltv.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/retail-calendar-cltv.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/retail-mirror/index.html"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/retail-mirror/index.html",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/retail-mirror/planner.browser.mjs"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/retail-mirror/planner.browser.mjs",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "site/Professional/retail-mirror/planner.css"
+      ],
+      "git_mode": "100644",
+      "path": "Professional/retail-mirror/planner.css",
+      "role": "runtime"
+    },
+    {
+      "destinations": [
+        "notices/RIGHTS_PROVENANCE.md",
+        "site/Professional/release-notices/RIGHTS_PROVENANCE.md"
+      ],
+      "git_mode": "100644",
+      "path": "RIGHTS_PROVENANCE.md",
+      "role": "notice"
+    },
+    {
+      "destinations": [
+        "notices/THIRD_PARTY_NOTICES.md",
+        "site/Professional/release-notices/THIRD_PARTY_NOTICES.md"
+      ],
+      "git_mode": "100644",
+      "path": "THIRD_PARTY_NOTICES.md",
+      "role": "notice"
+    }
+  ],
+  "max_bytes": 16777216,
+  "repository": "bc1q21/bc1q21-professional",
+  "schema": 2
+}
