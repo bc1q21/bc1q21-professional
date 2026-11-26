@@ -75,7 +75,9 @@ def syncdir(p):
  finally:os.close(fd)
 def put(p,b,mode=0o600):
  fd=os.open(p,os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,mode)
- with os.fdopen(fd,'wb') as f:f.write(b);f.flush();os.fsync(f.fileno())
+ with os.fdopen(fd,'wb') as f:
+  os.fchmod(f.fileno(),mode) # explicit public asset modes must not inherit restrictive umask
+  f.write(b);f.flush();os.fsync(f.fileno())
 def inventory(root):
  result={}
  for p in sorted(root.rglob('*')):
@@ -140,8 +142,8 @@ def main(commit):
  # Bare repo is a separate unprivileged public-source cache, never the docroot.
  git('fetch','--no-tags',URL,'main');verify_main(commit);need(git('rev-parse',commit+'^{commit}').decode().strip()==commit,'source identity mismatch');git('merge-base','--is-ancestor',commit,'FETCH_HEAD')
  commit_bytes=object_bytes('commit',commit,4*1024*1024);tree=commit_bytes.split(b'\n',1)[0].decode().removeprefix('tree ');need(re.fullmatch('[0-9a-f]{40}',tree),'invalid commit tree');tree_cache={}
- release=ROOT/'releases'/('git-'+commit);need(not release.exists(),'release already exists; do not overwrite')
- stage=pathlib.Path(tempfile.mkdtemp(prefix='.professional-stage-',dir=ROOT/'releases'));switched=False
+ release=ROOT/'releases'/('git-'+commit)
+ stage=pathlib.Path(tempfile.mkdtemp(prefix='.professional-stage-',dir=ROOT/'releases'));switch_attempted=False
  try:
   total=0
   for e in policy['entries']:
@@ -153,16 +155,26 @@ def main(commit):
     target=stage/dst;target.parent.mkdir(parents=True,exist_ok=True,mode=0o755);put(target,b,0o444)
   expected=inventory(stage);need(set(expected)==destinations,'release allowlist mismatch')
   for parent,dirs,files in os.walk(stage,topdown=False):os.chmod(parent,0o555);syncdir(parent)
-  os.rename(stage,release);syncdir(ROOT/'releases')
+  if release.exists() or release.is_symlink():
+   trusted(release,True);need(inventory(release)==expected,'existing release content mismatch; refusing overwrite')
+   for item in [release,*release.rglob('*')]:
+    need(stat.S_IMODE(item.stat().st_mode)==(0o555 if item.is_dir() else 0o444),'existing release permission mismatch')
+  else:
+   os.rename(stage,release);syncdir(ROOT/'releases')
   manifest={'commit':commit,'policy_sha256':sha(policy_bytes),'tree':tree,'files':expected,'previous':str(old)}
-  put(STATE/(commit+'.json'),json.dumps(manifest,sort_keys=True).encode());syncdir(STATE)
+  record=STATE/(commit+'.json')
+  if record.exists() or record.is_symlink():
+   prior=json.loads(trusted(record).read_text())
+   need(set(prior)==set(manifest) and all(prior[k]==manifest[k] for k in ('commit','policy_sha256','tree','files')),'existing release manifest mismatch')
+  else:put(record,json.dumps(manifest,sort_keys=True).encode());syncdir(STATE)
   # Durable previous pointer retained if killed/power lost; no new services.
   put(STATE/'pending.json',json.dumps({'previous':str(old),'candidate':str(release/'site/Professional'),'commit':commit}).encode());syncdir(STATE)
-  switch(release/'site/Professional');switched=True
+  switch_attempted=True # switch may replace the pointer before its fsync raises
+  switch(release/'site/Professional')
   health(release/'site/Professional',expected)
   (STATE/'pending.json').unlink();syncdir(STATE);print('Professional deployment verified: '+commit)
  except BaseException:
-  if switched:
+  if switch_attempted:
    try:
     switch(old)
     old_release=old.parent.parent
